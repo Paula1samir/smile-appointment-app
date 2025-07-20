@@ -86,7 +86,7 @@ const Dashboard = () => {
           </p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6" style={{display: "flex",justify-content:"space-between"}}>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6 dashboard-reports">
           <StatCard
             title="Today's Appointments"
             value={stats.todayAppointments}

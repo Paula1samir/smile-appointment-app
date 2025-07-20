@@ -43,3 +43,7 @@
 .StatCard{
   width: 300px;
 }
+.dashboard-reports{
+  display: flex;
+  justify-content: space-between;
+}
