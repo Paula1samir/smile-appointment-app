@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, Users, Clock, Activity } from 'lucide-react';
 import Navbar from '@/components/Navbar';
+import from "App.css";
 
 const Dashboard = () => {
   const { profile } = useAuth();
