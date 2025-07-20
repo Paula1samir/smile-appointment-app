@@ -79,14 +79,14 @@ const Dashboard = () => {
       <div className="p-6">
         <div className="mb-6">
           <h1 className="text-3xl font-bold">
-            Welcome back, {profile?.full_name}
+            Welcome back, Dr/ {profile?.full_name}
           </h1>
           <p className="text-muted-foreground">
             {profile?.role === 'doctor' ? 'Doctor Dashboard' : 'Assistant Dashboard'}
           </p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6" style={{display: "flex",justify-content:"space-between"}}>
           <StatCard
             title="Today's Appointments"
             value={stats.todayAppointments}
