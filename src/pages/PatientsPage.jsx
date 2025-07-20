@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Search, Plus, Phone, User, Calendar } from 'lucide-react';
 import Navbar from '@/components/Navbar';
+import '../styles/shared.css';
 
 const PatientsPage = () => {
   const [patients, setPatients] = useState([]);
@@ -69,9 +70,9 @@ const PatientsPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background page-container">
       <Navbar />
-      <div className="p-6">
+      <div className="p-6 dashboard-gradient">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-3xl font-bold">Patients</h1>
@@ -139,7 +140,7 @@ const PatientsPage = () => {
                   {filteredPatients.map((patient) => {
                     const stats = getPatientStats(patient);
                     return (
-                      <TableRow key={patient.id}>
+                      <TableRow key={patient.id} className="table-row">
                         <TableCell>
                           <div className="flex items-center space-x-2">
                             <User className="h-4 w-4 text-muted-foreground" />

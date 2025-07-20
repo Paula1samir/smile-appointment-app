@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Save, User } from 'lucide-react';
 import Navbar from '@/components/Navbar';
+import '../styles/shared.css';
 
 const AddPatientPage = () => {
   const [formData, setFormData] = useState({
@@ -61,9 +62,9 @@ const AddPatientPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background page-container">
       <Navbar />
-      <div className="p-6">
+      <div className="p-6 dashboard-gradient">
         <div className="flex items-center mb-6">
           <Button 
             variant="ghost" 
@@ -80,7 +81,7 @@ const AddPatientPage = () => {
         </div>
 
         <div className="max-w-2xl mx-auto">
-          <Card>
+          <Card className="animated-card">
             <CardHeader>
               <CardTitle className="flex items-center">
                 <User className="h-4 w-4 mr-2" />
@@ -103,6 +104,7 @@ const AddPatientPage = () => {
                       onChange={handleChange}
                       placeholder="Enter patient's full name"
                       required
+                      className="form-field"
                     />
                   </div>
                   <div className="space-y-2">
@@ -115,6 +117,7 @@ const AddPatientPage = () => {
                       onChange={handleChange}
                       placeholder="Enter phone number"
                       required
+                      className="form-field"
                     />
                   </div>
                 </div>
@@ -131,7 +134,7 @@ const AddPatientPage = () => {
                     onChange={handleChange}
                     placeholder="Enter patient's age"
                     required
-                    className="max-w-xs"
+                    className="max-w-xs form-field"
                   />
                 </div>
 

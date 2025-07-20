@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { useToast } from '@/hooks/use-toast';
 import { Calendar, Clock, Plus, User } from 'lucide-react';
 import Navbar from '@/components/Navbar';
+import '../styles/shared.css';
 
 const SchedulerPage = () => {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
@@ -159,9 +160,9 @@ const SchedulerPage = () => {
   const timeSlots = generateTimeSlots();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background page-container">
       <Navbar />
-      <div className="p-6">
+      <div className="p-6 dashboard-gradient">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-3xl font-bold">Scheduler</h1>
@@ -285,7 +286,7 @@ const SchedulerPage = () => {
             </CardContent>
           </Card>
 
-          <Card className="md:col-span-2">
+          <Card className="md:col-span-2 animated-card">
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Clock className="h-4 w-4 mr-2" />

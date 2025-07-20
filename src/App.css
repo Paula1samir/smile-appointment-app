@@ -40,10 +40,4 @@
 .read-the-docs {
   color: #888;
 }
-.StatCard{
-  width: 300px;
-}
-.dashboard-reports{
-  display: flex;
-  justify-content: space-between;
-}
+
