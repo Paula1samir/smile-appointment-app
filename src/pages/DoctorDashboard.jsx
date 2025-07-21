@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Users, Clock, Activity, User } from 'lucide-react';
+import { Calendar, Users, Clock, Activity, User, FileText, Stethoscope } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import ToothDiagram from '@/components/ToothDiagram';
 import SurgeryLogForm from '@/components/SurgeryLogForm';
@@ -25,10 +25,13 @@ const DoctorDashboard = () => {
   const [selectedTooth, setSelectedTooth] = useState('');
   const [isChild, setIsChild] = useState(false);
   const [surgeryLogs, setSurgeryLogs] = useState([]);
+  const [todayAppointments, setTodayAppointments] = useState([]);
+  const [selectedAppointmentPatient, setSelectedAppointmentPatient] = useState(null);
 
   useEffect(() => {
     fetchStats();
     fetchPatients();
+    fetchTodayAppointments();
   }, []);
 
   useEffect(() => {
@@ -36,6 +39,26 @@ const DoctorDashboard = () => {
       fetchSurgeryLogs();
     }
   }, [selectedPatient]);
+
+  const fetchTodayAppointments = async () => {
+    try {
+      const today = new Date().toISOString().split('T')[0];
+      const { data, error } = await supabase
+        .from('appointments')
+        .select(`
+          *,
+          patients (id, name, age, telephone, health_condition)
+        `)
+        .eq('appointment_date', today)
+        .eq('status', 'scheduled')
+        .order('appointment_time');
+
+      if (error) throw error;
+      setTodayAppointments(data || []);
+    } catch (error) {
+      console.error('Error fetching today appointments:', error);
+    }
+  };
 
   const fetchStats = async () => {
     try {
@@ -110,6 +133,15 @@ const DoctorDashboard = () => {
   const handleSurgeryLogSuccess = () => {
     fetchSurgeryLogs();
     setSelectedTooth('');
+    // Refresh today's appointments in case status changed
+    fetchTodayAppointments();
+  };
+
+  const handleAppointmentPatientSelect = (appointment) => {
+    setSelectedAppointmentPatient(appointment);
+    setSelectedPatient(appointment.patient_id);
+    // Determine if child based on age
+    setIsChild(appointment.patients?.age < 12);
   };
 
   const StatCard = ({ title, value, description, icon: Icon, className }) => (
@@ -170,7 +202,7 @@ const DoctorDashboard = () => {
         <Tabs defaultValue="treatment" className="space-y-6">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="treatment">Treatment Management</TabsTrigger>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="today-schedule">Today's Schedule</TabsTrigger>
           </TabsList>
 
           <TabsContent value="treatment" className="space-y-6">
@@ -265,52 +297,131 @@ const DoctorDashboard = () => {
             )}
           </TabsContent>
 
-          <TabsContent value="overview">
+          <TabsContent value="today-schedule" className="space-y-6">
             <div className="grid gap-6 md:grid-cols-2">
               <Card>
                 <CardHeader>
-                  <CardTitle>Quick Actions</CardTitle>
-                  <CardDescription>Common tasks for doctors</CardDescription>
+                  <CardTitle className="flex items-center">
+                    <Calendar className="h-4 w-4 mr-2" />
+                    Today's Appointments
+                  </CardTitle>
+                  <CardDescription>
+                    {todayAppointments.length} scheduled appointment(s) for today
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="p-4 border rounded-lg">
-                    <h3 className="font-medium">Review Today's Schedule</h3>
-                    <p className="text-sm text-muted-foreground">Check upcoming appointments and patient notes</p>
-                  </div>
-                  <div className="p-4 border rounded-lg">
-                    <h3 className="font-medium">Update Treatment Plans</h3>
-                    <p className="text-sm text-muted-foreground">Modify patient treatment information</p>
-                  </div>
-                  <div className="p-4 border rounded-lg">
-                    <h3 className="font-medium">Add Surgery Logs</h3>
-                    <p className="text-sm text-muted-foreground">Record completed treatments and procedures</p>
-                  </div>
+                  {todayAppointments.length === 0 ? (
+                    <p className="text-muted-foreground text-center py-4">
+                      No appointments scheduled for today
+                    </p>
+                  ) : (
+                    todayAppointments.map((appointment) => (
+                      <div 
+                        key={appointment.id} 
+                        className={`p-4 border rounded-lg cursor-pointer transition-colors ${
+                          selectedAppointmentPatient?.id === appointment.id 
+                            ? 'bg-blue-50 border-blue-200' 
+                            : 'hover:bg-gray-50'
+                        }`}
+                        onClick={() => handleAppointmentPatientSelect(appointment)}
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <h3 className="font-medium">{appointment.patients?.name}</h3>
+                          <Badge variant="outline">{appointment.appointment_time}</Badge>
+                        </div>
+                        <div className="text-sm text-muted-foreground space-y-1">
+                          <p><strong>Treatment:</strong> {appointment.treatment}</p>
+                          {appointment.tooth && <p><strong>Tooth:</strong> {appointment.tooth}</p>}
+                          <p><strong>Age:</strong> {appointment.patients?.age} years</p>
+                          <p><strong>Phone:</strong> {appointment.patients?.telephone}</p>
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>Recent Activity</CardTitle>
-                  <CardDescription>Latest updates in the clinic</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="text-sm">
-                      <span className="font-medium">System Status:</span>
-                      <span className="text-green-600 ml-2">All systems operational</span>
-                    </div>
-                    <div className="text-sm">
-                      <span className="font-medium">Last Backup:</span>
-                      <span className="text-muted-foreground ml-2">Today at 3:00 AM</span>
-                    </div>
-                    <div className="text-sm">
-                      <span className="font-medium">Active Users:</span>
-                      <span className="text-muted-foreground ml-2">Online now</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              {selectedAppointmentPatient && (
+                <div className="space-y-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center">
+                        <User className="h-4 w-4 mr-2" />
+                        Patient Details
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-2">
+                        <p><strong>Name:</strong> {selectedAppointmentPatient.patients?.name}</p>
+                        <p><strong>Age:</strong> {selectedAppointmentPatient.patients?.age} years</p>
+                        <p><strong>Phone:</strong> {selectedAppointmentPatient.patients?.telephone}</p>
+                        <p><strong>Today's Treatment:</strong> {selectedAppointmentPatient.treatment}</p>
+                        {selectedAppointmentPatient.tooth && (
+                          <p><strong>Tooth:</strong> {selectedAppointmentPatient.tooth}</p>
+                        )}
+                        {selectedAppointmentPatient.patients?.health_condition && (
+                          <p><strong>Health Condition:</strong> {selectedAppointmentPatient.patients.health_condition}</p>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <PatientTreatmentHistory
+                    patientId={selectedAppointmentPatient.patient_id}
+                    selectedTooth={selectedAppointmentPatient.tooth}
+                  />
+                </div>
+              )}
             </div>
+
+            {selectedAppointmentPatient && (
+              <div className="grid gap-6 lg:grid-cols-2">
+                <div className="space-y-6">
+                  <ToothDiagram
+                    isChild={isChild}
+                    onToothSelect={handleToothSelect}
+                    selectedTooth={selectedTooth}
+                    surgeryLogs={surgeryLogs}
+                  />
+                  
+                  <SurgeryLogForm
+                    patientId={selectedAppointmentPatient.patient_id}
+                    selectedTooth={selectedTooth}
+                    onSuccess={handleSurgeryLogSuccess}
+                  />
+                </div>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <Stethoscope className="h-4 w-4 mr-2" />
+                      Quick Actions
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <Button 
+                      className="w-full" 
+                      onClick={() => {
+                        // Mark appointment as completed
+                        supabase
+                          .from('appointments')
+                          .update({ status: 'completed' })
+                          .eq('id', selectedAppointmentPatient.id)
+                          .then(() => {
+                            fetchTodayAppointments();
+                            setSelectedAppointmentPatient(null);
+                          });
+                      }}
+                    >
+                      Mark Appointment Complete
+                    </Button>
+                    <div className="text-sm text-muted-foreground">
+                      <p>Use the tooth diagram to select specific teeth and add treatment logs.</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </div>

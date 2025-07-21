@@ -15,7 +15,8 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
     date: new Date().toISOString().split('T')[0],
     tooth_number: selectedTooth || '',
     treatment_performed: '',
-    notes: ''
+    notes: '',
+    patient_age: ''
   });
 
   // Update tooth number when selectedTooth changes
@@ -25,6 +26,34 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
       tooth_number: selectedTooth || ''
     }));
   }, [selectedTooth]);
+
+  // Fetch patient age when patientId changes
+  React.useEffect(() => {
+    if (patientId) {
+      fetchPatientAge();
+    }
+  }, [patientId]);
+
+  const fetchPatientAge = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('patients')
+        .select('age')
+        .eq('id', patientId)
+        .single();
+
+      if (error) throw error;
+      if (data) {
+        setFormData(prev => ({
+          ...prev,
+          patient_age: data.age
+        }));
+      }
+    } catch (error) {
+      console.error('Error fetching patient age:', error);
+    }
+  };
+
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const { profile } = useAuth();
@@ -67,9 +96,13 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
       const { error } = await supabase
         .from('surgery_logs')
         .insert([{
-          ...formData,
+          date: formData.date,
+          tooth_number: formData.tooth_number,
+          treatment_performed: formData.treatment_performed,
+          notes: formData.notes || null,
           patient_id: patientId,
-          doctor_id: profile.user_id
+          doctor_id: profile.user_id,
+          patient_age: formData.patient_age
         }]);
 
       if (error) throw error;
@@ -83,7 +116,8 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
         date: new Date().toISOString().split('T')[0],
         tooth_number: '',
         treatment_performed: '',
-        notes: ''
+        notes: '',
+        patient_age: formData.patient_age // Keep the age
       });
 
       if (onSuccess) onSuccess();
