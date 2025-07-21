@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Index from "./pages/Index";
 import AuthPage from "./pages/AuthPage";
 import Dashboard from "./pages/Dashboard";
+import DoctorDashboard from "./pages/DoctorDashboard";
 import SchedulerPage from "./pages/SchedulerPage";
 import PatientsPage from "./pages/PatientsPage";
 import AddPatientPage from "./pages/AddPatientPage";
@@ -29,6 +30,11 @@ const App = () => (
             <Route path="/dashboard" element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/doctor-dashboard" element={
+              <ProtectedRoute>
+                <DoctorDashboard />
               </ProtectedRoute>
             } />
             <Route path="/scheduler" element={

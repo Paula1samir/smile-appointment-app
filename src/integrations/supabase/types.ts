@@ -131,6 +131,42 @@ export type Database = {
         }
         Relationships: []
       }
+      surgery_logs: {
+        Row: {
+          created_at: string
+          date: string
+          doctor_id: string
+          id: string
+          notes: string | null
+          patient_id: string
+          tooth_number: string
+          treatment_performed: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          doctor_id: string
+          id?: string
+          notes?: string | null
+          patient_id: string
+          tooth_number: string
+          treatment_performed: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          doctor_id?: string
+          id?: string
+          notes?: string | null
+          patient_id?: string
+          tooth_number?: string
+          treatment_performed?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

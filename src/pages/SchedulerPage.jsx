@@ -20,6 +20,7 @@ const SchedulerPage = () => {
   const [formData, setFormData] = useState({
     patient_id: '',
     doctor_id: '',
+    appointment_date: '',
     appointment_time: '',
     treatment: '',
     tooth: '',
@@ -85,12 +86,12 @@ const SchedulerPage = () => {
     e.preventDefault();
     
     try {
-      const { error } = await supabase
-        .from('appointments')
-        .insert([{
-          ...formData,
-          appointment_date: selectedDate
-        }]);
+       const { error } = await supabase
+         .from('appointments')
+         .insert([{
+           ...formData,
+           appointment_date: formData.appointment_date || selectedDate
+         }]);
 
       if (error) throw error;
 
@@ -103,6 +104,7 @@ const SchedulerPage = () => {
       setFormData({
         patient_id: '',
         doctor_id: '',
+        appointment_date: '',
         appointment_time: '',
         treatment: '',
         tooth: '',
@@ -232,16 +234,53 @@ const SchedulerPage = () => {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="treatment">Treatment</Label>
-                  <Input
-                    id="treatment"
-                    value={formData.treatment}
-                    onChange={(e) => setFormData({...formData, treatment: e.target.value})}
-                    placeholder="e.g., Cleaning, Filling, Extraction"
-                    required
-                  />
-                </div>
+                 <div className="space-y-2">
+                   <Label htmlFor="appointment_date">Appointment Date</Label>
+                   <Input
+                     id="appointment_date"
+                     type="date"
+                     value={formData.appointment_date || selectedDate}
+                     onChange={(e) => setFormData({...formData, appointment_date: e.target.value})}
+                     required
+                   />
+                 </div>
+                 <div className="space-y-2">
+                   <Label htmlFor="treatment">Treatment</Label>
+                   <Select value={formData.treatment} onValueChange={(value) => setFormData({...formData, treatment: value})}>
+                     <SelectTrigger>
+                       <SelectValue placeholder="Select treatment" />
+                     </SelectTrigger>
+                     <SelectContent>
+                       <SelectItem value="Scaling & polishing">Scaling & polishing</SelectItem>
+                       <SelectItem value="Whitening">Whitening</SelectItem>
+                       <SelectItem value="Extraction tooth">Extraction tooth</SelectItem>
+                       <SelectItem value="Extraction remaining roots">Extraction remaining roots</SelectItem>
+                       <SelectItem value="Extraction wisdom tooth">Extraction wisdom tooth</SelectItem>
+                       <SelectItem value="Surgical extraction">Surgical extraction</SelectItem>
+                       <SelectItem value="Composite restoration">Composite restoration</SelectItem>
+                       <SelectItem value="Amalgam restoration">Amalgam restoration</SelectItem>
+                       <SelectItem value="Glass ionomer restoration">Glass ionomer restoration</SelectItem>
+                       <SelectItem value="Root canal with composite restoration">Root canal with composite restoration</SelectItem>
+                       <SelectItem value="Root canal with amalgam restoration">Root canal with amalgam restoration</SelectItem>
+                       <SelectItem value="Root canal with GI restoration">Root canal with GI restoration</SelectItem>
+                       <SelectItem value="Pulpotomy">Pulpotomy</SelectItem>
+                       <SelectItem value="Pulpectomy">Pulpectomy</SelectItem>
+                       <SelectItem value="Composite restoration child">Composite restoration child</SelectItem>
+                       <SelectItem value="Ss crown">Ss crown</SelectItem>
+                       <SelectItem value="Space maintainer">Space maintainer</SelectItem>
+                       <SelectItem value="Post & core">Post & core</SelectItem>
+                       <SelectItem value="Upper denture">Upper denture</SelectItem>
+                       <SelectItem value="Lower denture">Lower denture</SelectItem>
+                       <SelectItem value="Removable teeth">Removable teeth</SelectItem>
+                       <SelectItem value="Porcelain crown">Porcelain crown</SelectItem>
+                       <SelectItem value="Zirconia crown">Zirconia crown</SelectItem>
+                       <SelectItem value="E-max crown">E-max crown</SelectItem>
+                       <SelectItem value="Veneers">Veneers</SelectItem>
+                       <SelectItem value="Cement crown">Cement crown</SelectItem>
+                       <SelectItem value="Implant">Implant</SelectItem>
+                     </SelectContent>
+                   </Select>
+                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="tooth">Tooth (Optional)</Label>
                   <Input

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-import { Calendar, Users, Plus, LogOut, User } from 'lucide-react';
+import { Calendar, Users, Plus, LogOut, User, Stethoscope } from 'lucide-react';
 
 const Navbar = () => {
   const { signOut, profile } = useAuth();
@@ -27,6 +27,14 @@ const Navbar = () => {
                 <span>Dashboard</span>
               </Button>
             </Link>
+            {profile?.role === 'doctor' && (
+              <Link to="/doctor-dashboard">
+                <Button variant="ghost" size="sm" className="flex items-center space-x-2">
+                  <Stethoscope className="h-4 w-4" />
+                  <span>Treatment</span>
+                </Button>
+              </Link>
+            )}
             <Link to="/scheduler">
               <Button variant="ghost" size="sm" className="flex items-center space-x-2">
                 <Calendar className="h-4 w-4" />
