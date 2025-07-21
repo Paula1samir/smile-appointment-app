@@ -18,6 +18,7 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
     notes: '',
     age: ''
   });
+  const [patientInfo, setPatientInfo] = useState(null);
 
   // Update tooth number when selectedTooth changes
   React.useEffect(() => {
@@ -30,27 +31,28 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
   // Fetch patient age when patientId changes
   React.useEffect(() => {
     if (patientId) {
-      fetchPatientAge();
+      fetchPatientInfo();
     }
   }, [patientId]);
 
-  const fetchPatientAge = async () => {
+  const fetchPatientInfo = async () => {
     try {
       const { data, error } = await supabase
         .from('patients')
-        .select('age')
+        .select('age, name')
         .eq('id', patientId)
         .single();
 
       if (error) throw error;
       if (data) {
+        setPatientInfo(data);
         setFormData(prev => ({
           ...prev,
           age: data.age
         }));
       }
     } catch (error) {
-      console.error('Error fetching patient age:', error);
+      console.error('Error fetching patient info:', error);
     }
   };
 
@@ -136,6 +138,12 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
     <Card>
       <CardHeader>
         <CardTitle>Add Surgery/Treatment Log</CardTitle>
+        {patientInfo && (
+          <div className="text-sm text-muted-foreground">
+            Patient: <span className="font-medium">{patientInfo.name}</span> | 
+            Age: <span className="font-medium">{patientInfo.age} years</span>
+          </div>
+        )}
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -160,6 +168,20 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
                 required
               />
             </div>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="age">Patient Age at Treatment</Label>
+            <Input
+              id="age"
+              type="number"
+              value={formData.age}
+              onChange={(e) => setFormData({...formData, age: parseInt(e.target.value)})}
+              placeholder="Patient age"
+              min="1"
+              max="120"
+              required
+            />
           </div>
           
           <div className="space-y-2">
