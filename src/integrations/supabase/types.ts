@@ -134,6 +134,7 @@ export type Database = {
       surgery_logs: {
         Row: {
           age: number | null
+          age: number | null
           created_at: string
           date: string
           doctor_id: string
@@ -146,6 +147,7 @@ export type Database = {
         }
         Insert: {
           age?: number | null
+          age?: number | null
           created_at?: string
           date: string
           doctor_id: string
@@ -157,6 +159,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          age?: number | null
           age?: number | null
           created_at?: string
           date?: string

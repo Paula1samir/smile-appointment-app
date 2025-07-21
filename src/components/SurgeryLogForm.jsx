@@ -95,6 +95,9 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
     setLoading(true);
 
     try {
+      // Ensure age is a number
+      const ageValue = formData.age ? parseInt(formData.age) : null;
+      
       const { error } = await supabase
         .from('surgery_logs')
         .insert([{
@@ -104,7 +107,7 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
           notes: formData.notes || null,
           patient_id: patientId,
           doctor_id: profile.user_id,
-          age: formData.age
+          age: ageValue
         }]);
 
       if (error) throw error;
