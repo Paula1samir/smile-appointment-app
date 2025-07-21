@@ -79,9 +79,9 @@ const PatientTreatmentHistory = ({ patientId, selectedTooth }) => {
                   <div className="flex items-center space-x-2">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
                     <span className="font-medium">{log.date}</span>
-                    {log.patients?.age && (
+                    {(log.age || log.patients?.age) && (
                       <span className="text-xs text-muted-foreground">
-                        (Age: {log.patient_age || log.patients.age})
+                        (Age: {log.age || log.patients.age})
                       </span>
                     )}
                   </div>

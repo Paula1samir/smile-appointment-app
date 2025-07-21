@@ -16,7 +16,7 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
     tooth_number: selectedTooth || '',
     treatment_performed: '',
     notes: '',
-    patient_age: ''
+    age: ''
   });
 
   // Update tooth number when selectedTooth changes
@@ -46,7 +46,7 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
       if (data) {
         setFormData(prev => ({
           ...prev,
-          patient_age: data.age
+          age: data.age
         }));
       }
     } catch (error) {
@@ -102,7 +102,7 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
           notes: formData.notes || null,
           patient_id: patientId,
           doctor_id: profile.user_id,
-          patient_age: formData.patient_age
+          age: formData.age
         }]);
 
       if (error) throw error;
@@ -117,7 +117,7 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
         tooth_number: '',
         treatment_performed: '',
         notes: '',
-        patient_age: formData.patient_age // Keep the age
+        age: formData.age // Keep the age
       });
 
       if (onSuccess) onSuccess();
