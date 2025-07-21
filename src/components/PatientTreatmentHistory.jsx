@@ -21,7 +21,7 @@ const PatientTreatmentHistory = ({ patientId, selectedTooth }) => {
         .from('surgery_logs')
         .select(`
           *,
-          profiles (full_name)
+          profiles!surgery_logs_doctor_id_fkey (full_name)
         `)
         .eq('patient_id', patientId)
         .order('date', { ascending: false });
