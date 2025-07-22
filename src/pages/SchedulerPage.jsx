@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { useToast } from '@/hooks/use-toast';
 import { Calendar, Clock, Plus, User } from 'lucide-react';
 import Navbar from '@/components/Navbar';
+import PatientSearchSelect from '@/components/PatientSearchSelect';
 import '../styles/shared.css';
 
 const SchedulerPage = () => {
@@ -185,21 +186,10 @@ const SchedulerPage = () => {
                 </DialogDescription>
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="patient">Patient</Label>
-                  <Select value={formData.patient_id} onValueChange={(value) => setFormData({...formData, patient_id: value})}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select patient" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {patients.map((patient) => (
-                        <SelectItem key={patient.id} value={patient.id}>
-                          {patient.name} - {patient.telephone}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                <PatientSearchSelect
+                  selectedPatientId={formData.patient_id}
+                  onPatientSelect={(patientId) => setFormData({...formData, patient_id: patientId})}
+                />
                 <div className="space-y-2">
                   <Label htmlFor="doctor">Doctor</Label>
                   <Select value={formData.doctor_id} onValueChange={(value) => setFormData({...formData, doctor_id: value})}>

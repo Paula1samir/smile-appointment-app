@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import adultTeethImage from '@/assets/adult-teeth-diagram.png';
 import childTeethImage from '@/assets/child-teeth-diagram.png';
 
-const ToothDiagram = ({ isChild = false, onToothSelect, selectedTooth, surgeryLogs = [] }) => {
-  const [hoveredTooth, setHoveredTooth] = useState(null);
+const VisualToothHistory = ({ patientAge, surgeryLogs }) => {
+  const [selectedTooth, setSelectedTooth] = useState(null);
+  const isChild = patientAge < 12;
 
   // Adult teeth numbering (1-32)
   const adultTeeth = {
@@ -33,23 +34,34 @@ const ToothDiagram = ({ isChild = false, onToothSelect, selectedTooth, surgeryLo
   };
 
   const teeth = isChild ? childTeeth : adultTeeth;
+  const allTeeth = [
+    ...teeth.upper.right,
+    ...teeth.upper.left,
+    ...teeth.lower.left,
+    ...teeth.lower.right
+  ];
 
-  const getToothStyle = (toothNumber) => {
-    const hasHistory = surgeryLogs.some(log => log.tooth_number === toothNumber.toString());
-    const isSelected = selectedTooth === toothNumber.toString();
-    const isHovered = hoveredTooth === toothNumber;
-
-    let bgColor = 'bg-white';
-    if (hasHistory) bgColor = 'bg-yellow-200';
-    if (isSelected) bgColor = 'bg-blue-200';
-    if (isHovered) bgColor = 'bg-gray-200';
-
-    return `${bgColor} border-2 border-gray-300 rounded w-8 h-8 flex items-center justify-center text-xs font-bold cursor-pointer hover:border-blue-400 transition-colors`;
+  const getToothTreatments = (toothNumber) => {
+    return surgeryLogs.filter(log => log.tooth_number === toothNumber.toString());
   };
 
-  const ToothButton = ({ toothNumber }) => {
-    const hasToothHistory = surgeryLogs.some(log => log.tooth_number === toothNumber.toString());
-    const toothTreatments = surgeryLogs.filter(log => log.tooth_number === toothNumber.toString());
+  const hasHistory = (toothNumber) => {
+    return getToothTreatments(toothNumber).length > 0;
+  };
+
+  const getToothStyle = (toothNumber) => {
+    const treatments = getToothTreatments(toothNumber);
+    const isSelected = selectedTooth === toothNumber;
+    
+    let bgColor = 'bg-white';
+    if (treatments.length > 0) bgColor = 'bg-red-200';
+    if (isSelected) bgColor = 'bg-blue-200';
+
+    return `${bgColor} border-2 border-gray-300 rounded w-8 h-8 flex items-center justify-center text-xs font-bold cursor-pointer hover:border-blue-400 transition-colors absolute`;
+  };
+
+  const ToothButton = ({ toothNumber, style }) => {
+    const treatments = getToothTreatments(toothNumber);
     
     return (
       <TooltipProvider>
@@ -57,9 +69,8 @@ const ToothDiagram = ({ isChild = false, onToothSelect, selectedTooth, surgeryLo
           <TooltipTrigger asChild>
             <button
               className={getToothStyle(toothNumber)}
-              onClick={() => onToothSelect(toothNumber.toString())}
-              onMouseEnter={() => setHoveredTooth(toothNumber)}
-              onMouseLeave={() => setHoveredTooth(null)}
+              style={style}
+              onClick={() => setSelectedTooth(toothNumber)}
             >
               {toothNumber}
             </button>
@@ -67,23 +78,17 @@ const ToothDiagram = ({ isChild = false, onToothSelect, selectedTooth, surgeryLo
           <TooltipContent>
             <div className="p-2">
               <p className="font-medium">Tooth {toothNumber}</p>
-              {hasToothHistory ? (
+              {treatments.length > 0 ? (
                 <div className="mt-2 space-y-1">
-                  <p className="text-xs font-medium">Recent treatments:</p>
-                  {toothTreatments.slice(0, 3).map((treatment, index) => (
+                  {treatments.map((treatment, index) => (
                     <div key={index} className="text-xs">
                       <p>{new Date(treatment.date).toLocaleDateString()}</p>
                       <p>{treatment.treatment_performed}</p>
                     </div>
                   ))}
-                  {toothTreatments.length > 3 && (
-                    <p className="text-xs text-muted-foreground">
-                      +{toothTreatments.length - 3} more treatments
-                    </p>
-                  )}
                 </div>
               ) : (
-                <p className="text-xs text-muted-foreground mt-1">No previous treatments</p>
+                <p className="text-xs text-muted-foreground">No treatments</p>
               )}
             </div>
           </TooltipContent>
@@ -92,16 +97,32 @@ const ToothDiagram = ({ isChild = false, onToothSelect, selectedTooth, surgeryLo
     );
   };
 
+  // Positioning for teeth (these would need to be adjusted based on actual image)
+  const getToothPosition = (toothNumber) => {
+    // This is a simplified positioning system - you'd need to adjust these based on your actual tooth diagram image
+    const index = allTeeth.indexOf(toothNumber);
+    const row = Math.floor(index / 8);
+    const col = index % 8;
+    
+    return {
+      top: `${20 + (row * 40)}%`,
+      left: `${10 + (col * 10)}%`
+    };
+  };
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-center">
-          {isChild ? 'Child' : 'Adult'} Tooth Diagram
+        <CardTitle className="flex items-center justify-between">
+          <span>Visual Treatment History</span>
+          <Badge variant="outline">
+            {isChild ? 'Child Chart' : 'Adult Chart'}
+          </Badge>
         </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-6">
-          {/* Visual Tooth Diagram */}
+          {/* Tooth Diagram with Overlays */}
           <div className="relative bg-gray-50 rounded-lg p-4">
             <img 
               src={isChild ? childTeethImage : adultTeethImage} 
@@ -139,6 +160,34 @@ const ToothDiagram = ({ isChild = false, onToothSelect, selectedTooth, surgeryLo
             </div>
           </div>
 
+          {/* Selected Tooth Details */}
+          {selectedTooth && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Tooth {selectedTooth} - Treatment Details</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {getToothTreatments(selectedTooth).length > 0 ? (
+                  <div className="space-y-3">
+                    {getToothTreatments(selectedTooth).map((treatment, index) => (
+                      <div key={index} className="border-l-4 border-red-500 pl-4">
+                        <p className="font-medium">{treatment.treatment_performed}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {new Date(treatment.date).toLocaleDateString()}
+                        </p>
+                        {treatment.notes && (
+                          <p className="text-sm">{treatment.notes}</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-muted-foreground">No treatments recorded for this tooth</p>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
           {/* Legend */}
           <div className="flex justify-center space-x-6 text-sm">
             <div className="flex items-center space-x-2">
@@ -146,7 +195,7 @@ const ToothDiagram = ({ isChild = false, onToothSelect, selectedTooth, surgeryLo
               <span>No Treatment</span>
             </div>
             <div className="flex items-center space-x-2">
-              <div className="w-4 h-4 bg-yellow-200 border-2 border-gray-300 rounded"></div>
+              <div className="w-4 h-4 bg-red-200 border-2 border-gray-300 rounded"></div>
               <span>Has Treatment History</span>
             </div>
             <div className="flex items-center space-x-2">
@@ -160,4 +209,4 @@ const ToothDiagram = ({ isChild = false, onToothSelect, selectedTooth, surgeryLo
   );
 };
 
-export default ToothDiagram;
+export default VisualToothHistory;

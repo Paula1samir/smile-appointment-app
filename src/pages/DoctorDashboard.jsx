@@ -11,6 +11,7 @@ import Navbar from '@/components/Navbar';
 import ToothDiagram from '@/components/ToothDiagram';
 import SurgeryLogForm from '@/components/SurgeryLogForm';
 import PatientTreatmentHistory from '@/components/PatientTreatmentHistory';
+import TreatmentHistoryModal from '@/components/TreatmentHistoryModal';
 
 const DoctorDashboard = () => {
   const { profile } = useAuth();
@@ -27,6 +28,8 @@ const DoctorDashboard = () => {
   const [surgeryLogs, setSurgeryLogs] = useState([]);
   const [todayAppointments, setTodayAppointments] = useState([]);
   const [selectedAppointmentPatient, setSelectedAppointmentPatient] = useState(null);
+  const [treatmentHistoryModalOpen, setTreatmentHistoryModalOpen] = useState(false);
+  const [treatmentHistoryPatient, setTreatmentHistoryPatient] = useState(null);
 
   useEffect(() => {
     fetchStats();
@@ -142,6 +145,11 @@ const DoctorDashboard = () => {
     setSelectedPatient(appointment.patient_id);
     // Determine if child based on age
     setIsChild(appointment.patients?.age < 12);
+  };
+
+  const handleShowTreatmentHistory = (patient) => {
+    setTreatmentHistoryPatient(patient);
+    setTreatmentHistoryModalOpen(true);
   };
 
   const StatCard = ({ title, value, description, icon: Icon, className }) => (
@@ -335,6 +343,19 @@ const DoctorDashboard = () => {
                           <p><strong>Age:</strong> {appointment.patients?.age} years</p>
                           <p><strong>Phone:</strong> {appointment.patients?.telephone}</p>
                         </div>
+                        <div className="mt-3">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleShowTreatmentHistory(appointment.patients);
+                            }}
+                          >
+                            <FileText className="h-4 w-4 mr-2" />
+                            Treatment History
+                          </Button>
+                        </div>
                       </div>
                     ))
                   )}
@@ -424,6 +445,13 @@ const DoctorDashboard = () => {
             )}
           </TabsContent>
         </Tabs>
+
+        {/* Treatment History Modal */}
+        <TreatmentHistoryModal
+          isOpen={treatmentHistoryModalOpen}
+          onClose={() => setTreatmentHistoryModalOpen(false)}
+          patient={treatmentHistoryPatient}
+        />
       </div>
     </div>
   );
