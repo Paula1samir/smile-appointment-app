@@ -133,8 +133,6 @@ export type Database = {
       }
       surgery_logs: {
         Row: {
-          age: number | null
-          age: number | null
           created_at: string
           date: string
           doctor_id: string
@@ -146,8 +144,6 @@ export type Database = {
           updated_at: string
         }
         Insert: {
-          age?: number | null
-          age?: number | null
           created_at?: string
           date: string
           doctor_id: string
@@ -159,8 +155,6 @@ export type Database = {
           updated_at?: string
         }
         Update: {
-          age?: number | null
-          age?: number | null
           created_at?: string
           date?: string
           doctor_id?: string
@@ -171,7 +165,15 @@ export type Database = {
           treatment_performed?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "surgery_logs_doctor_id_fkey"
+            columns: ["doctor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
       }
     }
     Views: {
