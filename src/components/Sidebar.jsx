@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   LayoutDashboard, 
   Calendar, 
@@ -10,12 +11,13 @@ import {
   LogOut,
   Activity,
   Menu,
-  X
+  X,
+  Stethoscope
 } from 'lucide-react';
 import { Button } from './ui/button';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
-  const { user, signOut } = useAuth();
+  const { user, signOut, profile } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -25,10 +27,17 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
   const navItems = [
     { 
-      path: '/doctor-dashboard', 
+      path: '/dashboard', 
       icon: LayoutDashboard, 
       label: 'Dashboard',
-      description: 'Overview and quick actions'
+      description: 'Overview and analytics'
+    },
+    { 
+      path: '/doctor-dashboard', 
+      icon: Stethoscope, 
+      label: 'Treatment',
+      description: 'Patient treatment management',
+      doctorOnly: true
     },
     { 
       path: '/scheduler', 
@@ -48,45 +57,104 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       label: 'Add Patient',
       description: 'Register new patient'
     }
-  ];
+  ].filter(item => !item.doctorOnly || profile?.role === 'doctor');
+
+  const sidebarVariants = {
+    open: {
+      x: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30
+      }
+    },
+    closed: {
+      x: "-100%",
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30
+      }
+    }
+  };
+
+  const itemVariants = {
+    open: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 24
+      }
+    },
+    closed: {
+      opacity: 0,
+      x: -20,
+      transition: {
+        duration: 0.2
+      }
+    }
+  };
 
   return (
     <>
       {/* Mobile overlay */}
-      {isOpen && (
-        <div 
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+            onClick={() => setIsOpen(false)}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Sidebar */}
-      <aside className={`
-        fixed top-0 left-0 h-full bg-card border-r border-border z-50 transition-all duration-300 ease-in-out
-        ${isOpen ? 'w-72 translate-x-0' : 'w-72 -translate-x-full lg:w-20 lg:translate-x-0'}
-        lg:relative lg:z-auto
-      `}>
+      <motion.aside 
+        variants={sidebarVariants}
+        animate={isOpen ? "open" : "closed"}
+        className={`
+          fixed top-0 left-0 h-full bg-white border-r border-gray-200 z-50 shadow-soft-lg
+          ${isOpen ? 'w-80' : 'w-80 -translate-x-full lg:w-20 lg:translate-x-0'}
+          lg:relative lg:z-auto
+        `}
+      >
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="p-6 border-b border-border">
+          <div className="p-6 border-b border-gray-100">
             <div className="flex items-center justify-between">
-              <div className={`flex items-center gap-3 ${isOpen ? 'lg:flex' : 'lg:justify-center'}`}>
-                <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
-                  <Activity className="w-6 h-6 text-primary-foreground" />
+              <motion.div 
+                className={`flex items-center gap-3 ${isOpen ? 'lg:flex' : 'lg:justify-center'}`}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-600 rounded-2xl flex items-center justify-center shadow-soft">
+                  <Activity className="w-7 h-7 text-white" />
                 </div>
-                {(isOpen || window.innerWidth < 1024) && (
-                  <div>
-                    <h1 className="font-bold text-lg text-foreground">DentalCare</h1>
-                    <p className="text-sm text-muted-foreground">Clinic Management</p>
-                  </div>
-                )}
-              </div>
+                <AnimatePresence>
+                  {(isOpen || window.innerWidth < 1024) && (
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <h1 className="font-bold text-xl text-gray-900">DentalCare</h1>
+                      <p className="text-sm text-gray-600">Clinic Management</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
               
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsOpen(!isOpen)}
-                className="lg:hidden"
+                className="lg:hidden rounded-xl"
               >
                 {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </Button>
@@ -94,64 +162,118 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-2">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                className={({ isActive }) => `
-                  nav-item group relative
-                  ${isActive ? 'active bg-primary text-primary-foreground' : 'hover:bg-muted'}
-                  ${!isOpen && 'lg:justify-center lg:px-3'}
-                `}
-                onClick={() => window.innerWidth < 1024 && setIsOpen(false)}
-              >
-                <item.icon className="w-5 h-5 flex-shrink-0" />
-                {(isOpen || window.innerWidth < 1024) && (
-                  <div className="min-w-0 flex-1">
-                    <div className="font-medium">{item.label}</div>
-                    <div className="text-xs opacity-70 truncate">{item.description}</div>
-                  </div>
-                )}
-                
-                {/* Tooltip for collapsed state */}
-                {!isOpen && (
-                  <div className="absolute left-full ml-2 px-3 py-2 bg-foreground text-background text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50 hidden lg:block">
-                    {item.label}
-                    <div className="absolute top-1/2 -left-1 transform -translate-y-1/2 w-2 h-2 bg-foreground rotate-45" />
-                  </div>
-                )}
-              </NavLink>
-            ))}
+          <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+            <AnimatePresence>
+              {navItems.map((item, index) => (
+                <motion.div
+                  key={item.path}
+                  variants={itemVariants}
+                  initial="closed"
+                  animate="open"
+                  exit="closed"
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <NavLink
+                    to={item.path}
+                    className={({ isActive }) => `
+                      nav-item group relative overflow-hidden
+                      ${isActive ? 'active bg-primary text-white shadow-soft' : 'hover:bg-gray-50 text-gray-700 hover:text-primary'}
+                      ${!isOpen && 'lg:justify-center lg:px-3'}
+                      transition-all duration-200
+                    `}
+                    onClick={() => window.innerWidth < 1024 && setIsOpen(false)}
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex-shrink-0"
+                    >
+                      <item.icon className="w-5 h-5" />
+                    </motion.div>
+                    
+                    <AnimatePresence>
+                      {(isOpen || window.innerWidth < 1024) && (
+                        <motion.div 
+                          className="min-w-0 flex-1"
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -10 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <div className="font-semibold">{item.label}</div>
+                          <div className="text-xs opacity-80 truncate">{item.description}</div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                    
+                    {/* Tooltip for collapsed state */}
+                    {!isOpen && (
+                      <div className="absolute left-full ml-3 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50 hidden lg:block shadow-soft-lg">
+                        {item.label}
+                        <div className="absolute top-1/2 -left-1 transform -translate-y-1/2 w-2 h-2 bg-gray-900 rotate-45" />
+                      </div>
+                    )}
+                  </NavLink>
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </nav>
 
           {/* User section */}
-          <div className="p-4 border-t border-border">
-            <div className={`flex items-center gap-3 p-3 rounded-xl bg-muted ${!isOpen && 'lg:justify-center'}`}>
-              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                <span className="text-primary-foreground font-medium text-sm">
+          <div className="p-4 border-t border-gray-100">
+            <motion.div 
+              className={`flex items-center gap-3 p-4 rounded-xl bg-gray-50 ${!isOpen && 'lg:justify-center'}`}
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            >
+              <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-600 rounded-xl flex items-center justify-center shadow-soft">
+                <span className="text-white font-bold text-sm">
                   {user?.email?.charAt(0).toUpperCase()}
                 </span>
               </div>
-              {(isOpen || window.innerWidth < 1024) && (
-                <div className="min-w-0 flex-1">
-                  <div className="font-medium text-sm truncate">{user?.email}</div>
-                  <div className="text-xs text-muted-foreground">Dentist</div>
-                </div>
-              )}
-            </div>
+              <AnimatePresence>
+                {(isOpen || window.innerWidth < 1024) && (
+                  <motion.div 
+                    className="min-w-0 flex-1"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -10 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div className="font-semibold text-sm truncate text-gray-900">{user?.email}</div>
+                    <div className="text-xs text-gray-600 capitalize">{profile?.role || 'User'}</div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
             
-            <Button
-              variant="ghost"
-              onClick={handleLogout}
-              className={`w-full mt-2 justify-start text-destructive hover:text-destructive hover:bg-destructive/10 ${!isOpen && 'lg:justify-center lg:px-3'}`}
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
-              <LogOut className="w-4 h-4" />
-              {(isOpen || window.innerWidth < 1024) && <span>Logout</span>}
-            </Button>
+              <Button
+                variant="ghost"
+                onClick={handleLogout}
+                className={`w-full mt-3 justify-start text-error hover:text-error hover:bg-error-50 ${!isOpen && 'lg:justify-center lg:px-3'}`}
+              >
+                <LogOut className="w-4 h-4" />
+                <AnimatePresence>
+                  {(isOpen || window.innerWidth < 1024) && (
+                    <motion.span
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -10 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      Logout
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </Button>
+            </motion.div>
           </div>
         </div>
-      </aside>
+      </motion.aside>
     </>
   );
 };
