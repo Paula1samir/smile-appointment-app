@@ -17,7 +17,6 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
     treatment_performed: '',
     notes: ''
   });
-  const [patientInfo, setPatientInfo] = useState(null);
 
   // Update tooth number when selectedTooth changes
   React.useEffect(() => {
@@ -26,31 +25,6 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
       tooth_number: selectedTooth || ''
     }));
   }, [selectedTooth]);
-
-  // Fetch patient age when patientId changes
-  React.useEffect(() => {
-    if (patientId) {
-      fetchPatientInfo();
-    }
-  }, [patientId]);
-
-  const fetchPatientInfo = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('patients')
-        .select('age, name')
-        .eq('id', patientId)
-        .single();
-
-      if (error) throw error;
-      if (data) {
-        setPatientInfo(data);
-      }
-    } catch (error) {
-      console.error('Error fetching patient info:', error);
-    }
-  };
-
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const { profile } = useAuth();
@@ -93,10 +67,7 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
       const { error } = await supabase
         .from('surgery_logs')
         .insert([{
-          date: formData.date,
-          tooth_number: formData.tooth_number,
-          treatment_performed: formData.treatment_performed,
-          notes: formData.notes || null,
+          ...formData,
           patient_id: patientId,
           doctor_id: profile.user_id
         }]);
@@ -131,12 +102,6 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
     <Card>
       <CardHeader>
         <CardTitle>Add Surgery/Treatment Log</CardTitle>
-        {patientInfo && (
-          <div className="text-sm text-muted-foreground">
-            Patient: <span className="font-medium">{patientInfo.name}</span> | 
-            Age: <span className="font-medium">{patientInfo.age} years</span>
-          </div>
-        )}
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">

@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
+import '../styles/shared.css';
 
 const AuthPage = () => {
   const [email, setEmail] = useState('');
@@ -73,8 +74,8 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/20 to-accent/20 p-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center auth-gradient p-4 page-container">
+      <Card className="w-full max-w-md animated-card">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Dental Clinic System</CardTitle>
           <CardDescription>Access your clinic management dashboard</CardDescription>

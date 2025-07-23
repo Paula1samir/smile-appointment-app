@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import adultTeethImage from '@/assets/adult-teeth-diagram.png';
-import childTeethImage from '@/assets/child-teeth-diagram.png';
 
 const ToothDiagram = ({ isChild = false, onToothSelect, selectedTooth, surgeryLogs = [] }) => {
   const [hoveredTooth, setHoveredTooth] = useState(null);
@@ -47,50 +44,17 @@ const ToothDiagram = ({ isChild = false, onToothSelect, selectedTooth, surgeryLo
     return `${bgColor} border-2 border-gray-300 rounded w-8 h-8 flex items-center justify-center text-xs font-bold cursor-pointer hover:border-blue-400 transition-colors`;
   };
 
-  const ToothButton = ({ toothNumber }) => {
-    const hasToothHistory = surgeryLogs.some(log => log.tooth_number === toothNumber.toString());
-    const toothTreatments = surgeryLogs.filter(log => log.tooth_number === toothNumber.toString());
-    
-    return (
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              className={getToothStyle(toothNumber)}
-              onClick={() => onToothSelect(toothNumber.toString())}
-              onMouseEnter={() => setHoveredTooth(toothNumber)}
-              onMouseLeave={() => setHoveredTooth(null)}
-            >
-              {toothNumber}
-            </button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <div className="p-2">
-              <p className="font-medium">Tooth {toothNumber}</p>
-              {hasToothHistory ? (
-                <div className="mt-2 space-y-1">
-                  <p className="text-xs font-medium">Recent treatments:</p>
-                  {toothTreatments.slice(0, 3).map((treatment, index) => (
-                    <div key={index} className="text-xs">
-                      <p>{new Date(treatment.date).toLocaleDateString()}</p>
-                      <p>{treatment.treatment_performed}</p>
-                    </div>
-                  ))}
-                  {toothTreatments.length > 3 && (
-                    <p className="text-xs text-muted-foreground">
-                      +{toothTreatments.length - 3} more treatments
-                    </p>
-                  )}
-                </div>
-              ) : (
-                <p className="text-xs text-muted-foreground mt-1">No previous treatments</p>
-              )}
-            </div>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-    );
-  };
+  const ToothButton = ({ toothNumber }) => (
+    <button
+      className={getToothStyle(toothNumber)}
+      onClick={() => onToothSelect(toothNumber.toString())}
+      onMouseEnter={() => setHoveredTooth(toothNumber)}
+      onMouseLeave={() => setHoveredTooth(null)}
+      title={`Tooth ${toothNumber}${surgeryLogs.some(log => log.tooth_number === toothNumber.toString()) ? ' (Has history)' : ''}`}
+    >
+      {toothNumber}
+    </button>
+  );
 
   return (
     <Card>
@@ -101,55 +65,57 @@ const ToothDiagram = ({ isChild = false, onToothSelect, selectedTooth, surgeryLo
       </CardHeader>
       <CardContent>
         <div className="space-y-6">
-          {/* Visual Tooth Diagram */}
-          <div className="relative bg-gray-50 rounded-lg p-4">
-            <img 
-              src={isChild ? childTeethImage : adultTeethImage} 
-              alt={`${isChild ? 'Child' : 'Adult'} teeth diagram`}
-              className="w-full h-auto max-w-2xl mx-auto"
-            />
-            
-            {/* Overlay tooth buttons - simplified grid layout */}
-            <div className="absolute inset-0 flex flex-col justify-center items-center">
-              {/* Upper Jaw */}
-              <div className="mb-8">
-                <div className="flex space-x-1 mb-2">
-                  {teeth.upper.right.map(tooth => (
-                    <ToothButton key={tooth} toothNumber={tooth} />
-                  ))}
-                  <div className="w-4"></div>
-                  {teeth.upper.left.map(tooth => (
-                    <ToothButton key={tooth} toothNumber={tooth} />
-                  ))}
-                </div>
+          {/* Upper Jaw */}
+          <div className="text-center">
+            <div className="text-sm font-medium mb-2">Upper Jaw</div>
+            <div className="flex justify-center space-x-1">
+              {/* Upper Right */}
+              <div className="flex space-x-1">
+                {teeth.upper.right.map(tooth => (
+                  <ToothButton key={tooth} toothNumber={tooth} />
+                ))}
               </div>
-              
-              {/* Lower Jaw */}
-              <div>
-                <div className="flex space-x-1">
-                  {teeth.lower.left.map(tooth => (
-                    <ToothButton key={tooth} toothNumber={tooth} />
-                  ))}
-                  <div className="w-4"></div>
-                  {teeth.lower.right.map(tooth => (
-                    <ToothButton key={tooth} toothNumber={tooth} />
-                  ))}
-                </div>
+              <div className="w-4"></div> {/* Gap for midline */}
+              {/* Upper Left */}
+              <div className="flex space-x-1">
+                {teeth.upper.left.map(tooth => (
+                  <ToothButton key={tooth} toothNumber={tooth} />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Lower Jaw */}
+          <div className="text-center">
+            <div className="text-sm font-medium mb-2">Lower Jaw</div>
+            <div className="flex justify-center space-x-1">
+              {/* Lower Left */}
+              <div className="flex space-x-1">
+                {teeth.lower.left.map(tooth => (
+                  <ToothButton key={tooth} toothNumber={tooth} />
+                ))}
+              </div>
+              <div className="w-4"></div> {/* Gap for midline */}
+              {/* Lower Right */}
+              <div className="flex space-x-1">
+                {teeth.lower.right.map(tooth => (
+                  <ToothButton key={tooth} toothNumber={tooth} />
+                ))}
               </div>
             </div>
           </div>
 
           {/* Legend */}
-          <div className="flex justify-center space-x-6 text-sm">
-            <div className="flex items-center space-x-2">
+          <div className="flex justify-center space-x-4 text-xs">
+            <div className="flex items-center space-x-1">
               <div className="w-4 h-4 bg-white border-2 border-gray-300 rounded"></div>
-              <span>No Treatment</span>
+              <span>Normal</span>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-1">
               <div className="w-4 h-4 bg-yellow-200 border-2 border-gray-300 rounded"></div>
-              <span>Has Treatment History</span>
+              <span>Has History</span>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-1">
               <div className="w-4 h-4 bg-blue-200 border-2 border-gray-300 rounded"></div>
               <span>Selected</span>
             </div>
