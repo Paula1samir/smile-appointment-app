@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, Users, Clock, Activity } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import './Dashboard.css'
+import { Button } from '@/components/ui/button';
 
 const Dashboard = () => {
   const { profile } = useAuth();
@@ -61,7 +63,7 @@ const Dashboard = () => {
     }
   };
 
-  const StatCard = ({ title, value, description, icon: Icon, className }) => (
+  const StatCard = ({ title, value, description, icon: Icon, className, actionButton }) => (
     <Card className={className}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
@@ -70,6 +72,11 @@ const Dashboard = () => {
       <CardContent>
         <div className="text-2xl font-bold">{value}</div>
         <p className="text-xs text-muted-foreground">{description}</p>
+        {actionButton && (
+          <div className="mt-4">
+            {actionButton}
+          </div>
+        )}
       </CardContent>
     </Card>
   );
@@ -78,13 +85,15 @@ const Dashboard = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <div className="p-6">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold">
-            Welcome back, Dr/ {profile?.full_name}
-          </h1>
-          <p className="text-muted-foreground">
-            {profile?.role === 'doctor' ? 'Doctor Dashboard' : 'Assistant Dashboard'}
-          </p>
+        <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">
+              Welcome back, Dr/ {profile?.full_name}
+            </h1>
+            <p className="text-muted-foreground">
+              {profile?.role === 'doctor' ? 'Doctor Dashboard' : 'Assistant Dashboard'}
+            </p>
+          </div>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6 dashboard-reports p-6">
@@ -94,6 +103,13 @@ const Dashboard = () => {
             description="Scheduled for today"
             icon={Calendar}
             className="StatCard"
+            actionButton={
+              <Link to="/scheduler">
+                <Button variant="outline" size="sm" className="w-full">
+                  View Schedule
+                </Button>
+              </Link>
+            }
           />
           <StatCard
             title="Total Patients"
@@ -128,10 +144,14 @@ const Dashboard = () => {
             <CardContent className="space-y-4">
               {profile?.role === 'doctor' ? (
                 <>
+                <Link to="/scheduler">
                   <div className="p-4 border rounded-lg quick-action">
                     <h3 className="font-medium">Review Today's Schedule</h3>
                     <p className="text-sm text-muted-foreground">Check upcoming appointments and patient notes</p>
+                    
                   </div>
+              </Link>
+
                   <div className="p-4 border rounded-lg quick-action">
                     <h3 className="font-medium">Update Treatment Plans</h3>
                     <p className="text-sm text-muted-foreground">Modify patient treatment information</p>

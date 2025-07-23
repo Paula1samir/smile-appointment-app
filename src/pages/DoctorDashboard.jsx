@@ -111,20 +111,6 @@ const DoctorDashboard = () => {
     fetchSurgeryLogs();
     setSelectedTooth('');
   };
-
-  const StatCard = ({ title, value, description, icon: Icon, className }) => (
-    <Card className={className}>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
-        <Icon className="h-4 w-4 text-muted-foreground" />
-      </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold">{value}</div>
-        <p className="text-xs text-muted-foreground">{description}</p>
-      </CardContent>
-    </Card>
-  );
-
   const selectedPatientData = patients.find(p => p.id === selectedPatient);
 
   return (
@@ -139,34 +125,6 @@ const DoctorDashboard = () => {
             Doctor Dashboard - Treatment Management
           </p>
         </div>
-
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
-          <StatCard
-            title="Today's Appointments"
-            value={stats.todayAppointments}
-            description="Scheduled for today"
-            icon={Calendar}
-          />
-          <StatCard
-            title="Total Patients"
-            value={stats.totalPatients}
-            description="In the system"
-            icon={Users}
-          />
-          <StatCard
-            title="Upcoming Appointments"
-            value={stats.upcomingAppointments}
-            description="Next 7 days"
-            icon={Clock}
-          />
-          <StatCard
-            title="Completed Today"
-            value={stats.completedToday}
-            description="Appointments finished"
-            icon={Activity}
-          />
-        </div>
-
         <Tabs defaultValue="treatment" className="space-y-6">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="treatment">Treatment Management</TabsTrigger>
