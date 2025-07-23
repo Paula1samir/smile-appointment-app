@@ -10,7 +10,6 @@ import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Save, User, Trash2 } from 'lucide-react';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import Navbar from '@/components/Navbar';
-import '../styles/shared.css';
 
 const EditPatientPage = () => {
   const { id } = useParams();
@@ -135,9 +134,9 @@ const EditPatientPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background page-container">
+    <div className="min-h-screen bg-background">
       <Navbar />
-      <div className="p-6 dashboard-gradient">
+      <div className="p-6">
         <div className="flex items-center mb-6">
           <Button 
             variant="ghost" 
@@ -154,7 +153,7 @@ const EditPatientPage = () => {
         </div>
 
         <div className="max-w-2xl mx-auto">
-          <Card className="animated-card">
+          <Card>
             <CardHeader>
               <CardTitle className="flex items-center">
                 <User className="h-4 w-4 mr-2" />
@@ -253,7 +252,7 @@ const EditPatientPage = () => {
                     >
                       Cancel
                     </Button>
-                    <Button type="submit" disabled={loading} className="button-animated">
+                    <Button type="submit" disabled={loading}>
                       {loading ? (
                         'Saving...'
                       ) : (

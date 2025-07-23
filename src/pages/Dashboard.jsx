@@ -4,7 +4,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, Users, Clock, Activity } from 'lucide-react';
 import Navbar from '@/components/Navbar';
-import './Dashboard.css'
 
 const Dashboard = () => {
   const { profile } = useAuth();
@@ -87,35 +86,34 @@ const Dashboard = () => {
           </p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6 dashboard-reports p-6">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
           <StatCard
             title="Today's Appointments"
             value={stats.todayAppointments}
             description="Scheduled for today"
             icon={Calendar}
-            className="StatCard"
+            className="hover:shadow-md transition-shadow"
           />
           <StatCard
             title="Total Patients"
             value={stats.totalPatients}
             description="In the system"
             icon={Users}
-            className="StatCard"
-
+            className="hover:shadow-md transition-shadow"
           />
           <StatCard
             title="Upcoming Appointments"
             value={stats.upcomingAppointments}
             description="Next 7 days"
             icon={Clock}
-            className="StatCard"
+            className="hover:shadow-md transition-shadow"
           />
           <StatCard
             title="Completed Today"
             value={stats.completedToday}
             description="Appointments finished"
             icon={Activity}
-            className="StatCard"
+            className="hover:shadow-md transition-shadow"
           />
         </div>
 
@@ -128,22 +126,22 @@ const Dashboard = () => {
             <CardContent className="space-y-4">
               {profile?.role === 'doctor' ? (
                 <>
-                  <div className="p-4 border rounded-lg quick-action">
+                  <div className="p-4 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer">
                     <h3 className="font-medium">Review Today's Schedule</h3>
                     <p className="text-sm text-muted-foreground">Check upcoming appointments and patient notes</p>
                   </div>
-                  <div className="p-4 border rounded-lg quick-action">
+                  <div className="p-4 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer">
                     <h3 className="font-medium">Update Treatment Plans</h3>
                     <p className="text-sm text-muted-foreground">Modify patient treatment information</p>
                   </div>
                 </>
               ) : (
                 <>
-                  <div className="p-4 border rounded-lg quick-action">
+                  <div className="p-4 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer">
                     <h3 className="font-medium">Schedule Appointments</h3>
                     <p className="text-sm text-muted-foreground">Book new patient appointments</p>
                   </div>
-                  <div className="p-4 border rounded-lg quick-action">
+                  <div className="p-4 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer">
                     <h3 className="font-medium">Add New Patients</h3>
                     <p className="text-sm text-muted-foreground">Register new patients in the system</p>
                   </div>
@@ -159,7 +157,7 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <div className="text-sm system-status">
+                <div className="text-sm">
                   <span className="font-medium">System Status:</span>
                   <span className="text-green-600 ml-2">All systems operational</span>
                 </div>

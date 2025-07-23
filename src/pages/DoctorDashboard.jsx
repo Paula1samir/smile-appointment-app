@@ -11,6 +11,7 @@ import SurgeryLogForm from '@/components/SurgeryLogForm';
 import PatientTreatmentHistory from '@/components/PatientTreatmentHistory';
 import TreatmentHistoryModal from '@/components/TreatmentHistoryModal';
 import PatientSearchSelect from '@/components/PatientSearchSelect';
+import Navbar from '@/components/Navbar';
 
 const DoctorDashboard = () => {
   const { profile } = useAuth();
@@ -167,8 +168,9 @@ const DoctorDashboard = () => {
   const selectedPatientData = patients.find(p => p.id === selectedPatient);
 
   return (
-    <div className="page-container animate-fade-in">
-      <div className="content-wrapper">
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <div className="p-6">
         <div className="mb-8">
           <div className="mb-2">
             <span className="text-sm text-muted-foreground font-medium">Dashboard</span>
@@ -182,10 +184,10 @@ const DoctorDashboard = () => {
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
-          <Card className="stat-card group">
+          <Card className="hover:shadow-md transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Today's Appointments</CardTitle>
-              <div className="p-2 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+              <div className="p-2 bg-primary/10 rounded-lg">
                 <Calendar className="h-5 w-5 text-primary" />
               </div>
             </CardHeader>
@@ -195,10 +197,10 @@ const DoctorDashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="stat-card group">
+          <Card className="hover:shadow-md transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Total Patients</CardTitle>
-              <div className="p-2 bg-accent/10 rounded-lg group-hover:bg-accent/20 transition-colors">
+              <div className="p-2 bg-accent/10 rounded-lg">
                 <Users className="h-5 w-5 text-accent" />
               </div>
             </CardHeader>
@@ -208,10 +210,10 @@ const DoctorDashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="stat-card group">
+          <Card className="hover:shadow-md transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Upcoming</CardTitle>
-              <div className="p-2 bg-blue-500/10 rounded-lg group-hover:bg-blue-500/20 transition-colors">
+              <div className="p-2 bg-blue-500/10 rounded-lg">
                 <Clock className="h-5 w-5 text-blue-500" />
               </div>
             </CardHeader>
@@ -221,11 +223,11 @@ const DoctorDashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="stat-card group">
+          <Card className="hover:shadow-md transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Completed Today</CardTitle>
-              <div className="p-2 bg-destructive/10 rounded-lg group-hover:bg-destructive/20 transition-colors">
-                <TrendingUp className="h-5 w-5 text-destructive" />
+              <div className="p-2 bg-green-500/10 rounded-lg">
+                <TrendingUp className="h-5 w-5 text-green-500" />
               </div>
             </CardHeader>
             <CardContent>
