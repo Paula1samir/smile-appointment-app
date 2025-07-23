@@ -183,12 +183,12 @@ const Dashboard = () => {
                     All systems operational
                   </div>
                 </div>
-              </CardContent>
+              </div>
+            </CardContent>
             </Card>
-          </motion.div>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 };
 
