@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, Users, Clock, Activity } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import './Dashboard.css'
-import { Button } from '@/components/ui/button';
 
 const Dashboard = () => {
   const { profile } = useAuth();
@@ -16,6 +16,7 @@ const Dashboard = () => {
     upcomingAppointments: 0,
     completedToday: 0
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchStats();
@@ -60,10 +61,12 @@ const Dashboard = () => {
       });
     } catch (error) {
       console.error('Error fetching stats:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const StatCard = ({ title, value, description, icon: Icon, className, actionButton }) => (
+  const StatCard = ({ title, value, description, icon: Icon, className }) => (
     <Card className={className}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
@@ -72,11 +75,6 @@ const Dashboard = () => {
       <CardContent>
         <div className="text-2xl font-bold">{value}</div>
         <p className="text-xs text-muted-foreground">{description}</p>
-        {actionButton && (
-          <div className="mt-4">
-            {actionButton}
-          </div>
-        )}
       </CardContent>
     </Card>
   );
@@ -85,15 +83,13 @@ const Dashboard = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <div className="p-6">
-        <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">
-              Welcome back, Dr/ {profile?.full_name}
-            </h1>
-            <p className="text-muted-foreground">
-              {profile?.role === 'doctor' ? 'Doctor Dashboard' : 'Assistant Dashboard'}
-            </p>
-          </div>
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold">
+            Welcome back, Dr/ {profile?.full_name}
+          </h1>
+          <p className="text-muted-foreground">
+            {profile?.role === 'doctor' ? 'Doctor Dashboard' : 'Assistant Dashboard'}
+          </p>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6 dashboard-reports p-6">
@@ -103,35 +99,30 @@ const Dashboard = () => {
             description="Scheduled for today"
             icon={Calendar}
             className="StatCard"
-            actionButton={
-              <Link to="/scheduler">
-                <Button variant="outline" size="sm" className="w-full">
-                  View Schedule
-                </Button>
-              </Link>
-            }
           />
           <StatCard
             title="Total Patients"
             value={stats.totalPatients}
             description="In the system"
             icon={Users}
-            className="StatCard"
-
+            color="bg-accent"
+            delay={0.2}
           />
           <StatCard
-            title="Upcoming Appointments"
+            title="Upcoming"
             value={stats.upcomingAppointments}
             description="Next 7 days"
             icon={Clock}
-            className="StatCard"
+            color="bg-blue-500"
+            delay={0.3}
           />
           <StatCard
             title="Completed Today"
             value={stats.completedToday}
             description="Appointments finished"
-            icon={Activity}
-            className="StatCard"
+            icon={TrendingUp}
+            color="bg-green-500"
+            delay={0.4}
           />
         </div>
 
@@ -144,14 +135,10 @@ const Dashboard = () => {
             <CardContent className="space-y-4">
               {profile?.role === 'doctor' ? (
                 <>
-                <Link to="/scheduler">
                   <div className="p-4 border rounded-lg quick-action">
                     <h3 className="font-medium">Review Today's Schedule</h3>
                     <p className="text-sm text-muted-foreground">Check upcoming appointments and patient notes</p>
-                    
                   </div>
-              </Link>
-
                   <div className="p-4 border rounded-lg quick-action">
                     <h3 className="font-medium">Update Treatment Plans</h3>
                     <p className="text-sm text-muted-foreground">Modify patient treatment information</p>
@@ -183,20 +170,25 @@ const Dashboard = () => {
                   <span className="font-medium">System Status:</span>
                   <span className="text-green-600 ml-2">All systems operational</span>
                 </div>
-                <div className="text-sm">
-                  <span className="font-medium">Last Backup:</span>
-                  <span className="text-muted-foreground ml-2">Today at 3:00 AM</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-gray-600">Last Backup</span>
+                  <span className="text-sm text-gray-500">Today, 3:00 AM</span>
                 </div>
-                <div className="text-sm">
-                  <span className="font-medium">Active Users:</span>
-                  <span className="text-muted-foreground ml-2">Online now</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-gray-600">Active Users</span>
+                  <span className="text-sm text-gray-500">1 online</span>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+                <div className="pt-4 border-t border-gray-100">
+                  <div className="text-xs text-gray-500 text-center">
+                    All systems operational
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 
