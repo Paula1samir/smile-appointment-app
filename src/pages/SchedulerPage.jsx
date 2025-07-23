@@ -7,9 +7,10 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { Calendar, Clock, Plus, User } from 'lucide-react';
+import { Calendar, Clock, Plus, User, FileText } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import PatientSearchSelect from '@/components/PatientSearchSelect';
+import TreatmentHistoryChart from '@/components/TreatmentHistoryChart';
 import '../styles/shared.css';
 
 const SchedulerPage = () => {
@@ -41,7 +42,7 @@ const SchedulerPage = () => {
         .from('appointments')
         .select(`
           *,
-          patients (name, telephone),
+          patients (id, name, telephone, age, health_condition),
           profiles (full_name)
         `)
         .eq('appointment_date', selectedDate)
@@ -373,13 +374,24 @@ const SchedulerPage = () => {
                           </span>
                         </div>
                       </div>
-                      <div className="mt-2 text-sm text-muted-foreground">
-                        <p><strong>Doctor:</strong> Dr. {appointment.profiles?.full_name}</p>
-                        <p><strong>Treatment:</strong> {appointment.treatment}</p>
-                        {appointment.tooth && <p><strong>Tooth:</strong> {appointment.tooth}</p>}
-                        {appointment.notes && <p><strong>Notes:</strong> {appointment.notes}</p>}
-                        <p><strong>Phone:</strong> {appointment.patients?.telephone}</p>
-                      </div>
+                         <div className="mt-2 text-sm text-muted-foreground">
+                         <p><strong>Doctor:</strong> Dr. {appointment.profiles?.full_name}</p>
+                         <p><strong>Treatment:</strong> {appointment.treatment}</p>
+                         {appointment.tooth && <p><strong>Tooth:</strong> {appointment.tooth}</p>}
+                         {appointment.notes && <p><strong>Notes:</strong> {appointment.notes}</p>}
+                         <p><strong>Phone:</strong> {appointment.patients?.telephone}</p>
+                       </div>
+                       <div className="mt-3">
+                         <TreatmentHistoryChart
+                           patient={appointment.patients}
+                           triggerButton={
+                             <Button size="sm" variant="outline">
+                               <FileText className="h-4 w-4 mr-2" />
+                               Treatment History
+                             </Button>
+                           }
+                         />
+                       </div>
                     </div>
                   ))}
                 </div>

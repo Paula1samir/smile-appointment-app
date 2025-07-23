@@ -8,10 +8,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Users, Clock, Activity, User, FileText, Stethoscope } from 'lucide-react';
 import Navbar from '@/components/Navbar';
-import ToothDiagram from '@/components/ToothDiagram';
+import ToothChart from '@/components/ToothChart';
 import SurgeryLogForm from '@/components/SurgeryLogForm';
 import PatientTreatmentHistory from '@/components/PatientTreatmentHistory';
 import TreatmentHistoryModal from '@/components/TreatmentHistoryModal';
+import PatientSearchSelect from '@/components/PatientSearchSelect';
 
 const DoctorDashboard = () => {
   const { profile } = useAuth();
@@ -227,19 +228,10 @@ const DoctorDashboard = () => {
               <CardContent className="space-y-4">
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">Select Patient</label>
-                    <Select value={selectedPatient} onValueChange={setSelectedPatient}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Choose a patient" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {patients.map((patient) => (
-                          <SelectItem key={patient.id} value={patient.id}>
-                            {patient.name} - {patient.telephone}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <PatientSearchSelect
+                      selectedPatientId={selectedPatient}
+                      onPatientSelect={setSelectedPatient}
+                    />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Chart Type</label>
@@ -283,7 +275,7 @@ const DoctorDashboard = () => {
             {selectedPatient && (
               <div className="grid gap-6 lg:grid-cols-2">
                 <div className="space-y-6">
-                  <ToothDiagram
+                  <ToothChart
                     isChild={isChild}
                     onToothSelect={handleToothSelect}
                     selectedTooth={selectedTooth}
@@ -398,7 +390,7 @@ const DoctorDashboard = () => {
             {selectedAppointmentPatient && (
               <div className="grid gap-6 lg:grid-cols-2">
                 <div className="space-y-6">
-                  <ToothDiagram
+                  <ToothChart
                     isChild={isChild}
                     onToothSelect={handleToothSelect}
                     selectedTooth={selectedTooth}
