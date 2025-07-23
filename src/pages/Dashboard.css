@@ -6,6 +6,7 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
+  max-width: 100%;
 }
 
 .StatCard::before {
@@ -30,6 +31,19 @@
   animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   gap: 1.5rem;
   padding: 1rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .dashboard-reports {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .StatCard {
+    width: 100%;
+    max-width: none;
+  }
 }
 
 .StatCard:hover {

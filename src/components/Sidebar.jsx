@@ -15,11 +15,11 @@ import {
 import { Button } from './ui/button';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
-  const { user, logout } = useAuth();
+  const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await logout();
+    await signOut();
     navigate('/auth');
   };
 

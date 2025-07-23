@@ -80,7 +80,7 @@ const Dashboard = () => {
       <div className="p-6">
         <div className="mb-6">
           <h1 className="text-3xl font-bold">
-            Welcome back, Dr/ {profile?.full_name}
+            Welcome back, {profile?.full_name}
           </h1>
           <p className="text-muted-foreground">
             {profile?.role === 'doctor' ? 'Doctor Dashboard' : 'Assistant Dashboard'}

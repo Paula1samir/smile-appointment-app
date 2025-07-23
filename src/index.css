@@ -152,7 +152,7 @@
 
   /* Stats card */
   .stat-card {
-    @apply clinic-card hover:scale-105 cursor-pointer;
+    @apply clinic-card hover:scale-105 cursor-pointer transition-transform duration-200;
   }
 
   /* Table styling */
@@ -193,5 +193,16 @@
 
   .nav-item.active {
     @apply bg-sidebar-accent text-sidebar-accent-foreground font-medium;
+  }
+
+  /* Fix responsive design */
+  @media (max-width: 768px) {
+    .content-wrapper {
+      @apply p-4 space-y-4;
+    }
+    
+    .stat-card {
+      @apply hover:scale-100;
+    }
   }
 }

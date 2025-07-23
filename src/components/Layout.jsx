@@ -4,7 +4,7 @@ import Sidebar from './Sidebar';
 import { Menu } from 'lucide-react';
 import { Button } from './ui/button';
 
-const Layout = () => {
+const Layout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -27,7 +27,7 @@ const Layout = () => {
 
         {/* Main content */}
         <main className="flex-1 animate-fade-in">
-          <Outlet />
+          {children}
         </main>
       </div>
     </div>
