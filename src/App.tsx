@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Layout from "./components/Layout";
 import Index from "./pages/Index";
 import AuthPage from "./pages/AuthPage";
 import Dashboard from "./pages/Dashboard";
@@ -29,32 +30,44 @@ const App = () => (
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/dashboard" element={
               <ProtectedRoute>
-                <Dashboard />
+                <Layout>
+                  <Dashboard />
+                </Layout>
               </ProtectedRoute>
             } />
             <Route path="/doctor-dashboard" element={
               <ProtectedRoute>
-                <DoctorDashboard />
+                <Layout>
+                  <DoctorDashboard />
+                </Layout>
               </ProtectedRoute>
             } />
             <Route path="/scheduler" element={
               <ProtectedRoute>
-                <SchedulerPage />
+                <Layout>
+                  <SchedulerPage />
+                </Layout>
               </ProtectedRoute>
             } />
             <Route path="/patients" element={
               <ProtectedRoute>
-                <PatientsPage />
+                <Layout>
+                  <PatientsPage />
+                </Layout>
               </ProtectedRoute>
             } />
             <Route path="/add-patient" element={
               <ProtectedRoute>
-                <AddPatientPage />
+                <Layout>
+                  <AddPatientPage />
+                </Layout>
               </ProtectedRoute>
             } />
             <Route path="/edit-patient/:id" element={
               <ProtectedRoute>
-                <EditPatientPage />
+                <Layout>
+                  <EditPatientPage />
+                </Layout>
               </ProtectedRoute>
             } />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

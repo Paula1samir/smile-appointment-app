@@ -3,11 +3,9 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Users, Clock, Activity, User, FileText, Stethoscope } from 'lucide-react';
-import Navbar from '@/components/Navbar';
+import { Calendar, Users, Clock, Activity, User, FileText, Stethoscope, TrendingUp } from 'lucide-react';
 import ToothChart from '@/components/ToothChart';
 import SurgeryLogForm from '@/components/SurgeryLogForm';
 import PatientTreatmentHistory from '@/components/PatientTreatmentHistory';
@@ -169,43 +167,72 @@ const DoctorDashboard = () => {
   const selectedPatientData = patients.find(p => p.id === selectedPatient);
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <div className="p-6">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold">
+    <div className="page-container animate-fade-in">
+      <div className="content-wrapper">
+        <div className="mb-8">
+          <div className="mb-2">
+            <span className="text-sm text-muted-foreground font-medium">Dashboard</span>
+          </div>
+          <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
             Welcome back, Dr. {profile?.full_name}
           </h1>
-          <p className="text-muted-foreground">
-            Doctor Dashboard - Treatment Management
+          <p className="text-muted-foreground text-lg">
+            Treatment Management System
           </p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
-          <StatCard
-            title="Today's Appointments"
-            value={stats.todayAppointments}
-            description="Scheduled for today"
-            icon={Calendar}
-          />
-          <StatCard
-            title="Total Patients"
-            value={stats.totalPatients}
-            description="In the system"
-            icon={Users}
-          />
-          <StatCard
-            title="Upcoming Appointments"
-            value={stats.upcomingAppointments}
-            description="Next 7 days"
-            icon={Clock}
-          />
-          <StatCard
-            title="Completed Today"
-            value={stats.completedToday}
-            description="Appointments finished"
-            icon={Activity}
-          />
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
+          <Card className="stat-card group">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Today's Appointments</CardTitle>
+              <div className="p-2 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+                <Calendar className="h-5 w-5 text-primary" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-foreground">{stats.todayAppointments}</div>
+              <p className="text-sm text-muted-foreground mt-1">Scheduled for today</p>
+            </CardContent>
+          </Card>
+
+          <Card className="stat-card group">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Patients</CardTitle>
+              <div className="p-2 bg-accent/10 rounded-lg group-hover:bg-accent/20 transition-colors">
+                <Users className="h-5 w-5 text-accent" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-foreground">{stats.totalPatients}</div>
+              <p className="text-sm text-muted-foreground mt-1">In the system</p>
+            </CardContent>
+          </Card>
+
+          <Card className="stat-card group">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Upcoming</CardTitle>
+              <div className="p-2 bg-blue-500/10 rounded-lg group-hover:bg-blue-500/20 transition-colors">
+                <Clock className="h-5 w-5 text-blue-500" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-foreground">{stats.upcomingAppointments}</div>
+              <p className="text-sm text-muted-foreground mt-1">Next 7 days</p>
+            </CardContent>
+          </Card>
+
+          <Card className="stat-card group">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Completed Today</CardTitle>
+              <div className="p-2 bg-destructive/10 rounded-lg group-hover:bg-destructive/20 transition-colors">
+                <TrendingUp className="h-5 w-5 text-destructive" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-foreground">{stats.completedToday}</div>
+              <p className="text-sm text-muted-foreground mt-1">Appointments finished</p>
+            </CardContent>
+          </Card>
         </div>
 
         <Tabs defaultValue="treatment" className="space-y-6">
