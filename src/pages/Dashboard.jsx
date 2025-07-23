@@ -191,20 +191,14 @@ const Dashboard = () => {
                   <span className="font-medium">Active Users:</span>
                   <span className="text-muted-foreground ml-2">Online now</span>
                 </div>
-<<<<<<< HEAD
-                <div className="pt-4 border-t border-gray-100">
-                  <div className="text-xs text-gray-500 text-center">
-                    All systems operational
+                <div className="pt-4 border-t border-border">
+                  <div className="text-xs text-muted-foreground text-center">
+                    System last updated: {new Date().toLocaleDateString()}
                   </div>
                 </div>
               </div>
             </CardContent>
-            </Card>
-=======
-              </div>
-            </CardContent>
           </Card>
->>>>>>> parent of eb20b74 (Merge branch 'main' of https://github.com/Paula1samir/smile-appointment-app)
         </div>
       </div>
     </div>
