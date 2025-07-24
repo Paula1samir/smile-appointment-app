@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar, Users, Clock, Activity } from 'lucide-react';
+import { Calendar, Users, Clock, TrendingUp } from 'lucide-react';
 import Navbar from '@/components/Navbar';
-import './Dashboard.css'
 
 const Dashboard = () => {
   const { profile } = useAuth();
@@ -185,10 +183,10 @@ const Dashboard = () => {
                 </div>
               </CardContent>
             </Card>
-          </motion.div>
+          </div>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 };
 
