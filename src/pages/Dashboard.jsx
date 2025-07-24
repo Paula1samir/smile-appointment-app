@@ -181,9 +181,9 @@ const Dashboard = () => {
                     All systems operational
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>

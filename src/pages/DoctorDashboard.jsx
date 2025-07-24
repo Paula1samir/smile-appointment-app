@@ -12,7 +12,7 @@ import SurgeryLogForm from '@/components/SurgeryLogForm';
 import PatientTreatmentHistory from '@/components/PatientTreatmentHistory';
 import TreatmentHistoryModal from '@/components/TreatmentHistoryModal';
 import PatientSearchSelect from '@/components/PatientSearchSelect';
-import Layout from '@/components/Layout';
+import Navbar from '@/components/Navbar';
 
 const DoctorDashboard = () => {
   const { profile } = useAuth();
@@ -141,6 +141,15 @@ const DoctorDashboard = () => {
     fetchSurgeryLogs();
     setSelectedTooth('');
     fetchTodayAppointments();
+  };
+
+  const handleAppointmentPatientSelect = (appointment) => {
+    setSelectedAppointmentPatient(appointment);
+  };
+
+  const handleShowTreatmentHistory = (patient) => {
+    setTreatmentHistoryPatient(patient);
+    setTreatmentHistoryModalOpen(true);
   };
 
   const StatCard = ({ title, value, description, icon: Icon, className }) => (
@@ -512,7 +521,6 @@ const DoctorDashboard = () => {
               </AnimatePresence>
             </TabsContent>
           </Tabs>
-        </motion.div>
 
         {/* Treatment History Modal */}
         <TreatmentHistoryModal
@@ -521,7 +529,7 @@ const DoctorDashboard = () => {
           patient={treatmentHistoryPatient}
         />
       </div>
-    </Layout>
+    </div>
   );
 };
 
