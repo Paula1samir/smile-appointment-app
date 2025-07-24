@@ -180,33 +180,6 @@ const DoctorDashboard = () => {
           </p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
-          <StatCard
-            title="Today's Appointments"
-            value={stats.todayAppointments}
-            description="Scheduled for today"
-            icon={Calendar}
-          />
-          <StatCard
-            title="Total Patients"
-            value={stats.totalPatients}
-            description="In the system"
-            icon={Users}
-          />
-          <StatCard
-            title="Upcoming Appointments"
-            value={stats.upcomingAppointments}
-            description="Next 7 days"
-            icon={Clock}
-          />
-          <StatCard
-            title="Completed Today"
-            value={stats.completedToday}
-            description="Appointments finished"
-            icon={Activity}
-          />
-        </div>
-
         <Tabs defaultValue="treatment" className="space-y-6">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="treatment">Treatment Management</TabsTrigger>
