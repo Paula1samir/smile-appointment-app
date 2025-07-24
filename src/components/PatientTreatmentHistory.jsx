@@ -21,7 +21,8 @@ const PatientTreatmentHistory = ({ patientId, selectedTooth }) => {
         .from('surgery_logs')
         .select(`
           *,
-          profiles!surgery_logs_doctor_id_fkey (full_name)
+          profiles!surgery_logs_doctor_id_fkey (full_name),
+          patients!surgery_logs_patient_id_fkey (name, age)
         `)
         .eq('patient_id', patientId)
         .order('date', { ascending: false });
@@ -78,6 +79,11 @@ const PatientTreatmentHistory = ({ patientId, selectedTooth }) => {
                   <div className="flex items-center space-x-2">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
                     <span className="font-medium">{log.date}</span>
+                    {(log.age || log.patients?.age) && (
+                      <span className="text-xs text-muted-foreground">
+                        (Age: {log.age || log.patients.age})
+                      </span>
+                    )}
                   </div>
                   <Badge variant="outline">Tooth {log.tooth_number}</Badge>
                 </div>

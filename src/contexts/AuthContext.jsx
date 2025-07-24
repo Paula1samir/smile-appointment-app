@@ -89,6 +89,8 @@ export const AuthProvider = ({ children }) => {
     return { error };
   };
 
+  const logout = signOut; // Add alias for consistency
+
   const value = {
     user,
     session,
@@ -97,6 +99,7 @@ export const AuthProvider = ({ children }) => {
     signIn,
     signUp,
     signOut,
+    logout,
   };
 
   return (

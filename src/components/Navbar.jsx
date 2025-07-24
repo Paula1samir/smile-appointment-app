@@ -14,11 +14,11 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-background border-b border-border px-4 py-3">
+    <nav className="bg-card border-b border-border px-4 py-3 shadow-sm">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-6">
           <Link to="/dashboard" className="text-xl font-bold text-primary">
-            Dental Clinic
+            DentalCare
           </Link>
           <div className="flex items-center space-x-4">
             <Link to="/dashboard">

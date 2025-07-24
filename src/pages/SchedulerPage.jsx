@@ -7,9 +7,10 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { Calendar, Clock, Plus, User } from 'lucide-react';
+import { Calendar, Clock, Plus, User, FileText } from 'lucide-react';
 import Navbar from '@/components/Navbar';
-import '../styles/shared.css';
+import PatientSearchSelect from '@/components/PatientSearchSelect';
+import TreatmentHistoryChart from '@/components/TreatmentHistoryChart';
 
 const SchedulerPage = () => {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
@@ -40,7 +41,7 @@ const SchedulerPage = () => {
         .from('appointments')
         .select(`
           *,
-          patients (name, telephone),
+          patients (id, name, telephone, age, health_condition),
           profiles (full_name)
         `)
         .eq('appointment_date', selectedDate)
@@ -162,9 +163,9 @@ const SchedulerPage = () => {
   const timeSlots = generateTimeSlots();
 
   return (
-    <div className="min-h-screen bg-background page-container">
+    <div className="min-h-screen bg-background">
       <Navbar />
-      <div className="p-6 dashboard-gradient">
+      <div className="p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-3xl font-bold">Scheduler</h1>
@@ -185,21 +186,10 @@ const SchedulerPage = () => {
                 </DialogDescription>
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="patient">Patient</Label>
-                  <Select value={formData.patient_id} onValueChange={(value) => setFormData({...formData, patient_id: value})}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select patient" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {patients.map((patient) => (
-                        <SelectItem key={patient.id} value={patient.id}>
-                          {patient.name} - {patient.telephone}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                <PatientSearchSelect
+                  selectedPatientId={formData.patient_id}
+                  onPatientSelect={(patientId) => setFormData({...formData, patient_id: patientId})}
+                />
                 <div className="space-y-2">
                   <Label htmlFor="doctor">Doctor</Label>
                   <Select value={formData.doctor_id} onValueChange={(value) => setFormData({...formData, doctor_id: value})}>
@@ -325,7 +315,7 @@ const SchedulerPage = () => {
             </CardContent>
           </Card>
 
-          <Card className="md:col-span-2 animated-card">
+          <Card className="md:col-span-2">
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Clock className="h-4 w-4 mr-2" />
@@ -383,13 +373,24 @@ const SchedulerPage = () => {
                           </span>
                         </div>
                       </div>
-                      <div className="mt-2 text-sm text-muted-foreground">
-                        <p><strong>Doctor:</strong> Dr. {appointment.profiles?.full_name}</p>
-                        <p><strong>Treatment:</strong> {appointment.treatment}</p>
-                        {appointment.tooth && <p><strong>Tooth:</strong> {appointment.tooth}</p>}
-                        {appointment.notes && <p><strong>Notes:</strong> {appointment.notes}</p>}
-                        <p><strong>Phone:</strong> {appointment.patients?.telephone}</p>
-                      </div>
+                         <div className="mt-2 text-sm text-muted-foreground">
+                         <p><strong>Doctor:</strong> Dr. {appointment.profiles?.full_name}</p>
+                         <p><strong>Treatment:</strong> {appointment.treatment}</p>
+                         {appointment.tooth && <p><strong>Tooth:</strong> {appointment.tooth}</p>}
+                         {appointment.notes && <p><strong>Notes:</strong> {appointment.notes}</p>}
+                         <p><strong>Phone:</strong> {appointment.patients?.telephone}</p>
+                       </div>
+                       <div className="mt-3">
+                         <TreatmentHistoryChart
+                           patient={appointment.patients}
+                           triggerButton={
+                             <Button size="sm" variant="outline">
+                               <FileText className="h-4 w-4 mr-2" />
+                               Treatment History
+                             </Button>
+                           }
+                         />
+                       </div>
                     </div>
                   ))}
                 </div>
