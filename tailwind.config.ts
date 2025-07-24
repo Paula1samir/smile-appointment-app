@@ -20,6 +20,7 @@ export default {
 		extend: {
 			fontFamily: {
 				'inter': ['Inter', 'system-ui', 'sans-serif'],
+				'open-sans': ['Open Sans', 'system-ui', 'sans-serif'],
 				'sans': ['Inter', 'system-ui', 'sans-serif'],
 			},
 			colors: {
