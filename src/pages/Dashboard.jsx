@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar, Users, Clock, Activity, TrendingUp, ArrowRight, Plus, Stethoscope } from 'lucide-react';
-import Layout from '@/components/Layout';
+import DashboardLayout from '@/components/DashboardLayout';
 import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
@@ -120,7 +120,7 @@ const Dashboard = () => {
   );
 
   return (
-    <Layout>
+    <DashboardLayout>
       <div className="p-6 space-y-8">
         {/* Header */}
         <motion.div 
@@ -295,7 +295,7 @@ const Dashboard = () => {
           </motion.div>
         </div>
       </div>
-    </Layout>
+    </DashboardLayout>
   );
 };
 

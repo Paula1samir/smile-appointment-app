@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Save, User } from 'lucide-react';
-import Navbar from '@/components/Navbar';
+import DashboardLayout from '@/components/DashboardLayout';
 
 const AddPatientPage = () => {
   const [formData, setFormData] = useState({
@@ -61,8 +61,7 @@ const AddPatientPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <DashboardLayout>
       <div className="p-6">
         <div className="flex items-center mb-6">
           <Button 
@@ -171,7 +170,7 @@ const AddPatientPage = () => {
           </Card>
         </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 

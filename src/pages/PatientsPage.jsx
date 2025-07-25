@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Search, Plus, Phone, User, Calendar } from 'lucide-react';
-import Navbar from '@/components/Navbar';
+import DashboardLayout from '@/components/DashboardLayout';
 
 const PatientsPage = () => {
   const [patients, setPatients] = useState([]);
@@ -60,7 +60,6 @@ const PatientsPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
-        <Navbar />
         <div className="p-6">
           <div className="text-center">Loading patients...</div>
         </div>
@@ -69,8 +68,7 @@ const PatientsPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <DashboardLayout>
       <div className="p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -194,7 +192,7 @@ const PatientsPage = () => {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 

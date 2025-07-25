@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { Calendar, Clock, Plus, User, FileText } from 'lucide-react';
-import Navbar from '@/components/Navbar';
+import DashboardLayout from '@/components/DashboardLayout';
 import PatientSearchSelect from '@/components/PatientSearchSelect';
 import TreatmentHistoryChart from '@/components/TreatmentHistoryChart';
 
@@ -163,8 +163,7 @@ const SchedulerPage = () => {
   const timeSlots = generateTimeSlots();
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <DashboardLayout>
       <div className="p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -399,7 +398,7 @@ const SchedulerPage = () => {
           </Card>
         </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 
