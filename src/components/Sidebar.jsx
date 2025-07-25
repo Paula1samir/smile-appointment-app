@@ -132,13 +132,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
               >
-                <motion.div 
-                  className="w-12 h-12 bg-gradient-to-br from-primary to-primary-600 rounded-2xl flex items-center justify-center shadow-soft"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                >
+                <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-600 rounded-2xl flex items-center justify-center shadow-soft">
                   <Activity className="w-7 h-7 text-white" />
-                </motion.div>
+                </div>
                 <AnimatePresence>
                   {(isOpen || window.innerWidth < 1024) && (
                     <motion.div
@@ -147,40 +143,21 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                       exit={{ opacity: 0, x: -20 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <h1 className="font-bold text-xl bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">DentalCare</h1>
-                      <p className="text-sm text-gray-600 font-medium">Clinic Management</p>
+                      <h1 className="font-bold text-xl text-gray-900">DentalCare</h1>
+                      <p className="text-sm text-gray-600">Clinic Management</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </motion.div>
               
-              <div className="flex items-center gap-2">
-                {/* Desktop toggle button */}
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="hidden lg:block"
-                >
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setIsOpen(!isOpen)}
-                    className="rounded-xl hover:bg-gray-100 transition-colors duration-200"
-                  >
-                    <Menu className="w-4 h-4" />
-                  </Button>
-                </motion.div>
-                
-                {/* Mobile close button */}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setIsOpen(!isOpen)}
-                  className="lg:hidden rounded-xl"
-                >
-                  {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-                </Button>
-              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsOpen(!isOpen)}
+                className="lg:hidden rounded-xl"
+              >
+                {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </Button>
             </div>
           </div>
 

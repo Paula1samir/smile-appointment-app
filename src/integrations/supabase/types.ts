@@ -133,7 +133,6 @@ export type Database = {
       }
       surgery_logs: {
         Row: {
-          age: number | null
           created_at: string
           date: string
           doctor_id: string
@@ -145,7 +144,6 @@ export type Database = {
           updated_at: string
         }
         Insert: {
-          age?: number | null
           created_at?: string
           date: string
           doctor_id: string
@@ -157,7 +155,6 @@ export type Database = {
           updated_at?: string
         }
         Update: {
-          age?: number | null
           created_at?: string
           date?: string
           doctor_id?: string
@@ -190,18 +187,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      get_current_user_role: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      has_role: {
-        Args: { _role: string }
-        Returns: boolean
-      }
-      is_doctor_for_patient: {
-        Args: { _patient_id: string }
-        Returns: boolean
-      }
+      [_ in never]: never
     }
     Enums: {
       [_ in never]: never

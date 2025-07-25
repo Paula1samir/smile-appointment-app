@@ -12,7 +12,7 @@ import SurgeryLogForm from '@/components/SurgeryLogForm';
 import PatientTreatmentHistory from '@/components/PatientTreatmentHistory';
 import TreatmentHistoryModal from '@/components/TreatmentHistoryModal';
 import PatientSearchSelect from '@/components/PatientSearchSelect';
-import Navbar from '@/components/Navbar';
+import Layout from '@/components/Layout';
 
 const DoctorDashboard = () => {
   const { profile } = useAuth();
@@ -145,6 +145,8 @@ const DoctorDashboard = () => {
 
   const handleAppointmentPatientSelect = (appointment) => {
     setSelectedAppointmentPatient(appointment);
+    setSelectedPatient(appointment.patient_id);
+    setIsChild(appointment.patients?.age < 12);
   };
 
   const handleShowTreatmentHistory = (patient) => {
@@ -152,35 +154,25 @@ const DoctorDashboard = () => {
     setTreatmentHistoryModalOpen(true);
   };
 
-  const StatCard = ({ title, value, description, icon: Icon, className }) => (
+  const StatCard = ({ title, value, description, icon: Icon, color, delay = 0 }) => (
     <motion.div
-      whileHover={{ 
-        scale: 1.05, 
-        y: -5,
-        transition: { type: "spring", stiffness: 300 }
-      }}
-      whileTap={{ scale: 0.95 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay, duration: 0.5 }}
+      whileHover={{ scale: 1.02, y: -5 }}
+      className="cursor-pointer"
     >
-      <Card className={`${className} transition-all duration-300 cursor-pointer shadow-soft hover:shadow-soft-lg border-2`}>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-semibold text-gray-700">{title}</CardTitle>
-          <motion.div
-            whileHover={{ rotate: 360 }}
-            transition={{ duration: 0.6 }}
-          >
-            <Icon className="h-5 w-5 text-gray-600" />
-          </motion.div>
+      <Card className="relative overflow-hidden">
+        <div className={`absolute top-0 right-0 w-20 h-20 ${color} opacity-10 rounded-full -mr-10 -mt-10`} />
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+          <CardTitle className="text-sm font-semibold text-gray-600 uppercase tracking-wide">{title}</CardTitle>
+          <div className={`p-3 ${color} rounded-xl shadow-soft`}>
+            <Icon className="h-5 w-5 text-white" />
+          </div>
         </CardHeader>
         <CardContent>
-          <motion.div 
-            className="text-3xl font-bold text-gray-900 mb-1"
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
-          >
-            {value}
-          </motion.div>
-          <p className="text-sm text-gray-600 font-medium">{description}</p>
+          <div className="text-3xl font-bold text-gray-900 mb-1">{loading ? '...' : value}</div>
+          <p className="text-sm text-gray-600">{description}</p>
         </CardContent>
       </Card>
     </motion.div>
@@ -189,105 +181,84 @@ const DoctorDashboard = () => {
   const selectedPatientData = patients.find(p => p.id === selectedPatient);
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <Layout>
       <div className="p-6 space-y-8">
+        {/* Header */}
         <motion.div 
-          className="mb-8"
+          className="page-header"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <motion.h1 
-            className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-          >
-            Welcome back, Dr. {profile?.full_name}
-          </motion.h1>
-          <motion.p 
-            className="text-lg text-gray-600 font-medium"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-          >
-            Treatment Management Dashboard
-          </motion.p>
-          <motion.div 
-            className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full mt-3"
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-          />
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="page-title">
+                Welcome back, Dr. {profile?.full_name}
+              </h1>
+              <p className="page-subtitle">
+                Treatment Management System • {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+              </p>
+            </div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="flex items-center space-x-2"
+            >
+              <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-600 rounded-2xl flex items-center justify-center shadow-soft">
+                <Stethoscope className="w-6 h-6 text-white" />
+              </div>
+            </motion.div>
+          </div>
         </motion.div>
 
-        {/* Enhanced Statistics Cards */}
-        <motion.div 
-          className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8"
+        {/* Stats Grid */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <StatCard
+            title="Today's Appointments"
+            value={stats.todayAppointments}
+            description="Scheduled for today"
+            icon={Calendar}
+            color="bg-primary"
+            delay={0.1}
+          />
+          <StatCard
+            title="Total Patients"
+            value={stats.totalPatients}
+            description="In the system"
+            icon={Users}
+            color="bg-accent"
+            delay={0.2}
+          />
+          <StatCard
+            title="Upcoming"
+            value={stats.upcomingAppointments}
+            description="Next 7 days"
+            icon={Clock}
+            color="bg-blue-500"
+            delay={0.3}
+          />
+          <StatCard
+            title="Completed Today"
+            value={stats.completedToday}
+            description="Appointments finished"
+            icon={TrendingUp}
+            color="bg-green-500"
+            delay={0.4}
+          />
+        </div>
+
+        {/* Main Content */}
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, staggerChildren: 0.1 }}
+          transition={{ delay: 0.5, duration: 0.6 }}
         >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.1 }}
-          >
-            <StatCard
-              title="Today's Appointments"
-              value={stats.todayAppointments}
-              description="Scheduled for today"
-              icon={Calendar}
-              className="bg-gradient-to-br from-primary-50 to-primary-100 border-primary-200 hover:from-primary-100 hover:to-primary-200"
-            />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            <StatCard
-              title="Total Patients"
-              value={stats.totalPatients}
-              description="In the system"
-              icon={Users}
-              className="bg-gradient-to-br from-accent-50 to-accent-100 border-accent-200 hover:from-accent-100 hover:to-accent-200"
-            />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            <StatCard
-              title="Upcoming"
-              value={stats.upcomingAppointments}
-              description="Next 7 days"
-              icon={Clock}
-              className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200 hover:from-orange-100 hover:to-orange-200"
-            />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.4 }}
-          >
-            <StatCard
-              title="Completed Today"
-              value={stats.completedToday}
-              description="Appointments finished"
-              icon={Activity}
-              className="bg-gradient-to-br from-green-50 to-green-100 border-green-200 hover:from-green-100 hover:to-green-200"
-            />
-          </motion.div>
-        </motion.div>
-
-        <Tabs defaultValue="treatment" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="treatment">Treatment Management</TabsTrigger>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-          </TabsList>
+          <Tabs defaultValue="treatment" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-2 bg-gray-100 p-1 rounded-xl">
+              <TabsTrigger value="treatment" className="rounded-lg font-semibold">Treatment Management</TabsTrigger>
+              <TabsTrigger value="today-schedule" className="rounded-lg font-semibold">Today's Schedule</TabsTrigger>
+            </TabsList>
 
             <TabsContent value="treatment" className="space-y-6">
               <AnimatePresence mode="wait">
@@ -597,6 +568,7 @@ const DoctorDashboard = () => {
               </AnimatePresence>
             </TabsContent>
           </Tabs>
+        </motion.div>
 
         {/* Treatment History Modal */}
         <TreatmentHistoryModal
@@ -605,7 +577,7 @@ const DoctorDashboard = () => {
           patient={treatmentHistoryPatient}
         />
       </div>
-    </div>
+    </Layout>
   );
 };
 
