@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -55,15 +55,71 @@
   }
 
   .input-field {
-    @apply w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 placeholder-gray-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary hover:border-gray-300;
+    @apply w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 placeholder-gray-500 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary hover:border-gray-300 focus:scale-[1.02] focus:shadow-glow;
+  }
+
+  .form-card {
+    @apply bg-white rounded-2xl shadow-soft border border-gray-100 transition-all duration-300 hover:shadow-soft-lg;
+  }
+
+  .page-container {
+    @apply min-h-screen bg-gradient-to-br from-background via-background to-gray-50/30;
+  }
+
+  .content-wrapper {
+    @apply p-6 max-w-7xl mx-auto;
+  }
+
+  .page-header-modern {
+    @apply mb-8 animate-slide-up;
+  }
+
+  .section-title {
+    @apply text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3;
+  }
+
+  .stats-grid {
+    @apply grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8;
+  }
+
+  .action-button {
+    @apply bg-primary hover:bg-primary-hover text-primary-foreground font-medium px-6 py-3 rounded-xl shadow-soft transition-all duration-200 hover:shadow-soft-lg hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 flex items-center gap-2;
+  }
+
+  .table-container {
+    @apply bg-white rounded-2xl shadow-soft border border-gray-100 overflow-hidden;
+  }
+
+  .search-section {
+    @apply mb-6;
+  }
+
+  .appointment-card {
+    @apply bg-white rounded-xl border border-gray-100 p-6 shadow-soft transition-all duration-300 hover:shadow-soft-lg hover:scale-[1.01] hover:-translate-y-1;
+  }
+
+  .status-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+  }
+
+  .status-completed {
+    @apply bg-success-50 text-success-700;
+  }
+
+  .status-scheduled {
+    @apply bg-primary-50 text-primary-700;
+  }
+
+  .status-cancelled {
+    @apply bg-error-50 text-error-700;
   }
 
   .card-modern {
-    @apply bg-white rounded-xl shadow-soft border border-gray-100 transition-all duration-200 hover:shadow-soft-lg;
+    @apply bg-white rounded-xl shadow-soft border border-gray-100 transition-all duration-300 hover:shadow-soft-lg hover:scale-[1.02] hover:-translate-y-1;
   }
 
   .stat-card {
-    @apply card-modern p-6 hover:scale-[1.02] cursor-pointer;
+    @apply card-modern p-6 hover:scale-[1.05] cursor-pointer bg-gradient-to-br from-white to-gray-50/30 hover:from-primary-50/50 hover:to-accent-50/30 transition-all duration-300;
   }
 
   .nav-item {
@@ -146,11 +202,22 @@
   transition: opacity 300ms ease-out, transform 300ms ease-out;
 }
 
-/* Smooth focus transitions */
+/* Enhanced focus transitions */
 input:focus,
 textarea:focus,
 select:focus {
-  transition: all 0.2s ease-in-out;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(-1px);
+}
+
+/* Glass morphism effects */
+.glass-card {
+  @apply bg-white/80 backdrop-blur-sm border border-white/20 shadow-soft-lg;
+}
+
+/* Floating button effect */
+.floating-button {
+  @apply transition-all duration-300 hover:shadow-soft-lg hover:-translate-y-1 hover:scale-105 active:scale-95;
 }
 
 /* Custom animations for specific components */
@@ -166,7 +233,7 @@ select:focus {
 }
 
 .appointment-card {
-  @apply transform transition-all duration-200 hover:scale-[1.02] hover:shadow-soft-lg;
+  @apply transform transition-all duration-300 hover:scale-[1.03] hover:shadow-soft-lg hover:-translate-y-1 bg-gradient-to-r from-white to-gray-50/50;
 }
 
 .sidebar-item {

@@ -7,8 +7,14 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
+<<<<<<< HEAD
 import { Calendar, Clock, Plus, User, FileText } from 'lucide-react';
 import DashboardLayout from '@/components/DashboardLayout';
+=======
+import { Calendar, Clock, Plus, User, FileText, CalendarDays } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Navbar from '@/components/Navbar';
+>>>>>>> parent of 0e5d2c9 (Reverted to commit 670bd8b7f7b9a545de8344645b52af31f7fb64c5)
 import PatientSearchSelect from '@/components/PatientSearchSelect';
 import TreatmentHistoryChart from '@/components/TreatmentHistoryChart';
 
@@ -163,27 +169,66 @@ const SchedulerPage = () => {
   const timeSlots = generateTimeSlots();
 
   return (
+<<<<<<< HEAD
     <DashboardLayout>
       <div className="p-6">
         <div className="flex items-center justify-between mb-6">
+=======
+    <div className="page-container">
+      <Navbar />
+      <div className="content-wrapper">
+        <motion.div 
+          className="flex items-center justify-between mb-8"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+>>>>>>> parent of 0e5d2c9 (Reverted to commit 670bd8b7f7b9a545de8344645b52af31f7fb64c5)
           <div>
-            <h1 className="text-3xl font-bold">Scheduler</h1>
-            <p className="text-muted-foreground">Manage daily appointments</p>
+            <motion.h1 
+              className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              Scheduler
+            </motion.h1>
+            <motion.p 
+              className="text-lg text-gray-600"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+            >
+              Manage daily appointments
+            </motion.p>
           </div>
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                Schedule Appointment
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Schedule New Appointment</DialogTitle>
-                <DialogDescription>
-                  Fill in the details to schedule a new appointment.
-                </DialogDescription>
-              </DialogHeader>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+          >
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <Button className="action-button">
+                  <Plus className="h-4 w-4" />
+                  Schedule Appointment
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <DialogHeader>
+                    <DialogTitle className="flex items-center gap-2">
+                      <CalendarDays className="h-5 w-5 text-primary" />
+                      Schedule New Appointment
+                    </DialogTitle>
+                    <DialogDescription>
+                      Fill in the details to schedule a new appointment.
+                    </DialogDescription>
+                  </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <PatientSearchSelect
                   selectedPatientId={formData.patient_id}
@@ -288,114 +333,168 @@ const SchedulerPage = () => {
                     placeholder="Additional notes"
                   />
                 </div>
-                <Button type="submit" className="w-full">
-                  Schedule Appointment
-                </Button>
-              </form>
-            </DialogContent>
-          </Dialog>
-        </div>
+                  <Button type="submit" className="w-full action-button">
+                    Schedule Appointment
+                  </Button>
+                </form>
+                </motion.div>
+              </DialogContent>
+            </Dialog>
+          </motion.div>
+        </motion.div>
 
         <div className="grid gap-6 md:grid-cols-3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Calendar className="h-4 w-4 mr-2" />
-                Select Date
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Input
-                type="date"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-                className="w-full"
-              />
-            </CardContent>
-          </Card>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+          >
+            <Card className="form-card">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Calendar className="h-5 w-5 text-primary" />
+                  Select Date
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Input
+                  type="date"
+                  value={selectedDate}
+                  onChange={(e) => setSelectedDate(e.target.value)}
+                  className="w-full focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300"
+                />
+              </CardContent>
+            </Card>
+          </motion.div>
 
-          <Card className="md:col-span-2">
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Clock className="h-4 w-4 mr-2" />
-                Appointments for {selectedDate}
-              </CardTitle>
-              <CardDescription>
-                {appointments.length} appointment(s) scheduled
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {appointments.length === 0 ? (
-                <p className="text-muted-foreground text-center py-8">
-                  No appointments scheduled for this date.
-                </p>
-              ) : (
-                <div className="space-y-4">
-                  {appointments.map((appointment) => (
-                    <div key={appointment.id} className="border rounded-lg p-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-4">
-                          <div className="flex items-center space-x-2">
-                            <Clock className="h-4 w-4 text-muted-foreground" />
-                            <span className="font-medium">{appointment.appointment_time}</span>
+          <motion.div 
+            className="md:col-span-2"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
+          >
+            <Card className="form-card">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Clock className="h-5 w-5 text-primary" />
+                  Appointments for {selectedDate}
+                </CardTitle>
+                <CardDescription>
+                  {appointments.length} appointment(s) scheduled
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <AnimatePresence mode="wait">
+                  {appointments.length === 0 ? (
+                    <motion.div 
+                      className="text-center py-12"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.4 }}
+                    >
+                      <Calendar className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                      <p className="text-gray-600">
+                        No appointments scheduled for this date.
+                      </p>
+                    </motion.div>
+                  ) : (
+                    <motion.div 
+                      className="space-y-4"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.4 }}
+                    >
+                      {appointments.map((appointment, index) => (
+                        <motion.div 
+                          key={appointment.id} 
+                          className="appointment-card"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1, duration: 0.4 }}
+                        >
+                          <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center space-x-4">
+                              <div className="flex items-center space-x-2">
+                                <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-600 rounded-lg flex items-center justify-center">
+                                  <Clock className="h-4 w-4 text-white" />
+                                </div>
+                                <span className="font-semibold text-gray-900">{appointment.appointment_time}</span>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <div className="w-8 h-8 bg-gradient-to-br from-accent to-accent-600 rounded-lg flex items-center justify-center">
+                                  <User className="h-4 w-4 text-white" />
+                                </div>
+                                <span className="font-medium text-gray-800">{appointment.patients?.name}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center space-x-3">
+                              {appointment.status === 'scheduled' && (
+                                <>
+                                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() => updateAppointmentStatus(appointment.id, 'completed')}
+                                      className="hover:bg-success hover:text-success-foreground transition-colors"
+                                    >
+                                      Complete
+                                    </Button>
+                                  </motion.div>
+                                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() => updateAppointmentStatus(appointment.id, 'cancelled')}
+                                      className="hover:bg-error hover:text-error-foreground transition-colors"
+                                    >
+                                      Cancel
+                                    </Button>
+                                  </motion.div>
+                                </>
+                              )}
+                              <span className={`status-badge ${
+                                appointment.status === 'completed' ? 'status-completed' :
+                                appointment.status === 'cancelled' ? 'status-cancelled' :
+                                'status-scheduled'
+                              }`}>
+                                {appointment.status}
+                              </span>
+                            </div>
                           </div>
-                          <div className="flex items-center space-x-2">
-                            <User className="h-4 w-4 text-muted-foreground" />
-                            <span>{appointment.patients?.name}</span>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600 bg-gray-50 rounded-xl p-4">
+                            <div>
+                              <p><strong className="text-gray-900">Doctor:</strong> Dr. {appointment.profiles?.full_name}</p>
+                              <p><strong className="text-gray-900">Treatment:</strong> {appointment.treatment}</p>
+                              {appointment.tooth && <p><strong className="text-gray-900">Tooth:</strong> {appointment.tooth}</p>}
+                            </div>
+                            <div>
+                              {appointment.notes && <p><strong className="text-gray-900">Notes:</strong> {appointment.notes}</p>}
+                              <p><strong className="text-gray-900">Phone:</strong> {appointment.patients?.telephone}</p>
+                            </div>
                           </div>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          {appointment.status === 'scheduled' && (
-                            <>
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => updateAppointmentStatus(appointment.id, 'completed')}
-                              >
-                                Complete
-                              </Button>
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => updateAppointmentStatus(appointment.id, 'cancelled')}
-                              >
-                                Cancel
-                              </Button>
-                            </>
-                          )}
-                          <span className={`text-xs px-2 py-1 rounded-full ${
-                            appointment.status === 'completed' ? 'bg-green-100 text-green-800' :
-                            appointment.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                            'bg-blue-100 text-blue-800'
-                          }`}>
-                            {appointment.status}
-                          </span>
-                        </div>
-                      </div>
-                         <div className="mt-2 text-sm text-muted-foreground">
-                         <p><strong>Doctor:</strong> Dr. {appointment.profiles?.full_name}</p>
-                         <p><strong>Treatment:</strong> {appointment.treatment}</p>
-                         {appointment.tooth && <p><strong>Tooth:</strong> {appointment.tooth}</p>}
-                         {appointment.notes && <p><strong>Notes:</strong> {appointment.notes}</p>}
-                         <p><strong>Phone:</strong> {appointment.patients?.telephone}</p>
-                       </div>
-                       <div className="mt-3">
-                         <TreatmentHistoryChart
-                           patient={appointment.patients}
-                           triggerButton={
-                             <Button size="sm" variant="outline">
-                               <FileText className="h-4 w-4 mr-2" />
-                               Treatment History
-                             </Button>
-                           }
-                         />
-                       </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                          <div className="mt-4 flex justify-end">
+                            <TreatmentHistoryChart
+                              patient={appointment.patients}
+                              triggerButton={
+                                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                  <Button size="sm" variant="outline" className="hover:bg-primary hover:text-primary-foreground transition-colors">
+                                    <FileText className="h-4 w-4 mr-2" />
+                                    Treatment History
+                                  </Button>
+                                </motion.div>
+                              }
+                            />
+                          </div>
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </CardContent>
+            </Card>
+          </motion.div>
         </div>
       </div>
     </DashboardLayout>
