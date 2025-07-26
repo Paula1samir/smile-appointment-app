@@ -199,8 +199,12 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                   <NavLink
                     to={item.path}
                     className={({ isActive }) => `
+                      flex items-center gap-3 px-4 py-3 rounded-xl
                       nav-item group relative overflow-hidden
-                      ${isActive ? 'active bg-primary text-white shadow-soft' : 'hover:bg-gray-50 text-gray-700 hover:text-primary'}
+                      ${isActive 
+                        ? 'bg-blue-500 text-white shadow-md' 
+                        : 'hover:bg-blue-50 text-gray-700 hover:text-blue-600'
+                      }
                       ${!isOpen && 'lg:justify-center lg:px-3'}
                       transition-all duration-200
                     `}
@@ -231,9 +235,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                     
                     {/* Tooltip for collapsed state */}
                     {!isOpen && (
-                      <div className="absolute left-full ml-3 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50 hidden lg:block shadow-soft-lg">
+                      <div className="absolute left-full ml-3 px-3 py-2 bg-blue-500 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50 hidden lg:block shadow-lg">
                         {item.label}
-                        <div className="absolute top-1/2 -left-1 transform -translate-y-1/2 w-2 h-2 bg-gray-900 rotate-45" />
+                        <div className="absolute top-1/2 -left-1 transform -translate-y-1/2 w-2 h-2 bg-blue-500 rotate-45" />
                       </div>
                     )}
                   </NavLink>

@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Save, User, Trash2 } from 'lucide-react';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import DashboardLayout from '@/components/DashboardLayout';
+import Layout from '@/components/Layout';
 
 const EditPatientPage = () => {
   const { id } = useParams();
@@ -124,16 +124,14 @@ const EditPatientPage = () => {
 
   if (initialLoading) {
     return (
-      <DashboardLayout>
         <div className="p-6">
           <div className="text-center">Loading patient data...</div>
         </div>
-      </DashboardLayout>
     );
   }
 
   return (
-    <DashboardLayout>
+    <Layout>
       <div className="p-6">
         <div className="flex items-center mb-6">
           <Button 
@@ -267,7 +265,7 @@ const EditPatientPage = () => {
           </Card>
         </div>
       </div>
-    </DashboardLayout>
+    </Layout>
   );
 };
 

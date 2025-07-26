@@ -7,14 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-<<<<<<< HEAD
 import { ArrowLeft, Save, User } from 'lucide-react';
-import DashboardLayout from '@/components/DashboardLayout';
-=======
-import { ArrowLeft, Save, User, UserPlus } from 'lucide-react';
-import { motion } from 'framer-motion';
-import Navbar from '@/components/Navbar';
->>>>>>> parent of 0e5d2c9 (Reverted to commit 670bd8b7f7b9a545de8344645b52af31f7fb64c5)
+import Layout from '@/components/Layout';
 
 const AddPatientPage = () => {
   const [formData, setFormData] = useState({
@@ -67,68 +61,30 @@ const AddPatientPage = () => {
   };
 
   return (
-<<<<<<< HEAD
-    <DashboardLayout>
+    <Layout>
+
+    <div className="min-h-screen bg-background">
       <div className="p-6">
         <div className="flex items-center mb-6">
           <Button 
             variant="ghost" 
             onClick={() => navigate('/patients')}
             className="mr-4"
-=======
-    <div className="page-container">
-      <Navbar />
-      <div className="content-wrapper">
-        <motion.div 
-          className="flex items-center mb-8"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
->>>>>>> parent of 0e5d2c9 (Reverted to commit 670bd8b7f7b9a545de8344645b52af31f7fb64c5)
           >
-            <Button 
-              variant="ghost" 
-              onClick={() => navigate('/patients')}
-              className="mr-6 hover:bg-gray-100 transition-colors"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Patients
-            </Button>
-          </motion.div>
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Patients
+          </Button>
           <div>
-            <motion.h1 
-              className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-            >
-              Add New Patient
-            </motion.h1>
-            <motion.p 
-              className="text-lg text-gray-600"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
-            >
-              Register a new patient in the system
-            </motion.p>
+            <h1 className="text-3xl font-bold">Add New Patient</h1>
+            <p className="text-muted-foreground">Register a new patient in the system</p>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div 
-          className="max-w-2xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-        >
-          <Card className="form-card">
+        <div className="max-w-2xl mx-auto">
+          <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <UserPlus className="h-5 w-5 text-primary" />
+              <CardTitle className="flex items-center">
+                <User className="h-4 w-4 mr-2" />
                 Patient Information
               </CardTitle>
               <CardDescription>
@@ -193,42 +149,31 @@ const AddPatientPage = () => {
                 </div>
 
                 <div className="flex items-center justify-end space-x-4 pt-6">
-                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      onClick={() => navigate('/patients')}
-                      className="hover:bg-gray-100 transition-colors"
-                    >
-                      Cancel
-                    </Button>
-                  </motion.div>
-                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <Button type="submit" disabled={loading} className="action-button">
-                      {loading ? (
-                        <>
-                          <motion.div
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                            className="w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"
-                          />
-                          Saving...
-                        </>
-                      ) : (
-                        <>
-                          <Save className="h-4 w-4" />
-                          Add Patient
-                        </>
-                      )}
-                    </Button>
-                  </motion.div>
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    onClick={() => navigate('/patients')}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit" disabled={loading}>
+                    {loading ? (
+                      'Saving...'
+                    ) : (
+                      <>
+                        <Save className="h-4 w-4 mr-2" />
+                        Add Patient
+                      </>
+                    )}
+                  </Button>
                 </div>
               </form>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
       </div>
-    </DashboardLayout>
+    </div>
+    </Layout>
   );
 };
 
