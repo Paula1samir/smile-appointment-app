@@ -167,8 +167,8 @@ const SchedulerPage = () => {
   return (
         <Layout>
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-gray-50/30">
-      <div className="p-6">
-        <div className="flex items-center justify-between mb-6 animate-fade-in-up">
+      <div className="p-6 ">
+        <div className="flex items-center justify-between mb-6 animate-fade-in-up SchedulerFirstComponent">
           <div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">Scheduler</h1>
             <p className="text-muted-foreground">Manage daily appointments</p>
@@ -299,7 +299,7 @@ const SchedulerPage = () => {
           </Dialog>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-3" style={{marginTop:'10px'}}>
           <Card className="animate-fade-in-left">
             <CardHeader>
               <CardTitle className="flex items-center">
@@ -317,7 +317,7 @@ const SchedulerPage = () => {
             </CardContent>
           </Card>
 
-          <Card className="md:col-span-2 animate-fade-in-right">
+          <Card className="md:col-span-2 animate-fade-in-right SchedulerThirdComponent">
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Clock className="h-4 w-4 mr-2 text-primary" />

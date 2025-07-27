@@ -122,10 +122,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           ${isOpen ? 'w-80' : 'w-80 -translate-x-full lg:w-20 lg:translate-x-0'}
           lg:relative lg:z-auto
         `}
+        style={{ backgroundColor: 'white' }}
       >
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full bg-white">
           {/* Header */}
-          <div className="p-6 border-b border-gray-100">
+          <div className="p-6 border-b border-gray-100 bg-white">
             <div className="flex items-center justify-between">
               <motion.div 
                 className={`flex items-center gap-3 ${isOpen ? 'lg:flex' : 'lg:justify-center'}`}
@@ -186,7 +187,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+          <nav className="flex-1 p-4 space-y-2 overflow-y-auto bg-white">
             <AnimatePresence>
               {navItems.map((item, index) => (
                 <motion.div
@@ -248,7 +249,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           </nav>
 
           {/* User section */}
-          <div className="p-4 border-t border-gray-100">
+          <div className="p-4 border-t border-gray-100 bg-white">
             <motion.div 
               className={`flex items-center gap-3 p-4 rounded-xl bg-gray-50 ${!isOpen && 'lg:justify-center'}`}
               whileHover={{ scale: 1.02 }}

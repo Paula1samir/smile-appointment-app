@@ -17,4 +17,14 @@
     .page-header{
         display: block;
     }
+    .SchedulerFirstComponent{
+    display: block !important;
+    margin-bottom: 10px;
+}
+}
+#lovable-badge{
+    display: none !important;
+}
+.SchedulerThirdComponent{
+    margin-top: 10px;
 }
