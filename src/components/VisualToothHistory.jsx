@@ -55,9 +55,9 @@ const VisualToothHistory = ({ patientAge, surgeryLogs }) => {
     
     let bgColor = 'bg-white';
     if (treatments.length > 0) bgColor = 'bg-red-200';
-    if (isSelected) bgColor = 'bg-blue-200';
+    if (isSelected) bgColor = 'bg-primary-200';
 
-    return `${bgColor} border-2 border-gray-300 rounded w-8 h-8 flex items-center justify-center text-xs font-bold cursor-pointer hover:border-blue-400 transition-colors absolute`;
+    return `${bgColor} border-2 border-gray-300 rounded w-8 h-8 flex items-center justify-center text-xs font-bold cursor-pointer hover:border-primary transition-colors absolute`;
   };
 
   const ToothButton = ({ toothNumber, style }) => {
@@ -199,7 +199,7 @@ const VisualToothHistory = ({ patientAge, surgeryLogs }) => {
               <span>Has Treatment History</span>
             </div>
             <div className="flex items-center space-x-2">
-              <div className="w-4 h-4 bg-blue-200 border-2 border-gray-300 rounded"></div>
+              <div className="w-4 h-4 bg-primary-200 border-2 border-gray-300 rounded"></div>
               <span>Selected</span>
             </div>
           </div>

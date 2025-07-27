@@ -166,21 +166,21 @@ const SchedulerPage = () => {
 
   return (
         <Layout>
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-gray-50/30">
       <div className="p-6">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-6 animate-fade-in-up">
           <div>
-            <h1 className="text-3xl font-bold">Scheduler</h1>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">Scheduler</h1>
             <p className="text-muted-foreground">Manage daily appointments</p>
           </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button>
+              <Button className="animate-fade-in-right">
                 <Plus className="h-4 w-4 mr-2" />
                 Schedule Appointment
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[425px] animate-zoom-in">
               <DialogHeader>
                 <DialogTitle>Schedule New Appointment</DialogTitle>
                 <DialogDescription>
@@ -291,7 +291,7 @@ const SchedulerPage = () => {
                     placeholder="Additional notes"
                   />
                 </div>
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full animate-fade-in-up" >
                   Schedule Appointment
                 </Button>
               </form>
@@ -300,10 +300,10 @@ const SchedulerPage = () => {
         </div>
 
         <div className="grid gap-6 md:grid-cols-3">
-          <Card>
+          <Card className="animate-fade-in-left">
             <CardHeader>
               <CardTitle className="flex items-center">
-                <Calendar className="h-4 w-4 mr-2" />
+                <Calendar className="h-4 w-4 mr-2 text-primary" />
                 Select Date
               </CardTitle>
             </CardHeader>
@@ -317,10 +317,10 @@ const SchedulerPage = () => {
             </CardContent>
           </Card>
 
-          <Card className="md:col-span-2">
+          <Card className="md:col-span-2 animate-fade-in-right">
             <CardHeader>
               <CardTitle className="flex items-center">
-                <Clock className="h-4 w-4 mr-2" />
+                <Clock className="h-4 w-4 mr-2 text-primary" />
                 Appointments for {selectedDate}
               </CardTitle>
               <CardDescription>
@@ -329,13 +329,13 @@ const SchedulerPage = () => {
             </CardHeader>
             <CardContent>
               {appointments.length === 0 ? (
-                <p className="text-muted-foreground text-center py-8">
+                <p className="text-muted-foreground text-center py-8 animate-fade-in">
                   No appointments scheduled for this date.
                 </p>
               ) : (
                 <div className="space-y-4">
-                  {appointments.map((appointment) => (
-                    <div key={appointment.id} className="border rounded-lg p-4">
+                  {appointments.map((appointment, index) => (
+                    <div key={appointment.id} className="border rounded-lg p-4 appointment-card animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-4">
                           <div className="flex items-center space-x-2">
@@ -354,6 +354,7 @@ const SchedulerPage = () => {
                                 size="sm"
                                 variant="outline"
                                 onClick={() => updateAppointmentStatus(appointment.id, 'completed')}
+                                className="hover-lift"
                               >
                                 Complete
                               </Button>
@@ -361,6 +362,7 @@ const SchedulerPage = () => {
                                 size="sm"
                                 variant="outline"
                                 onClick={() => updateAppointmentStatus(appointment.id, 'cancelled')}
+                                className="hover-lift"
                               >
                                 Cancel
                               </Button>
@@ -369,7 +371,7 @@ const SchedulerPage = () => {
                           <span className={`text-xs px-2 py-1 rounded-full ${
                             appointment.status === 'completed' ? 'bg-green-100 text-green-800' :
                             appointment.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                            'bg-blue-100 text-blue-800'
+                            'bg-primary-100 text-primary-800'
                           }`}>
                             {appointment.status}
                           </span>
@@ -386,7 +388,7 @@ const SchedulerPage = () => {
                          <TreatmentHistoryChart
                            patient={appointment.patients}
                            triggerButton={
-                             <Button size="sm" variant="outline">
+                             <Button size="sm" variant="outline" className="hover-lift">
                                <FileText className="h-4 w-4 mr-2" />
                                Treatment History
                              </Button>

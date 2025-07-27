@@ -41,10 +41,10 @@ const ToothDiagram = ({ isChild = false, onToothSelect, selectedTooth, surgeryLo
 
     let bgColor = 'bg-white';
     if (hasHistory) bgColor = 'bg-yellow-200';
-    if (isSelected) bgColor = 'bg-blue-200';
+    if (isSelected) bgColor = 'bg-primary-200';
     if (isHovered) bgColor = 'bg-gray-200';
 
-    return `${bgColor} border-2 border-gray-300 rounded w-8 h-8 flex items-center justify-center text-xs font-bold cursor-pointer hover:border-blue-400 transition-colors`;
+    return `${bgColor} border-2 border-gray-300 rounded w-8 h-8 flex items-center justify-center text-xs font-bold cursor-pointer hover:border-primary transition-colors`;
   };
 
   const ToothButton = ({ toothNumber }) => {
@@ -150,7 +150,7 @@ const ToothDiagram = ({ isChild = false, onToothSelect, selectedTooth, surgeryLo
               <span>Has Treatment History</span>
             </div>
             <div className="flex items-center space-x-2">
-              <div className="w-4 h-4 bg-blue-200 border-2 border-gray-300 rounded"></div>
+              <div className="w-4 h-4 bg-primary-200 border-2 border-gray-300 rounded"></div>
               <span>Selected</span>
             </div>
           </div>

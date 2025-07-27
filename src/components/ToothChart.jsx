@@ -114,12 +114,12 @@ const ToothChart = ({ isChild = false, onToothSelect, selectedTooth, surgeryLogs
     }
     
     if (isSelected) {
-      bgColor = 'bg-blue-200';
-      borderColor = 'border-blue-400';
+      bgColor = 'bg-primary-200';
+      borderColor = 'border-primary';
     }
     
     if (isHovered) {
-      borderColor = 'border-blue-500';
+      borderColor = 'border-primary-600';
     }
 
     return `${bgColor} ${borderColor} border-2 rounded-lg w-12 h-12 flex flex-col items-center justify-center text-xs font-bold cursor-pointer hover:shadow-md transition-all duration-200`;
@@ -246,7 +246,7 @@ const ToothChart = ({ isChild = false, onToothSelect, selectedTooth, surgeryLogs
               </div>
             )}
             <div className="flex items-center space-x-2">
-              <div className="w-4 h-4 bg-blue-200 border-2 border-blue-400 rounded"></div>
+              <div className="w-4 h-4 bg-primary-200 border-2 border-primary rounded"></div>
               <span>Selected</span>
             </div>
           </div>

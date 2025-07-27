@@ -52,7 +52,7 @@ const TreatmentHistoryChart = ({ patient, triggerButton }) => {
         {triggerButton}
       </DialogTrigger>
       <DialogContent className="w-[95vw] h-[90vh] md:w-[90vw] lg:w-[85vw] xl:w-[80vw] overflow-hidden p-0" style={{
-        maxWidth: '1400px',
+        Width: 'fit-content',
         margin: 'auto'
       }}>
         <DialogHeader className="sticky top-0 bg-background z-10 p-4 border-b">

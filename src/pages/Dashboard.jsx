@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Calendar, Users, Clock, Activity, TrendingUp, ArrowRight, Plus, Stethoscope } from 'lucide-react';
 import Layout from '@/components/Layout';
 import { Link } from 'react-router-dom';
-
+import  "./Dashboard.css"
 const Dashboard = () => {
   const { profile } = useAuth();
   const [stats, setStats] = useState({
@@ -73,7 +73,7 @@ const Dashboard = () => {
       transition={{ delay, duration: 0.5 }}
       whileHover={{ scale: 1.02, y: -5 }}
       className="cursor-pointer"
-      style={{width:'250px'}}
+      style={{width:'300px',margin:'10px'} }
     >
       <Card className="relative overflow-hidden">
         <div className={`absolute top-0 right-0 w-20 h-20 ${color} opacity-10 rounded-full -mr-10 -mt-10`} />
@@ -130,32 +130,28 @@ const Dashboard = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="flex items-center justify-between">
+          <div className="page-header">
             <div>
               <h1 className="page-title">
-                Welcome back, {profile?.full_name}
+                Welcome back, DR. 
+                <span style={{fontWeight:'bolder'}}>{profile?.full_name}</span>
               </h1>
               <p className="page-subtitle">
-                {profile?.role === 'doctor' ? 'Doctor Dashboard' : 'Assistant Dashboard'} • {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                {profile?.role === 'doctor' ? 'Doctor Dashboard' : 'Assistant Dashboard'} 
               </p>
+                {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
             </div>
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.3, duration: 0.5 }}
             >
-              <Link to="/add-patient">
-                <Button size="lg" className="shadow-soft-lg">
-                  <Plus className="h-5 w-5 mr-2" />
-                  Add Patient
-                </Button>
-              </Link>
             </motion.div>
           </div>
         </motion.div>
 
         {/* Stats Grid */}
-        <div style={{display:'flex',justifyContent:"space-between",margin:"10px"}}>
+        <div className='StatCard'>
           <StatCard
             title="Today's Appointments"
             value={stats.todayAppointments}
@@ -179,7 +175,7 @@ const Dashboard = () => {
             value={stats.upcomingAppointments}
             description="Next 7 days"
             icon={Clock}
-            color="bg-blue-500"
+            color="bg-primary"
             delay={0.3}
           />
           <StatCard

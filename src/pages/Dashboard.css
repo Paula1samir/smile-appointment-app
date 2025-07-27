@@ -1,0 +1,20 @@
+.StatCard{
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+    margin: 10px;
+}
+.page-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+@media (max-width: 500px) {
+    .StatCard{
+    text-align: center;
+    display: block;
+}
+    .page-header{
+        display: block;
+    }
+}

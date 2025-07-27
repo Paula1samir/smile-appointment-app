@@ -5,20 +5,20 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:scale-[1.02] active:scale-[0.98] shadow-soft hover:shadow-soft-lg",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl transform",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary-600 focus:ring-primary/20",
+        default: "bg-gradient-to-r from-primary to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white focus:ring-primary/20",
         destructive:
-          "bg-error text-error-foreground hover:bg-error-600 focus:ring-error/20",
+          "bg-gradient-to-r from-error to-error-600 hover:from-error-600 hover:to-error-700 text-white focus:ring-error/20",
         outline:
-          "border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 hover:text-primary hover:border-primary/30 focus:ring-primary/20",
+          "border-2 border-primary bg-transparent text-primary hover:bg-primary hover:text-white focus:ring-primary/20 shadow-lg hover:shadow-xl",
         secondary:
-          "bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-primary/20",
-        ghost: "hover:bg-gray-100 text-gray-700 hover:text-primary shadow-none hover:shadow-soft",
+          "bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-700 focus:ring-primary/20",
+        ghost: "hover:bg-primary/10 text-gray-700 hover:text-primary shadow-none hover:shadow-lg",
         link: "text-primary underline-offset-4 hover:underline shadow-none hover:shadow-none",
-        accent: "bg-accent text-accent-foreground hover:bg-accent-600 focus:ring-accent/20",
+        accent: "bg-gradient-to-r from-accent to-accent-600 hover:from-accent-600 hover:to-accent-700 text-white focus:ring-accent/20",
       },
       size: {
         default: "h-11 px-6 py-3 text-sm",

@@ -15,6 +15,7 @@ import {
   Stethoscope
 } from 'lucide-react';
 import { Button } from './ui/button';
+import Logo from '@/images/Logo.png';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const { user, signOut, profile } = useAuth();
@@ -133,11 +134,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                 transition={{ delay: 0.1 }}
               >
                 <motion.div 
-                  className="w-12 h-12 bg-gradient-to-br from-primary to-primary-600 rounded-2xl flex items-center justify-center shadow-soft"
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center overflow-hidden"
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 >
-                  <Activity className="w-7 h-7 text-white" />
+                  <img src={Logo} alt="Logo" className="w-full h-full object-contain" />
                 </motion.div>
                 <AnimatePresence>
                   {(isOpen || window.innerWidth < 1024) && (
@@ -202,8 +203,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                       flex items-center gap-3 px-4 py-3 rounded-xl
                       nav-item group relative overflow-hidden
                       ${isActive 
-                        ? 'bg-blue-500 text-white shadow-md' 
-                        : 'hover:bg-blue-50 text-gray-700 hover:text-blue-600'
+                        ? 'bg-primary text-white shadow-md' 
+                        : 'hover:bg-primary-50 text-gray-700 hover:text-primary'
                       }
                       ${!isOpen && 'lg:justify-center lg:px-3'}
                       transition-all duration-200
@@ -235,9 +236,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                     
                     {/* Tooltip for collapsed state */}
                     {!isOpen && (
-                      <div className="absolute left-full ml-3 px-3 py-2 bg-blue-500 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50 hidden lg:block shadow-lg">
+                      <div className="absolute left-full ml-3 px-3 py-2 bg-primary text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50 hidden lg:block shadow-lg">
                         {item.label}
-                        <div className="absolute top-1/2 -left-1 transform -translate-y-1/2 w-2 h-2 bg-blue-500 rotate-45" />
+                        <div className="absolute top-1/2 -left-1 transform -translate-y-1/2 w-2 h-2 bg-primary rotate-45" />
                       </div>
                     )}
                   </NavLink>
