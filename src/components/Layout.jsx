@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Sidebar from './Sidebar';
+import Footer from './Footer';
 import { Menu } from 'lucide-react';
 import { Button } from './ui/button';
 import Logo from '@/images/Logo.png';
@@ -36,16 +37,17 @@ const Layout = ({ children }) => {
       
       <div className="flex-1 flex flex-col">
         {/* Mobile Header */}
-        <div className="lg:hidden bg-white/90 backdrop-blur-sm border-b border-white/20 shadow-lg">
-          <div className="flex items-center justify-between p-4">
-            <div className="flex items-center space-x-3">
+        <div className="lg:hidden bg-white/90 backdrop-blur-sm border-b border-white/20 shadow-lg sticky top-0 z-30">
+          <div className="flex items-center justify-between p-3 sm:p-4">
+            <div className="flex items-center space-x-2 sm:space-x-3">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                className="flex-shrink-0"
               >
-                <img src={Logo} alt="Logo" className="h-8 w-8" />
+                <img src={Logo} alt="Logo" className="h-6 w-6 sm:h-8 sm:w-8" />
               </motion.div>
-              <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary-600 bg-clip-text text-transparent">
+              <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-primary to-primary-600 bg-clip-text text-transparent truncate">
                 DentalCare
               </span>
             </div>
@@ -71,6 +73,9 @@ const Layout = ({ children }) => {
         >
           {children || <Outlet />}
         </motion.main>
+
+        {/* Footer */}
+        <Footer />
       </div>
     </div>
   );

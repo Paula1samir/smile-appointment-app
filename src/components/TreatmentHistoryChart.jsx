@@ -59,7 +59,7 @@ const TreatmentHistoryChart = ({ patient, triggerButton }) => {
               <DialogTitle className="flex items-center text-base">
                 <FileText className="h-4 w-4 mr-2" />
                 <span>History - {patient.name}</span>
-              </DialogTitle>
+          </DialogTitle>
               <Button
                 variant="ghost"
                 size="icon"
@@ -68,20 +68,20 @@ const TreatmentHistoryChart = ({ patient, triggerButton }) => {
                 <X className="h-4 w-4" />
               </Button>
             </div>
-          </DialogHeader>
-          
+        </DialogHeader>
+        
           <div className="flex-1 overflow-y-auto h-full">
             <div className="flex flex-col space-y-3 p-3 min-h-full">
               {/* Patient Info Card */}
               <Card className="flex-shrink-0">
                 <CardContent className="pt-4">
                   <div className="grid grid-cols-1 gap-3 text-xs">
-                    <div>
-                      <p className="font-medium">Age</p>
-                      <p className="text-muted-foreground">{patient.age} years</p>
-                    </div>
-                    <div>
-                      <p className="font-medium">Phone</p>
+                <div>
+                  <p className="font-medium">Age</p>
+                  <p className="text-muted-foreground">{patient.age} years</p>
+                </div>
+                <div>
+                  <p className="font-medium">Phone</p>
                       <p className="text-muted-foreground break-all">{patient.telephone}</p>
                     </div>
                     {patient.health_condition && (
@@ -226,74 +226,74 @@ const TreatmentHistoryChart = ({ patient, triggerButton }) => {
                     <div>
                       <p className="font-medium">Phone</p>
                       <p className="text-muted-foreground break-all">{patient.telephone}</p>
-                    </div>
-                    {patient.health_condition && (
-                      <div className="col-span-2">
-                        <p className="font-medium">Health Condition</p>
-                        <p className="text-muted-foreground">{patient.health_condition}</p>
-                      </div>
-                    )}
+                </div>
+                {patient.health_condition && (
+                  <div className="col-span-2">
+                    <p className="font-medium">Health Condition</p>
+                    <p className="text-muted-foreground">{patient.health_condition}</p>
                   </div>
-                </CardContent>
-              </Card>
+                )}
+              </div>
+            </CardContent>
+          </Card>
 
               {/* Tooth Chart */}
               <div className="flex-shrink-0">
-                <div className="w-full overflow-x-auto">
-                  <div className="min-w-[768px]">
-                    <ToothChart 
-                      isChild={patient.age < 12}
-                      surgeryLogs={history}
-                      showHistory={true}
-                      onToothSelect={setSelectedTooth}
-                      selectedTooth={selectedTooth}
-                    />
+          <div className="w-full overflow-x-auto">
+            <div className="min-w-[768px]">
+              <ToothChart 
+                isChild={patient.age < 12}
+                surgeryLogs={history}
+                showHistory={true}
+                onToothSelect={setSelectedTooth}
+                selectedTooth={selectedTooth}
+              />
                   </div>
-                </div>
-              </div>
+            </div>
+          </div>
 
               {/* Treatment Details and History */}
               <div className="grid grid-cols-1 gap-4 flex-1">
-                {selectedTooth && (
+            {selectedTooth && (
                   <Card className="order-2 flex-shrink-0">
                     <CardHeader className="pb-3">
                       <CardTitle className="text-base">Tooth {selectedTooth} - Treatment Details</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      {getToothTreatments(selectedTooth).length > 0 ? (
-                        <div className="space-y-3">
-                          {getToothTreatments(selectedTooth).map((treatment, index) => (
-                            <div key={index} className="border-l-4 border-red-500 pl-4">
+                </CardHeader>
+                <CardContent>
+                  {getToothTreatments(selectedTooth).length > 0 ? (
+                    <div className="space-y-3">
+                      {getToothTreatments(selectedTooth).map((treatment, index) => (
+                        <div key={index} className="border-l-4 border-red-500 pl-4">
                               <p className="font-medium text-sm">{treatment.treatment_performed}</p>
-                              <p className="text-sm text-muted-foreground">
-                                {new Date(treatment.date).toLocaleDateString()}
-                              </p>
-                              {treatment.profiles?.full_name && (
-                                <p className="text-sm">
-                                  <strong>Doctor:</strong> Dr. {treatment.profiles.full_name}
-                                </p>
-                              )}
-                              {treatment.notes && (
+                          <p className="text-sm text-muted-foreground">
+                            {new Date(treatment.date).toLocaleDateString()}
+                          </p>
+                          {treatment.profiles?.full_name && (
+                            <p className="text-sm">
+                              <strong>Doctor:</strong> Dr. {treatment.profiles.full_name}
+                            </p>
+                          )}
+                          {treatment.notes && (
                                 <p className="text-sm mt-1">{treatment.notes}</p>
-                              )}
-                            </div>
-                          ))}
+                          )}
                         </div>
-                      ) : (
+                      ))}
+                    </div>
+                  ) : (
                         <p className="text-muted-foreground text-sm">No treatments recorded for this tooth</p>
-                      )}
-                    </CardContent>
-                  </Card>
-                )}
-                
+                  )}
+                </CardContent>
+              </Card>
+            )}
+            
                 <Card className="order-1 flex-1">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-base">All Previous Treatments</CardTitle>
-                  </CardHeader>
+              </CardHeader>
                   <CardContent className="overflow-y-auto max-h-[50vh]">
-                    {loading ? (
+                {loading ? (
                       <div className="text-center py-4 text-sm">Loading treatment history...</div>
-                    ) : history.length === 0 ? (
+                ) : history.length === 0 ? (
                       <div className="text-center py-4 text-muted-foreground text-sm">
                         No previous treatments recorded
                       </div>
@@ -438,44 +438,44 @@ const TreatmentHistoryChart = ({ patient, triggerButton }) => {
                       <div className="text-center py-4 text-sm">Loading treatment history...</div>
                     ) : history.length === 0 ? (
                       <div className="text-center py-4 text-muted-foreground text-sm">
-                        No previous treatments recorded
-                      </div>
-                    ) : (
-                      <div className="space-y-4">
-                        {history.map((treatment) => (
-                          <div key={treatment.id} className="border rounded-lg p-4">
-                            <div className="flex items-center justify-between mb-2">
-                              <div className="flex items-center space-x-2">
-                                <Calendar className="h-4 w-4 text-muted-foreground" />
+                    No previous treatments recorded
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {history.map((treatment) => (
+                      <div key={treatment.id} className="border rounded-lg p-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center space-x-2">
+                            <Calendar className="h-4 w-4 text-muted-foreground" />
                                 <span className="font-medium text-sm">
-                                  {new Date(treatment.date).toLocaleDateString()}
-                                </span>
-                              </div>
-                              <Badge variant="outline" className="text-xs w-fit">
-                                Tooth {treatment.tooth_number}
-                              </Badge>
-                            </div>
-                            <div className="space-y-2">
-                              <p className="text-sm">
-                                <strong>Treatment:</strong> {treatment.treatment_performed}
-                              </p>
-                              {treatment.profiles?.full_name && (
-                                <p className="text-sm">
-                                  <strong>Doctor:</strong> Dr. {treatment.profiles.full_name}
-                                </p>
-                              )}
-                              {treatment.notes && (
-                                <p className="text-sm">
-                                  <strong>Notes:</strong> {treatment.notes}
-                                </p>
-                              )}
-                            </div>
+                              {new Date(treatment.date).toLocaleDateString()}
+                            </span>
                           </div>
-                        ))}
+                              <Badge variant="outline" className="text-xs w-fit">
+                            Tooth {treatment.tooth_number}
+                          </Badge>
+                        </div>
+                        <div className="space-y-2">
+                              <p className="text-sm">
+                            <strong>Treatment:</strong> {treatment.treatment_performed}
+                          </p>
+                          {treatment.profiles?.full_name && (
+                                <p className="text-sm">
+                              <strong>Doctor:</strong> Dr. {treatment.profiles.full_name}
+                            </p>
+                          )}
+                          {treatment.notes && (
+                                <p className="text-sm">
+                              <strong>Notes:</strong> {treatment.notes}
+                            </p>
+                          )}
+                        </div>
                       </div>
-                    )}
-                  </CardContent>
-                </Card>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
               </div>
             </div>
           </div>
