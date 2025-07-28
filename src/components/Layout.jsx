@@ -37,7 +37,7 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-background via-background to-gray-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-100 flex ${isRTL ? 'rtl' : 'ltr'}`}>
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-gray-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-100 flex">
       <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
       <div className="flex-1 flex flex-col">
         {/* Mobile Header */}

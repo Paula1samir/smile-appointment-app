@@ -123,8 +123,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         variants={sidebarVariants}
         animate={isOpen ? "open" : "closed"}
         className={`
-          fixed top-0 ${isRTL ? 'right-0' : 'left-0'} h-full bg-white border-${isRTL ? 'l' : 'r'} border-gray-200 z-50 shadow-soft-lg dark:bg-gray-900 dark:border-gray-800
-          ${isOpen ? 'w-80' : `w-80 ${isRTL ? 'translate-x-full' : '-translate-x-full'} lg:w-20 lg:translate-x-0`}
+          fixed top-0 left-0 h-full bg-white border-r border-gray-200 z-50 shadow-soft-lg dark:bg-gray-900 dark:border-gray-800
+          ${isOpen ? 'w-80' : 'w-80 -translate-x-full lg:w-20 lg:translate-x-0'}
           lg:relative lg:z-auto
         `}
       >
@@ -206,7 +206,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                     <NavLink
                       to={item.path}
                       className={({ isActive }) => `
-                        flex items-center ${isRTL ? 'gap-3 flex-row-reverse' : 'gap-3'} px-4 py-3 rounded-xl
+                        flex items-center gap-3 px-4 py-3 rounded-xl
                         nav-item group relative overflow-hidden
                         ${isActive 
                           ? 'bg-primary text-white shadow-md dark:bg-primary-800' 
