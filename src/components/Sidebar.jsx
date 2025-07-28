@@ -168,7 +168,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               </motion.div>
               
               <div className="flex items-center gap-2">
-                <LanguageSwitcher />
                 {/* Desktop toggle button */}
                 <motion.div
                   whileHover={{ scale: 1.05 }}
