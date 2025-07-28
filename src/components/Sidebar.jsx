@@ -1,6 +1,8 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   LayoutDashboard, 
@@ -16,9 +18,12 @@ import {
 } from 'lucide-react';
 import { Button } from './ui/button';
 import Logo from '@/images/Logo.png';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const { user, signOut, profile } = useAuth();
+  const { isRTL } = useLanguage();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -30,7 +35,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     { 
       path: '/dashboard', 
       icon: LayoutDashboard, 
-      label: 'Dashboard',
+      label: t('navigation.dashboard'),
       description: 'Overview and analytics'
     },
     { 
@@ -43,19 +48,19 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     { 
       path: '/scheduler', 
       icon: Calendar, 
-      label: 'Scheduler',
+      label: t('navigation.scheduler'),
       description: 'Manage appointments'
     },
     { 
       path: '/patients', 
       icon: Users, 
-      label: 'Patients',
+      label: t('navigation.patients'),
       description: 'Patient records'
     },
     { 
       path: '/add-patient', 
       icon: UserPlus, 
-      label: 'Add Patient',
+      label: t('navigation.addPatient'),
       description: 'Register new patient'
     }
   ].filter(item => !item.doctorOnly || profile?.role === 'doctor');
@@ -118,8 +123,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         variants={sidebarVariants}
         animate={isOpen ? "open" : "closed"}
         className={`
-          fixed top-0 left-0 h-full bg-white border-r border-gray-200 z-50 shadow-soft-lg dark:bg-gray-900 dark:border-gray-800
-          ${isOpen ? 'w-80' : 'w-80 -translate-x-full lg:w-20 lg:translate-x-0'}
+          fixed top-0 ${isRTL ? 'right-0' : 'left-0'} h-full bg-white border-${isRTL ? 'l' : 'r'} border-gray-200 z-50 shadow-soft-lg dark:bg-gray-900 dark:border-gray-800
+          ${isOpen ? 'w-80' : `w-80 ${isRTL ? 'translate-x-full' : '-translate-x-full'} lg:w-20 lg:translate-x-0`}
           lg:relative lg:z-auto
         `}
       >
@@ -156,6 +161,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               </motion.div>
               
               <div className="flex items-center gap-2">
+                <LanguageSwitcher />
                 {/* Desktop toggle button */}
                 <motion.div
                   whileHover={{ scale: 1.05 }}
@@ -197,20 +203,20 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                   exit="closed"
                   transition={{ delay: index * 0.1 }}
                 >
-                  <NavLink
-                    to={item.path}
-                    className={({ isActive }) => `
-                      flex items-center gap-3 px-4 py-3 rounded-xl
-                      nav-item group relative overflow-hidden
-                      ${isActive 
-                        ? 'bg-primary text-white shadow-md dark:bg-primary-800' 
-                        : 'hover:bg-primary-50 text-gray-700 hover:text-primary dark:hover:bg-gray-800 dark:text-gray-100 dark:hover:text-primary-300'
-                      }
-                      ${!isOpen && 'lg:justify-center lg:px-3'}
-                      transition-all duration-200
-                    `}
-                    onClick={() => window.innerWidth < 1024 && setIsOpen(false)}
-                  >
+                    <NavLink
+                      to={item.path}
+                      className={({ isActive }) => `
+                        flex items-center ${isRTL ? 'gap-3 flex-row-reverse' : 'gap-3'} px-4 py-3 rounded-xl
+                        nav-item group relative overflow-hidden
+                        ${isActive 
+                          ? 'bg-primary text-white shadow-md dark:bg-primary-800' 
+                          : 'hover:bg-primary-50 text-gray-700 hover:text-primary dark:hover:bg-gray-800 dark:text-gray-100 dark:hover:text-primary-300'
+                        }
+                        ${!isOpen && 'lg:justify-center lg:px-3'}
+                        transition-all duration-200
+                      `}
+                      onClick={() => window.innerWidth < 1024 && setIsOpen(false)}
+                    >
                     <motion.div
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
@@ -293,7 +299,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                       exit={{ opacity: 0, x: -10 }}
                       transition={{ duration: 0.2 }}
                     >
-                      Logout
+                                        {t('navigation.logout')}
                     </motion.span>
                   )}
                 </AnimatePresence>

@@ -7,10 +7,13 @@ import { Menu, Moon, Sun } from 'lucide-react';
 import { Button } from './ui/button';
 import Logo from '@/images/Logo.png';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Layout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const { isRTL } = useLanguage();
 
   const pageVariants = {
     initial: {
@@ -34,25 +37,26 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-gray-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-100 flex">
+    <div className={`min-h-screen bg-gradient-to-br from-background via-background to-gray-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-100 flex ${isRTL ? 'rtl' : 'ltr'}`}>
       <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
       <div className="flex-1 flex flex-col">
         {/* Mobile Header */}
         <div className="lg:hidden bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-white/20 dark:border-gray-800 shadow-lg sticky top-0 z-30">
-          <div className="flex items-center justify-between p-3 sm:p-4" style={{direction:'rtl'}}>
-            <div className="flex items-center space-x-2 sm:space-x-3">
+          <div className={`flex items-center justify-between p-3 sm:p-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-2 sm:space-x-3' : 'space-x-2 sm:space-x-3'}`}>
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="flex-shrink-0"
               >
-                <img src={Logo} alt="Logo" className="h-6 w-6 sm:h-8 sm:w-8" style={{width:'80px',height:'80px'}}/>
+                <img src={Logo} alt="Logo" className="h-12 w-12 sm:h-16 sm:w-16"/>
               </motion.div>
               <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-primary to-primary-600 bg-clip-text text-transparent truncate dark:from-primary-300 dark:to-primary-500">
                 DentalCare
               </span>
             </div>
             <div className="flex items-center gap-2">
+              <LanguageSwitcher />
               <Button
                 variant="ghost"
                 size="icon"
