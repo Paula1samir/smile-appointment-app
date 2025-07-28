@@ -124,5 +124,37 @@
     "patientAddedSuccessfully": "Patient added successfully!",
     "appointmentScheduled": "Appointment scheduled successfully!",
     "somethingWentWrong": "Something went wrong. Please try again."
+  },
+  "profile": {
+    "myProfile": "My Profile",
+    "manageAccountSettings": "Manage your account settings and preferences",
+    "profileInformation": "Profile Information",
+    "updatePersonalInfo": "Update your personal information",
+    "changePassword": "Change Password",
+    "updatePasswordDesc": "Update your password to keep your account secure",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "profileUpdated": "Profile updated successfully!",
+    "passwordUpdated": "Password updated successfully!",
+    "updateProfile": "Update Profile",
+    "updatePassword": "Update Password",
+    "enterNewPassword": "Enter new password",
+    "confirmNewPassword": "Confirm new password"
+  },
+  "forgotPassword": {
+    "resetPassword": "Reset Password",
+    "enterEmailDesc": "Enter your email address to receive a verification code",
+    "enterOtpDesc": "Enter the verification code sent to your email and your new password",
+    "enterEmail": "Enter your email address",
+    "sendOtp": "Send Verification Code",
+    "sendingOtp": "Sending...",
+    "otpCode": "Verification Code",
+    "enterOtp": "Enter 6-digit code",
+    "otpSent": "Verification code sent to your email",
+    "passwordReset": "Password reset successfully! You can now sign in.",
+    "backToLogin": "Back to Login",
+    "changeEmail": "Change Email",
+    "resetting": "Resetting..."
   }
 }

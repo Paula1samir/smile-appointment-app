@@ -124,5 +124,37 @@
     "patientAddedSuccessfully": "تم إضافة المريض بنجاح!",
     "appointmentScheduled": "تم جدولة الموعد بنجاح!",
     "somethingWentWrong": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+  },
+  "profile": {
+    "myProfile": "ملفي الشخصي",
+    "manageAccountSettings": "إدارة إعدادات الحساب والتفضيلات",
+    "profileInformation": "معلومات الملف الشخصي",
+    "updatePersonalInfo": "تحديث معلوماتك الشخصية",
+    "changePassword": "تغيير كلمة المرور",
+    "updatePasswordDesc": "قم بتحديث كلمة المرور للحفاظ على أمان حسابك",
+    "newPassword": "كلمة المرور الجديدة",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "passwordsDoNotMatch": "كلمات المرور غير متطابقة",
+    "profileUpdated": "تم تحديث الملف الشخصي بنجاح!",
+    "passwordUpdated": "تم تحديث كلمة المرور بنجاح!",
+    "updateProfile": "تحديث الملف الشخصي",
+    "updatePassword": "تحديث كلمة المرور",
+    "enterNewPassword": "أدخل كلمة المرور الجديدة",
+    "confirmNewPassword": "تأكيد كلمة المرور الجديدة"
+  },
+  "forgotPassword": {
+    "resetPassword": "إعادة تعيين كلمة المرور",
+    "enterEmailDesc": "أدخل عنوان بريدك الإلكتروني لتلقي رمز التحقق",
+    "enterOtpDesc": "أدخل رمز التحقق المرسل إلى بريدك الإلكتروني وكلمة المرور الجديدة",
+    "enterEmail": "أدخل عنوان بريدك الإلكتروني",
+    "sendOtp": "إرسال رمز التحقق",
+    "sendingOtp": "جاري الإرسال...",
+    "otpCode": "رمز التحقق",
+    "enterOtp": "أدخل الرمز المكون من 6 أرقام",
+    "otpSent": "تم إرسال رمز التحقق إلى بريدك الإلكتروني",
+    "passwordReset": "تم إعادة تعيين كلمة المرور بنجاح! يمكنك الآن تسجيل الدخول.",
+    "backToLogin": "العودة إلى تسجيل الدخول",
+    "changeEmail": "تغيير البريد الإلكتروني",
+    "resetting": "جاري الإعادة..."
   }
 }

@@ -14,7 +14,8 @@ import {
   Activity,
   Menu,
   X,
-  Stethoscope
+  Stethoscope,
+  User
 } from 'lucide-react';
 import { Button } from './ui/button';
 import Logo from '@/images/Logo.png';
@@ -62,6 +63,12 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       icon: UserPlus, 
       label: t('navigation.addPatient'),
       description: 'Register new patient'
+    },
+    { 
+      path: '/profile', 
+      icon: User, 
+      label: t('navigation.profile'),
+      description: 'Account settings'
     }
   ].filter(item => !item.doctorOnly || profile?.role === 'doctor');
 
