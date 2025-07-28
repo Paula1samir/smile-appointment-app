@@ -118,15 +118,14 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         variants={sidebarVariants}
         animate={isOpen ? "open" : "closed"}
         className={`
-          fixed top-0 left-0 h-full bg-white border-r border-gray-200 z-50 shadow-soft-lg
+          fixed top-0 left-0 h-full bg-white border-r border-gray-200 z-50 shadow-soft-lg dark:bg-gray-900 dark:border-gray-800
           ${isOpen ? 'w-80' : 'w-80 -translate-x-full lg:w-20 lg:translate-x-0'}
           lg:relative lg:z-auto
         `}
-        style={{ backgroundColor: 'white' }}
       >
-        <div className="flex flex-col h-full bg-white">
+        <div className="flex flex-col h-full bg-white dark:bg-gray-900">
           {/* Header */}
-          <div className="p-6 border-b border-gray-100 bg-white">
+          <div className="p-6 border-b border-gray-100 bg-white dark:bg-gray-900 dark:border-gray-800">
             <div className="flex items-center justify-between">
               <motion.div 
                 className={`flex items-center gap-3 ${isOpen ? 'lg:flex' : 'lg:justify-center'}`}
@@ -149,8 +148,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                       exit={{ opacity: 0, x: -20 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <h1 className="font-bold text-xl bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">DentalCare</h1>
-                      <p className="text-sm text-gray-600 font-medium">Clinic Management</p>
+                      <h1 className="font-bold text-xl bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent dark:from-gray-100 dark:to-gray-400">DentalCare</h1>
+                      <p className="text-sm text-gray-600 font-medium dark:text-gray-300">Clinic Management</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -167,7 +166,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                     variant="ghost"
                     size="icon"
                     onClick={() => setIsOpen(!isOpen)}
-                    className="rounded-xl hover:bg-gray-100 transition-colors duration-200"
+                    className="rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
                   >
                     <Menu className="w-4 h-4" />
                   </Button>
@@ -187,7 +186,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-2 overflow-y-auto bg-white">
+          <nav className="flex-1 p-4 space-y-2 overflow-y-auto bg-white dark:bg-gray-900">
             <AnimatePresence>
               {navItems.map((item, index) => (
                 <motion.div
@@ -204,8 +203,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                       flex items-center gap-3 px-4 py-3 rounded-xl
                       nav-item group relative overflow-hidden
                       ${isActive 
-                        ? 'bg-primary text-white shadow-md' 
-                        : 'hover:bg-primary-50 text-gray-700 hover:text-primary'
+                        ? 'bg-primary text-white shadow-md dark:bg-primary-800' 
+                        : 'hover:bg-primary-50 text-gray-700 hover:text-primary dark:hover:bg-gray-800 dark:text-gray-100 dark:hover:text-primary-300'
                       }
                       ${!isOpen && 'lg:justify-center lg:px-3'}
                       transition-all duration-200
@@ -237,9 +236,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                     
                     {/* Tooltip for collapsed state */}
                     {!isOpen && (
-                      <div className="absolute left-full ml-3 px-3 py-2 bg-primary text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50 hidden lg:block shadow-lg">
+                      <div className="absolute left-full ml-3 px-3 py-2 bg-primary text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50 hidden lg:block shadow-lg dark:bg-gray-800">
                         {item.label}
-                        <div className="absolute top-1/2 -left-1 transform -translate-y-1/2 w-2 h-2 bg-primary rotate-45" />
+                        <div className="absolute top-1/2 -left-1 transform -translate-y-1/2 w-2 h-2 bg-primary rotate-45 dark:bg-gray-800" />
                       </div>
                     )}
                   </NavLink>
@@ -249,9 +248,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           </nav>
 
           {/* User section */}
-          <div className="p-4 border-t border-gray-100 bg-white">
+          <div className="p-4 border-t border-gray-100 bg-white dark:bg-gray-900 dark:border-gray-800">
             <motion.div 
-              className={`flex items-center gap-3 p-4 rounded-xl bg-gray-50 ${!isOpen && 'lg:justify-center'}`}
+              className={`flex items-center gap-3 p-4 rounded-xl bg-gray-50 dark:bg-gray-800 ${!isOpen && 'lg:justify-center'}`}
               whileHover={{ scale: 1.02 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
@@ -269,8 +268,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                     exit={{ opacity: 0, x: -10 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <div className="font-semibold text-sm truncate text-gray-900">{user?.email}</div>
-                    <div className="text-xs text-gray-600 capitalize">{profile?.role || 'User'}</div>
+                    <div className="font-semibold text-sm truncate text-gray-900 dark:text-gray-100">{user?.email}</div>
+                    <div className="text-xs text-gray-600 capitalize dark:text-gray-300">{profile?.role || 'User'}</div>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -283,7 +282,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               <Button
                 variant="ghost"
                 onClick={handleLogout}
-                className={`w-full mt-3 justify-start text-error hover:text-error hover:bg-error-50 ${!isOpen && 'lg:justify-center lg:px-3'}`}
+                className={`w-full mt-3 justify-start text-error hover:text-error hover:bg-error-50 dark:hover:bg-error-900 ${!isOpen && 'lg:justify-center lg:px-3'}`}
               >
                 <LogOut className="w-4 h-4" />
                 <AnimatePresence>

@@ -75,7 +75,7 @@ const PatientsPage = () => {
   return (
     <Layout>
 
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen ">
       <div className="p-6">
         <div className="flex items-center justify-between mb-6">
           <div>

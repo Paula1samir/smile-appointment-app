@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 export default {
-	darkMode: ["class"],
+	darkMode: 'class', // Enable dark mode via class strategy
 	content: [
 		"./pages/**/*.{ts,tsx}",
 		"./components/**/*.{ts,tsx}",
@@ -37,7 +37,9 @@ export default {
 					100: '#b3e8ff',
 					500: '#01aef0',
 					600: '#0098d6',
-					700: '#0082bc'
+					700: '#0082bc',
+					800: '#005f8a', // dark:from-primary-800
+					900: '#00384d', // dark:to-primary-900
 				},
 				secondary: {
 					DEFAULT: '#f3f4f6',

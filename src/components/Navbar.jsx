@@ -1,12 +1,14 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { Button } from '@/components/ui/button';
-import { Calendar, Users, Plus, LogOut, User, Stethoscope } from 'lucide-react';
+import { Calendar, Users, Plus, LogOut, User, Stethoscope, Moon, Sun } from 'lucide-react';
 
 const Navbar = () => {
   const { signOut, profile } = useAuth();
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
 
   const handleSignOut = async () => {
     await signOut();
@@ -14,57 +16,21 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-card border-b border-border px-4 py-3 shadow-sm">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-6">
-          <Link to="/dashboard" className="text-xl font-bold text-primary">
-            DentalCare
-          </Link>
-          <div className="flex items-center space-x-4">
-            <Link to="/dashboard">
-              <Button variant="ghost" size="sm" className="flex items-center space-x-2">
-                <User className="h-4 w-4" />
-                <span>Dashboard</span>
-              </Button>
-            </Link>
-            {profile?.role === 'doctor' && (
-              <Link to="/doctor-dashboard">
-                <Button variant="ghost" size="sm" className="flex items-center space-x-2">
-                  <Stethoscope className="h-4 w-4" />
-                  <span>Treatment</span>
-                </Button>
-              </Link>
-            )}
-            <Link to="/scheduler">
-              <Button variant="ghost" size="sm" className="flex items-center space-x-2">
-                <Calendar className="h-4 w-4" />
-                <span>Scheduler</span>
-              </Button>
-            </Link>
-            <Link to="/patients">
-              <Button variant="ghost" size="sm" className="flex items-center space-x-2">
-                <Users className="h-4 w-4" />
-                <span>Patients</span>
-              </Button>
-            </Link>
-            <Link to="/add-patient">
-              <Button variant="ghost" size="sm" className="flex items-center space-x-2">
-                <Plus className="h-4 w-4" />
-                <span>Add Patient</span>
-              </Button>
-            </Link>
-          </div>
-        </div>
-        <div className="flex items-center space-x-4">
-          <span className="text-sm text-muted-foreground">
-            {profile?.full_name} ({profile?.role})
-          </span>
-          <Button variant="outline" size="sm" onClick={handleSignOut}>
-            <LogOut className="h-4 w-4 mr-2" />
-            Sign Out
-          </Button>
-        </div>
+    <nav className="flex items-center justify-between px-4 py-2 bg-white/90 dark:bg-gray-900/90 border-b border-gray-200 dark:border-gray-800 shadow-sm">
+      <div className="font-bold text-lg bg-gradient-to-r from-primary to-primary-600 bg-clip-text text-transparent">
+        DentalCare
       </div>
+      <button
+        onClick={toggleTheme}
+        className="rounded-full p-2 bg-gray-100 dark:bg-gray-800 hover:bg-primary/10 dark:hover:bg-primary/20 transition-colors"
+        aria-label="Toggle dark mode"
+      >
+        {theme === 'dark' ? (
+          <Sun className="h-5 w-5 text-yellow-400" />
+        ) : (
+          <Moon className="h-5 w-5 text-gray-700" />
+        )}
+      </button>
     </nav>
   );
 };

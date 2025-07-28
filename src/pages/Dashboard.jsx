@@ -84,7 +84,7 @@ const Dashboard = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{loading ? '...' : value}</div>
+          <div className="text-3xl font-bold text-gray-100 mb-1">{loading ? '...' : value}</div>
           <p className="text-sm text-gray-600">{description}</p>
         </CardContent>
       </Card>
@@ -106,7 +106,7 @@ const Dashboard = () => {
                 <Icon className="h-6 w-6 text-white" />
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">{title}</h3>
+                <h3 className="font-semibold text-gray-100 mb-2 group-hover:text-primary transition-colors duration-200">{title}</h3>
                 <p className="text-sm text-gray-600 mb-3">{description}</p>
                 <div className="flex items-center text-primary text-sm font-medium group-hover:translate-x-1 transition-transform duration-200">
                   <span>Get started</span>

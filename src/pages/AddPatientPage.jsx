@@ -63,7 +63,7 @@ const AddPatientPage = () => {
   return (
     <Layout>
 
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen ">
       <div className="p-6">
         <div className="flex items-center mb-6">
           <Button 

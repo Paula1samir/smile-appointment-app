@@ -192,7 +192,7 @@ const DoctorDashboard = () => {
 
   return (
     <Layout>
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen ">
       <div className="p-6 space-y-8">
         <motion.div 
           className="mb-8"
@@ -201,7 +201,7 @@ const DoctorDashboard = () => {
           transition={{ duration: 0.6 }}
         >
           <motion.h1 
-            className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2"
+            className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text  mb-2"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.6 }}

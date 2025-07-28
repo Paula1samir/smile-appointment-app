@@ -66,7 +66,7 @@ const PatientSearchSelect = ({ selectedPatientId, onPatientSelect, onNewPatient 
 
   return (
     <div className="space-y-3">
-      <Label htmlFor="patient-search" className="text-sm font-semibold text-gray-700">Patient</Label>
+      <Label htmlFor="patient-search" className="text-sm font-semibold text-gray-700" >Patient</Label>
       <div className="relative">
         <div className="flex space-x-3">
           <div className="relative flex-1">
@@ -76,6 +76,7 @@ const PatientSearchSelect = ({ selectedPatientId, onPatientSelect, onNewPatient 
             >
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 z-10" />
               <Input
+              style={{direction:'rtl'}}
                 id="patient-search"
                 placeholder="Search by name or phone..."
                 value={searchTerm}
@@ -112,7 +113,7 @@ const PatientSearchSelect = ({ selectedPatientId, onPatientSelect, onNewPatient 
                               <User className="h-5 w-5 text-primary" />
                             </motion.div>
                             <div>
-                              <p className="font-semibold text-gray-900">{patient.name}</p>
+                              <p className="font-semibold text-gray-100">{patient.name}</p>
                               <p className="text-sm text-gray-600">{patient.telephone}</p>
                             </div>
                           </div>
