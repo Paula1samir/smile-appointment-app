@@ -38,14 +38,14 @@ const AuthPage = () => {
     
     if (error) {
       toast({
-        title: "Error",
+        title: t('messages.error'),
         description: error.message,
         variant: "destructive",
       });
     } else {
       toast({
-        title: "Success",
-        description: "Signed in successfully!",
+        title: t('messages.success'),
+        description: t('auth.signInSuccess'),
       });
     }
     setLoading(false);
@@ -63,37 +63,37 @@ const AuthPage = () => {
     
     if (error) {
       toast({
-        title: "Error", 
+        title: t('messages.error'), 
         description: error.message,
         variant: "destructive",
       });
     } else {
       toast({
-        title: "Success",
-        description: "Account created successfully! Please check your email.",
+        title: t('messages.success'),
+        description: t('auth.accountCreated'),
       });
     }
     setLoading(false);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/20 to-accent/20 p-4">
+    <div className={`min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/20 to-accent/20 p-4 ${isRTL ? 'rtl' : 'ltr'}`}>
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">Dental Clinic System</CardTitle>
-          <CardDescription>Access your clinic management dashboard</CardDescription>
+          <CardTitle className="text-2xl font-bold">{t('auth.dentalClinicSystem')}</CardTitle>
+          <CardDescription>{t('auth.accessDashboard')}</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="signin" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="signin">Sign In</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
+              <TabsTrigger value="signin">{t('auth.signIn')}</TabsTrigger>
+              <TabsTrigger value="signup">{t('auth.signUp')}</TabsTrigger>
             </TabsList>
             
             <TabsContent value="signin" className="space-y-4">
               <form onSubmit={handleSignIn} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">{t('auth.email')}</Label>
                   <Input
                     id="email"
                     type="email"
@@ -103,7 +103,7 @@ const AuthPage = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password">{t('auth.password')}</Label>
                   <Input
                     id="password"
                     type="password"
@@ -113,7 +113,7 @@ const AuthPage = () => {
                   />
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? 'Signing In...' : 'Sign In'}
+                  {loading ? t('auth.signingIn') : t('auth.signIn')}
                 </Button>
               </form>
             </TabsContent>
@@ -121,7 +121,7 @@ const AuthPage = () => {
             <TabsContent value="signup" className="space-y-4">
               <form onSubmit={handleSignUp} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="fullName">Full Name</Label>
+                  <Label htmlFor="fullName">{t('auth.fullName')}</Label>
                   <Input
                     id="fullName"
                     type="text"
@@ -131,19 +131,19 @@ const AuthPage = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="role">Role</Label>
+                  <Label htmlFor="role">{t('auth.role')}</Label>
                   <Select value={role} onValueChange={setRole}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="doctor">Doctor</SelectItem>
-                      <SelectItem value="assistant">Assistant</SelectItem>
+                      <SelectItem value="doctor">{t('forms.doctor')}</SelectItem>
+                      <SelectItem value="assistant">{t('forms.assistant')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="phone">Phone (Optional)</Label>
+                  <Label htmlFor="phone">{t('auth.phoneOptional')}</Label>
                   <Input
                     id="phone"
                     type="tel"
@@ -152,7 +152,7 @@ const AuthPage = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signupEmail">Email</Label>
+                  <Label htmlFor="signupEmail">{t('auth.email')}</Label>
                   <Input
                     id="signupEmail"
                     type="email"
@@ -162,7 +162,7 @@ const AuthPage = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signupPassword">Password</Label>
+                  <Label htmlFor="signupPassword">{t('auth.password')}</Label>
                   <Input
                     id="signupPassword"
                     type="password"
@@ -172,7 +172,7 @@ const AuthPage = () => {
                   />
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? 'Creating Account...' : 'Create Account'}
+                  {loading ? t('auth.creatingAccount') : t('auth.createAccount')}
                 </Button>
               </form>
             </TabsContent>

@@ -29,14 +29,21 @@
     "fullName": "الاسم الكامل",
     "role": "الدور",
     "phoneNumber": "رقم الهاتف",
+    "phoneOptional": "الهاتف (اختياري)",
     "signInToAccount": "تسجيل الدخول إلى حسابك",
     "createNewAccount": "إنشاء حساب جديد",
     "alreadyHaveAccount": "لديك حساب بالفعل؟",
     "dontHaveAccount": "ليس لديك حساب؟",
     "signingIn": "جاري تسجيل الدخول...",
     "signingUp": "جاري إنشاء الحساب...",
+    "creatingAccount": "جاري إنشاء الحساب...",
+    "createAccount": "إنشاء حساب",
     "welcomeBack": "مرحبًا بعودتك إلى دنتل كير",
-    "joinDentalCare": "انضم إلى دنتل كير اليوم"
+    "joinDentalCare": "انضم إلى دنتل كير اليوم",
+    "dentalClinicSystem": "نظام العيادة السنية",
+    "accessDashboard": "الوصول إلى لوحة إدارة العيادة",
+    "signInSuccess": "تم تسجيل الدخول بنجاح!",
+    "accountCreated": "تم إنشاء الحساب بنجاح! يرجى التحقق من بريدك الإلكتروني."
   },
   "dashboard": {
     "welcomeBack": "مرحبًا بعودتك",

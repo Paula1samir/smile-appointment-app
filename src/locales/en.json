@@ -29,14 +29,21 @@
     "fullName": "Full Name",
     "role": "Role",
     "phoneNumber": "Phone Number",
+    "phoneOptional": "Phone (Optional)",
     "signInToAccount": "Sign in to your account",
     "createNewAccount": "Create a new account",
     "alreadyHaveAccount": "Already have an account?",
     "dontHaveAccount": "Don't have an account?",
     "signingIn": "Signing in...",
     "signingUp": "Signing up...",
+    "creatingAccount": "Creating Account...",
+    "createAccount": "Create Account",
     "welcomeBack": "Welcome back to DentalCare",
-    "joinDentalCare": "Join DentalCare today"
+    "joinDentalCare": "Join DentalCare today",
+    "dentalClinicSystem": "Dental Clinic System",
+    "accessDashboard": "Access your clinic management dashboard",
+    "signInSuccess": "Signed in successfully!",
+    "accountCreated": "Account created successfully! Please check your email."
   },
   "dashboard": {
     "welcomeBack": "Welcome back",
