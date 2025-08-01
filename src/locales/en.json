@@ -43,7 +43,8 @@
     "dentalClinicSystem": "Dental Clinic System",
     "accessDashboard": "Access your clinic management dashboard",
     "signInSuccess": "Signed in successfully!",
-    "accountCreated": "Account created successfully! Please check your email."
+    "accountCreated": "Account created successfully! Please check your email.",
+    "forgotPassword": "Forgot your password?"
   },
   "dashboard": {
     "welcomeBack": "Welcome back",

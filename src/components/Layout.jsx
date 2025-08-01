@@ -56,6 +56,7 @@ const Layout = ({ children }) => {
               </span>
             </div>
             <div className="flex items-center gap-2">
+              <LanguageSwitcher />
               <Button
                 variant="ghost"
                 size="icon"

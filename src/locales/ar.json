@@ -43,7 +43,8 @@
     "dentalClinicSystem": "نظام العيادة السنية",
     "accessDashboard": "الوصول إلى لوحة إدارة العيادة",
     "signInSuccess": "تم تسجيل الدخول بنجاح!",
-    "accountCreated": "تم إنشاء الحساب بنجاح! يرجى التحقق من بريدك الإلكتروني."
+    "accountCreated": "تم إنشاء الحساب بنجاح! يرجى التحقق من بريدك الإلكتروني.",
+    "forgotPassword": "نسيت كلمة المرور؟"
   },
   "dashboard": {
     "welcomeBack": "مرحبًا بعودتك",

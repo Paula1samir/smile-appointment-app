@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTranslation } from 'react-i18next';
@@ -115,6 +115,15 @@ const AuthPage = () => {
                 <Button type="submit" className="w-full" disabled={loading}>
                   {loading ? t('auth.signingIn') : t('auth.signIn')}
                 </Button>
+                
+                <div className="text-center">
+                  <Link 
+                    to="/forgot-password" 
+                    className="text-sm text-primary hover:underline"
+                  >
+                    {t('auth.forgotPassword')}
+                  </Link>
+                </div>
               </form>
             </TabsContent>
             

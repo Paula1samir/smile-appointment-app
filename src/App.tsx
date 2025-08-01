@@ -61,6 +61,12 @@ const App = () => (
                 <EditPatientPage />
               </ProtectedRoute>
             } />
+            <Route path="/profile" element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            } />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           </BrowserRouter>
