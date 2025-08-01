@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,6 +13,8 @@ import { ArrowLeft, Save, User } from 'lucide-react';
 import Layout from '@/components/Layout';
 
 const AddPatientPage = () => {
+  const { isRTL } = useLanguage();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: '',
     telephone: '',
@@ -44,14 +48,14 @@ const AddPatientPage = () => {
       if (error) throw error;
 
       toast({
-        title: "Success",
-        description: "Patient added successfully!",
+        title: t('addPatient.success'),
+        description: t('addPatient.patientAddedSuccessfully'),
       });
 
       navigate('/patients');
     } catch (error) {
       toast({
-        title: "Error",
+        title: t('addPatient.error'),
         description: error.message,
         variant: "destructive",
       });
@@ -72,11 +76,11 @@ const AddPatientPage = () => {
             className="mr-4"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Patients
+            {t('addPatient.backToPatients')}
           </Button>
           <div>
-            <h1 className="text-3xl font-bold">Add New Patient</h1>
-            <p className="text-muted-foreground">Register a new patient in the system</p>
+            <h1 className="text-3xl font-bold">{t('addPatient.addNewPatient')}</h1>
+            <p className="text-muted-foreground">{t('addPatient.registerNewPatient')}</p>
           </div>
         </div>
 
@@ -85,43 +89,43 @@ const AddPatientPage = () => {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <User className="h-4 w-4 mr-2" />
-                Patient Information
+                {t('addPatient.patientInformation')}
               </CardTitle>
               <CardDescription>
-                Fill in the patient details below. All fields marked with * are required.
+                {t('addPatient.fillPatientDetails')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="name">Full Name *</Label>
+                    <Label htmlFor="name">{t('addPatient.fullName')}</Label>
                     <Input
                       id="name"
                       name="name"
                       type="text"
                       value={formData.name}
                       onChange={handleChange}
-                      placeholder="Enter patient's full name"
+                      placeholder={t('forms.enterPatientName')}
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="telephone">Telephone *</Label>
+                    <Label htmlFor="telephone">{t('addPatient.telephone')}</Label>
                     <Input
                       id="telephone"
                       name="telephone"
                       type="tel"
                       value={formData.telephone}
                       onChange={handleChange}
-                      placeholder="Enter phone number"
+                      placeholder={t('forms.enterPhoneNumber')}
                       required
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="age">Age *</Label>
+                  <Label htmlFor="age">{t('patients.age')} *</Label>
                   <Input
                     id="age"
                     name="age"
@@ -130,20 +134,20 @@ const AddPatientPage = () => {
                     max="120"
                     value={formData.age}
                     onChange={handleChange}
-                    placeholder="Enter patient's age"
+                    placeholder={t('addPatient.enterPatientsAge')}
                     required
                     className="max-w-xs"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="health_condition">Health Condition</Label>
+                  <Label htmlFor="health_condition">{t('addPatient.healthConditionOptional')}</Label>
                   <Textarea
                     id="health_condition"
                     name="health_condition"
                     value={formData.health_condition}
                     onChange={handleChange}
-                    placeholder="Enter any health conditions, allergies, medications, or medical history (optional)"
+                    placeholder={t('addPatient.healthConditionPlaceholder')}
                     rows={4}
                   />
                 </div>
@@ -154,15 +158,15 @@ const AddPatientPage = () => {
                     variant="outline" 
                     onClick={() => navigate('/patients')}
                   >
-                    Cancel
+                    {t('common.cancel')}
                   </Button>
                   <Button type="submit" disabled={loading}>
                     {loading ? (
-                      'Saving...'
+                      t('addPatient.saving')
                     ) : (
                       <>
                         <Save className="h-4 w-4 mr-2" />
-                        Add Patient
+                        {t('patients.addPatient')}
                       </>
                     )}
                   </Button>

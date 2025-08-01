@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -15,6 +17,8 @@ import Layout from '@/components/Layout';
 
 
 const SchedulerPage = () => {
+  const { isRTL } = useLanguage();
+  const { t } = useTranslation();
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [appointments, setAppointments] = useState([]);
   const [patients, setPatients] = useState([]);
@@ -99,8 +103,8 @@ const SchedulerPage = () => {
       if (error) throw error;
 
       toast({
-        title: "Success",
-        description: "Appointment scheduled successfully!",
+        title: t('messages.success'),
+        description: t('messages.appointmentScheduled'),
       });
 
       setIsDialogOpen(false);
@@ -116,7 +120,7 @@ const SchedulerPage = () => {
       fetchAppointments();
     } catch (error) {
       toast({
-        title: "Error",
+        title: t('messages.error'),
         description: error.message,
         variant: "destructive",
       });
@@ -133,14 +137,14 @@ const SchedulerPage = () => {
       if (error) throw error;
 
       toast({
-        title: "Success",
+        title: t('messages.success'),
         description: `Appointment marked as ${status}`,
       });
 
       fetchAppointments();
     } catch (error) {
       toast({
-        title: "Error",
+        title: t('messages.error'),
         description: error.message,
         variant: "destructive",
       });
@@ -170,21 +174,21 @@ const SchedulerPage = () => {
       <div className="p-6 ">
         <div className="flex items-center justify-between mb-6 animate-fade-in-up SchedulerFirstComponent">
           <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text">Scheduler</h1>
-            <p className="text-muted-foreground">Manage daily appointments</p>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text">{t('scheduler.scheduler')}</h1>
+            <p className="text-muted-foreground">{t('scheduler.manageDailyAppointments')}</p>
           </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <Button className="animate-fade-in-right">
                 <Plus className="h-4 w-4 mr-2" />
-                Schedule Appointment
+                {t('scheduler.scheduleAppointment')}
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px] animate-zoom-in">
               <DialogHeader>
-                <DialogTitle>Schedule New Appointment</DialogTitle>
+                <DialogTitle>{t('scheduler.scheduleNewAppointment')}</DialogTitle>
                 <DialogDescription>
-                  Fill in the details to schedule a new appointment.
+                  {t('scheduler.fillDetailsToSchedule')}
                 </DialogDescription>
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -193,10 +197,10 @@ const SchedulerPage = () => {
                   onPatientSelect={(patientId) => setFormData({...formData, patient_id: patientId})}
                 />
                 <div className="space-y-2">
-                  <Label htmlFor="doctor">Doctor</Label>
+                  <Label htmlFor="doctor">{t('appointments.selectDoctor')}</Label>
                   <Select value={formData.doctor_id} onValueChange={(value) => setFormData({...formData, doctor_id: value})}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select doctor" />
+                      <SelectValue placeholder={t('scheduler.selectDoctor')} />
                     </SelectTrigger>
                     <SelectContent>
                       {doctors.map((doctor) => (
@@ -208,10 +212,10 @@ const SchedulerPage = () => {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="time">Time</Label>
+                  <Label htmlFor="time">{t('appointments.appointmentTime')}</Label>
                   <Select value={formData.appointment_time} onValueChange={(value) => setFormData({...formData, appointment_time: value})}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select time" />
+                      <SelectValue placeholder={t('scheduler.selectTime')} />
                     </SelectTrigger>
                     <SelectContent>
                       {timeSlots.map((time) => (
@@ -220,14 +224,14 @@ const SchedulerPage = () => {
                           value={time}
                           disabled={isTimeSlotBooked(time)}
                         >
-                          {time} {isTimeSlotBooked(time) ? '(Booked)' : ''}
+                          {time} {isTimeSlotBooked(time) ? t('scheduler.booked') : ''}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
                  <div className="space-y-2">
-                   <Label htmlFor="appointment_date">Appointment Date</Label>
+                   <Label htmlFor="appointment_date">{t('scheduler.appointmentDate')}</Label>
                    <Input
                      id="appointment_date"
                      type="date"
@@ -237,10 +241,10 @@ const SchedulerPage = () => {
                    />
                  </div>
                  <div className="space-y-2">
-                   <Label htmlFor="treatment">Treatment</Label>
+                   <Label htmlFor="treatment">{t('appointments.treatment')}</Label>
                    <Select value={formData.treatment} onValueChange={(value) => setFormData({...formData, treatment: value})}>
                      <SelectTrigger>
-                       <SelectValue placeholder="Select treatment" />
+                       <SelectValue placeholder={t('scheduler.selectTreatment')} />
                      </SelectTrigger>
                      <SelectContent>
                        <SelectItem value="Scaling & polishing">Scaling & polishing</SelectItem>
@@ -274,25 +278,25 @@ const SchedulerPage = () => {
                    </Select>
                  </div>
                 <div className="space-y-2">
-                  <Label htmlFor="tooth">Tooth (Optional)</Label>
+                  <Label htmlFor="tooth">{t('scheduler.toothOptional')}</Label>
                   <Input
                     id="tooth"
                     value={formData.tooth}
                     onChange={(e) => setFormData({...formData, tooth: e.target.value})}
-                    placeholder="e.g., Upper left molar"
+                    placeholder={t('scheduler.toothPlaceholder')}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="notes">Notes (Optional)</Label>
+                  <Label htmlFor="notes">{t('scheduler.notesOptional')}</Label>
                   <Input
                     id="notes"
                     value={formData.notes}
                     onChange={(e) => setFormData({...formData, notes: e.target.value})}
-                    placeholder="Additional notes"
+                    placeholder={t('scheduler.additionalNotes')}
                   />
                 </div>
                 <Button type="submit" className="w-full animate-fade-in-up" >
-                  Schedule Appointment
+                  {t('scheduler.scheduleAppointment')}
                 </Button>
               </form>
             </DialogContent>
@@ -304,7 +308,7 @@ const SchedulerPage = () => {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Calendar className="h-4 w-4 mr-2 text-primary" />
-                Select Date
+                {t('scheduler.selectDate')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -321,16 +325,16 @@ const SchedulerPage = () => {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Clock className="h-4 w-4 mr-2 text-primary" />
-                Appointments for {selectedDate}
+                {t('scheduler.appointmentsFor')} {selectedDate}
               </CardTitle>
               <CardDescription>
-                {appointments.length} appointment(s) scheduled
+                {appointments.length} {t('scheduler.appointmentsScheduled')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               {appointments.length === 0 ? (
                 <p className="text-muted-foreground text-center py-8 animate-fade-in">
-                  No appointments scheduled for this date.
+                  {t('scheduler.noAppointmentsScheduled')}
                 </p>
               ) : (
                 <div className="space-y-4">

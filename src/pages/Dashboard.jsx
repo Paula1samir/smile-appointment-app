@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,6 +12,8 @@ import { Link } from 'react-router-dom';
 import  "./Dashboard.css"
 const Dashboard = () => {
   const { profile } = useAuth();
+  const { isRTL } = useLanguage();
+  const { t } = useTranslation();
   const [stats, setStats] = useState({
     todayAppointments: 0,
     totalPatients: 0,
@@ -109,7 +113,7 @@ const Dashboard = () => {
                 <h3 className="font-semibold text-gray-100 mb-2 group-hover:text-primary transition-colors duration-200">{title}</h3>
                 <p className="text-sm text-gray-600 mb-3">{description}</p>
                 <div className="flex items-center text-primary text-sm font-medium group-hover:translate-x-1 transition-transform duration-200">
-                  <span>Get started</span>
+                  <span>{t('dashboard.getStarted')}</span>
                   <ArrowRight className="h-4 w-4 ml-1" />
                 </div>
               </div>
@@ -133,13 +137,13 @@ const Dashboard = () => {
           <div className="page-header">
             <div>
               <h1 className="page-title">
-                Welcome back, DR. 
+                {t('dashboard.welcomeBackDr')} 
                 <span style={{fontWeight:'bolder'}}>{profile?.full_name}</span>
               </h1>
               <p className="page-subtitle">
-                {profile?.role === 'doctor' ? 'Doctor Dashboard' : 'Assistant Dashboard'} 
+                {profile?.role === 'doctor' ? t('dashboard.doctorDashboard') : t('dashboard.assistantDashboard')} 
               </p>
-                {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                {new Date().toLocaleDateString(isRTL ? 'ar-SA' : 'en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
             </div>
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
@@ -153,9 +157,9 @@ const Dashboard = () => {
         {/* Stats Grid */}
         <div className='StatCard'>
           <StatCard
-            title="Today's Appointments"
+            title={t('dashboard.todaysAppointments')}
             value={stats.todayAppointments}
-            description="Scheduled for today"
+            description={t('dashboard.scheduledForToday')}
             icon={Calendar}
             color="bg-primary"
             delay={0.1}
@@ -163,25 +167,25 @@ const Dashboard = () => {
             
           />
           <StatCard
-            title="Total Patients"
+            title={t('dashboard.totalPatients')}
             value={stats.totalPatients}
-            description="In the system"
+            description={t('dashboard.inTheSystem')}
             icon={Users}
             color="bg-accent"
             delay={0.2}
           />
           <StatCard
-            title="Upcoming"
+            title={t('dashboard.upcomingAppointments')}
             value={stats.upcomingAppointments}
-            description="Next 7 days"
+            description={t('dashboard.next7Days')}
             icon={Clock}
             color="bg-primary"
             delay={0.3}
           />
           <StatCard
-            title="Completed Today"
+            title={t('dashboard.completedToday')}
             value={stats.completedToday}
-            description="Appointments finished"
+            description={t('dashboard.appointmentsFinished')}
             icon={TrendingUp}
             color="bg-green-500"
             delay={0.4}
@@ -200,10 +204,10 @@ const Dashboard = () => {
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <Activity className="h-5 w-5 mr-2 text-primary" />
-                  Quick Actions
+                  {t('dashboard.quickActions')}
                 </CardTitle>
                 <CardDescription>
-                  Common tasks for {profile?.role}s
+                  {t('dashboard.commonTasksFor')} {profile?.role}s
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -211,16 +215,16 @@ const Dashboard = () => {
                   {profile?.role === 'doctor' ? (
                     <>
                       <QuickActionCard
-                        title="Treatment Management"
-                        description="Access patient charts and add treatment logs"
+                        title={t('dashboard.treatmentManagement')}
+                        description={t('dashboard.accessPatientCharts')}
                         icon={Stethoscope}
                         to="/doctor-dashboard"
                         color="bg-primary"
                         delay={0.6}
                       />
                       <QuickActionCard
-                        title="Today's Schedule"
-                        description="Review appointments and patient notes"
+                        title={t('dashboard.todaysSchedule')}
+                        description={t('dashboard.reviewAppointments')}
                         icon={Calendar}
                         to="/scheduler"
                         color="bg-accent"
@@ -230,16 +234,16 @@ const Dashboard = () => {
                   ) : (
                     <>
                       <QuickActionCard
-                        title="Schedule Appointments"
-                        description="Book new patient appointments"
+                        title={t('dashboard.scheduleAppointments')}
+                        description={t('dashboard.bookNewAppointments')}
                         icon={Calendar}
                         to="/scheduler"
                         color="bg-primary"
                         delay={0.6}
                       />
                       <QuickActionCard
-                        title="Manage Patients"
-                        description="View and edit patient records"
+                        title={t('dashboard.managePatients')}
+                        description={t('dashboard.viewEditRecords')}
                         icon={Users}
                         to="/patients"
                         color="bg-accent"
@@ -263,31 +267,31 @@ const Dashboard = () => {
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <Activity className="h-5 w-5 mr-2 text-accent" />
-                  System Status
+                  {t('dashboard.systemStatus')}
                 </CardTitle>
                 <CardDescription>
-                  Current system information
+                  {t('dashboard.currentSystemInfo')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-gray-600">System Status</span>
+                  <span className="text-sm font-medium text-gray-600">{t('dashboard.systemStatus')}</span>
                   <div className="flex items-center">
                     <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse-soft" />
-                    <span className="text-sm text-green-600 font-medium">Online</span>
+                    <span className="text-sm text-green-600 font-medium">{t('dashboard.systemStatusOnline')}</span>
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-gray-600">Last Backup</span>
-                  <span className="text-sm text-gray-500">Today, 3:00 AM</span>
+                  <span className="text-sm font-medium text-gray-600">{t('dashboard.lastBackup')}</span>
+                  <span className="text-sm text-gray-500">{t('dashboard.todayBackup')}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-gray-600">Active Users</span>
-                  <span className="text-sm text-gray-500">1 online</span>
+                  <span className="text-sm font-medium text-gray-600">{t('dashboard.activeUsers')}</span>
+                  <span className="text-sm text-gray-500">{t('dashboard.oneOnline')}</span>
                 </div>
                 <div className="pt-4 border-t border-gray-100">
                   <div className="text-xs text-gray-500 text-center">
-                    All systems operational
+                    {t('dashboard.allSystemsOperational')}
                   </div>
                 </div>
               </CardContent>
