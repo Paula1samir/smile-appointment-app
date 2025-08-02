@@ -138,7 +138,7 @@ const SchedulerPage = () => {
 
       toast({
         title: t('messages.success'),
-        description: `Appointment marked as ${status}`,
+        description: `${t('schedulerActions.appointmentMarkedAs')} ${t(`appointmentStatus.${status}`)}`,
       });
 
       fetchAppointments();
@@ -360,7 +360,7 @@ const SchedulerPage = () => {
                                 onClick={() => updateAppointmentStatus(appointment.id, 'completed')}
                                 className="hover-lift"
                               >
-                                Complete
+                                {t('schedulerActions.complete')}
                               </Button>
                               <Button
                                 size="sm"
@@ -368,7 +368,7 @@ const SchedulerPage = () => {
                                 onClick={() => updateAppointmentStatus(appointment.id, 'cancelled')}
                                 className="hover-lift"
                               >
-                                Cancel
+                                {t('schedulerActions.cancel')}
                               </Button>
                             </>
                           )}
@@ -377,25 +377,25 @@ const SchedulerPage = () => {
                             appointment.status === 'cancelled' ? 'bg-red-100 text-red-800' :
                             'bg-primary-100 text-primary-800'
                           }`}>
-                            {appointment.status}
-                          </span>
+                             {t(`appointmentStatus.${appointment.status}`)}
+                           </span>
                         </div>
                       </div>
                          <div className="mt-2 text-sm text-muted-foreground">
-                         <p><strong>Doctor:</strong> Dr. {appointment.profiles?.full_name}</p>
-                         <p><strong>Treatment:</strong> {appointment.treatment}</p>
-                         {appointment.tooth && <p><strong>Tooth:</strong> {appointment.tooth}</p>}
-                         {appointment.notes && <p><strong>Notes:</strong> {appointment.notes}</p>}
-                         <p><strong>Phone:</strong> {appointment.patients?.telephone}</p>
+                         <p><strong>{t('schedulerActions.doctor')}:</strong> Dr. {appointment.profiles?.full_name}</p>
+                         <p><strong>{t('schedulerActions.treatment')}:</strong> {appointment.treatment}</p>
+                         {appointment.tooth && <p><strong>{t('schedulerActions.tooth')}:</strong> {appointment.tooth}</p>}
+                         {appointment.notes && <p><strong>{t('schedulerActions.notes')}:</strong> {appointment.notes}</p>}
+                         <p><strong>{t('schedulerActions.phone')}:</strong> {appointment.patients?.telephone}</p>
                        </div>
                        <div className="mt-3">
                          <TreatmentHistoryChart
                            patient={appointment.patients}
                            triggerButton={
-                             <Button size="sm" variant="outline" className="hover-lift">
-                               <FileText className="h-4 w-4 mr-2" />
-                               Treatment History
-                             </Button>
+                              <Button size="sm" variant="outline" className="hover-lift">
+                                <FileText className="h-4 w-4 mr-2" />
+                                {t('schedulerActions.treatmentHistory')}
+                              </Button>
                            }
                          />
                        </div>

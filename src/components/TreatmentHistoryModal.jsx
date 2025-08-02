@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useTranslation } from 'react-i18next';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -7,6 +8,7 @@ import { Calendar, FileText } from 'lucide-react';
 import VisualToothHistory from './VisualToothHistory';
 
 const TreatmentHistoryModal = ({ isOpen, onClose, patient }) => {
+  const { t } = useTranslation();
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -45,7 +47,7 @@ const TreatmentHistoryModal = ({ isOpen, onClose, patient }) => {
         <DialogHeader>
           <DialogTitle className="flex items-center">
             <FileText className="h-5 w-5 mr-2" />
-            Treatment History - {patient.name}
+            {t('treatmentHistoryModal.treatmentHistoryFor')} {patient.name}
           </DialogTitle>
         </DialogHeader>
         
@@ -55,16 +57,16 @@ const TreatmentHistoryModal = ({ isOpen, onClose, patient }) => {
             <CardContent className="pt-6">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                 <div>
-                  <p className="font-medium">Age</p>
-                  <p className="text-muted-foreground">{patient.age} years</p>
+                  <p className="font-medium">{t('patients.age')}</p>
+                  <p className="text-muted-foreground">{patient.age} {t('patients.years')}</p>
                 </div>
                 <div>
-                  <p className="font-medium">Phone</p>
+                  <p className="font-medium">{t('schedulerActions.phone')}</p>
                   <p className="text-muted-foreground">{patient.telephone}</p>
                 </div>
                 {patient.health_condition && (
                   <div className="col-span-2">
-                    <p className="font-medium">Health Condition</p>
+                    <p className="font-medium">{t('treatmentHistoryModal.healthCondition')}</p>
                     <p className="text-muted-foreground">{patient.health_condition}</p>
                   </div>
                 )}
@@ -81,14 +83,14 @@ const TreatmentHistoryModal = ({ isOpen, onClose, patient }) => {
           {/* Treatment History List */}
           <Card>
             <CardHeader>
-              <CardTitle>Previous Treatments</CardTitle>
+              <CardTitle>{t('treatmentHistoryModal.previousTreatments')}</CardTitle>
             </CardHeader>
             <CardContent>
               {loading ? (
-                <div className="text-center py-4">Loading treatment history...</div>
+                <div className="text-center py-4">{t('common.loading')}</div>
               ) : history.length === 0 ? (
                 <div className="text-center py-4 text-muted-foreground">
-                  No previous treatments recorded
+                  {t('treatmentHistoryModal.noTreatmentHistory')}
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -102,21 +104,21 @@ const TreatmentHistoryModal = ({ isOpen, onClose, patient }) => {
                           </span>
                         </div>
                         <Badge variant="outline">
-                          Tooth {treatment.tooth_number}
+                          {t('schedulerActions.tooth')} {treatment.tooth_number}
                         </Badge>
                       </div>
                       <div className="space-y-2">
                         <p>
-                          <strong>Treatment:</strong> {treatment.treatment_performed}
+                          <strong>{t('schedulerActions.treatment')}:</strong> {treatment.treatment_performed}
                         </p>
                         {treatment.profiles?.full_name && (
                           <p>
-                            <strong>Doctor:</strong> Dr. {treatment.profiles.full_name}
+                            <strong>{t('schedulerActions.doctor')}:</strong> Dr. {treatment.profiles.full_name}
                           </p>
                         )}
                         {treatment.notes && (
                           <p>
-                            <strong>Notes:</strong> {treatment.notes}
+                            <strong>{t('schedulerActions.notes')}:</strong> {treatment.notes}
                           </p>
                         )}
                       </div>

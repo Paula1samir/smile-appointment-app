@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import adultTeethImage from '@/assets/adult-teeth-diagram.png';
 import childTeethImage from '@/assets/child-teeth-diagram.png';
 
 const VisualToothHistory = ({ patientAge, surgeryLogs }) => {
+  const { t } = useTranslation();
   const [selectedTooth, setSelectedTooth] = useState(null);
   const isChild = patientAge < 12;
 
@@ -77,7 +79,7 @@ const VisualToothHistory = ({ patientAge, surgeryLogs }) => {
           </TooltipTrigger>
           <TooltipContent>
             <div className="p-2">
-              <p className="font-medium">Tooth {toothNumber}</p>
+              <p className="font-medium">{t('schedulerActions.tooth')} {toothNumber}</p>
               {treatments.length > 0 ? (
                 <div className="mt-2 space-y-1">
                   {treatments.map((treatment, index) => (
@@ -88,7 +90,7 @@ const VisualToothHistory = ({ patientAge, surgeryLogs }) => {
                   ))}
                 </div>
               ) : (
-                <p className="text-xs text-muted-foreground">No treatments</p>
+                <p className="text-xs text-muted-foreground">{t('visualToothHistory.noTreatmentsRecorded')}</p>
               )}
             </div>
           </TooltipContent>
@@ -114,9 +116,9 @@ const VisualToothHistory = ({ patientAge, surgeryLogs }) => {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
-          <span>Visual Treatment History</span>
+          <span>{t('visualToothHistory.toothHistory')}</span>
           <Badge variant="outline">
-            {isChild ? 'Child Chart' : 'Adult Chart'}
+            {isChild ? t('doctorDashboard.childChart') : t('doctorDashboard.adultChart')}
           </Badge>
         </CardTitle>
       </CardHeader>
@@ -164,7 +166,7 @@ const VisualToothHistory = ({ patientAge, surgeryLogs }) => {
           {selectedTooth && (
             <Card>
               <CardHeader>
-                <CardTitle>Tooth {selectedTooth} - Treatment Details</CardTitle>
+                <CardTitle>{t('schedulerActions.tooth')} {selectedTooth} - {t('visualToothHistory.treatmentHistory')}</CardTitle>
               </CardHeader>
               <CardContent>
                 {getToothTreatments(selectedTooth).length > 0 ? (
@@ -182,7 +184,7 @@ const VisualToothHistory = ({ patientAge, surgeryLogs }) => {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-muted-foreground">No treatments recorded for this tooth</p>
+                  <p className="text-muted-foreground">{t('visualToothHistory.noTreatmentsRecorded')}</p>
                 )}
               </CardContent>
             </Card>
@@ -192,15 +194,15 @@ const VisualToothHistory = ({ patientAge, surgeryLogs }) => {
           <div className="flex justify-center space-x-6 text-sm">
             <div className="flex items-center space-x-2">
               <div className="w-4 h-4 bg-white border-2 border-gray-300 rounded"></div>
-              <span>No Treatment</span>
+              <span>{t('visualToothHistory.noTreatmentsRecorded')}</span>
             </div>
             <div className="flex items-center space-x-2">
               <div className="w-4 h-4 bg-red-200 border-2 border-gray-300 rounded"></div>
-              <span>Has Treatment History</span>
+              <span>{t('visualToothHistory.treated')}</span>
             </div>
             <div className="flex items-center space-x-2">
               <div className="w-4 h-4 bg-primary-200 border-2 border-gray-300 rounded"></div>
-              <span>Selected</span>
+              <span>{t('visualToothHistory.selected')}</span>
             </div>
           </div>
         </div>
