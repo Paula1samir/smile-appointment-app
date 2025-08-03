@@ -236,6 +236,7 @@
     "upcoming": "القادمة",
     "edit": "تعديل",
     "book": "حجز",
+    "viewProfile": "عرض الملف الشخصي",
     "loadingPatients": "تحميل المرضى..."
   },
   "addPatient": {
@@ -376,5 +377,31 @@
     "healthCondition": "الحالة الصحية",
     "previousTreatments": "العلاجات السابقة",
     "noTreatmentHistory": "لا يوجد تاريخ علاج متاح لهذا المريض"
+  },
+  "patientProfile": {
+    "patientProfile": "الملف الشخصي للمريض",
+    "patientInformation": "معلومات المريض",
+    "treatmentHistory": "تاريخ العلاج",
+    "appointments": "المواعيد",
+    "appointmentHistory": "تاريخ المواعيد",
+    "medicalNotes": "الملاحظات الطبية",
+    "medicalNotesAndConditions": "الملاحظات الطبية والحالات",
+    "files": "الملفات",
+    "filesAndDocuments": "الملفات والوثائق",
+    "print": "طباعة",
+    "download": "تحميل",
+    "registeredDate": "تاريخ التسجيل",
+    "noAppointments": "لا توجد مواعيد",
+    "notes": "الملاحظات",
+    "enterMedicalNotes": "أدخل الملاحظات الطبية والحالات الصحية...",
+    "uploadFile": "رفع ملف",
+    "uploading": "جاري الرفع...",
+    "noFilesUploaded": "لم يتم رفع أي ملفات بعد",
+    "patientNotFound": "المريض غير موجود",
+    "errorFetchingData": "خطأ في جلب بيانات المريض",
+    "notesSaved": "تم حفظ الملاحظات الطبية بنجاح",
+    "errorSavingNotes": "خطأ في حفظ الملاحظات الطبية",
+    "fileUploaded": "تم رفع الملف بنجاح",
+    "errorUploadingFile": "خطأ في رفع الملف"
   }
 }

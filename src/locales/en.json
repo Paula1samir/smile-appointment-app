@@ -236,6 +236,7 @@
     "upcoming": "upcoming",
     "edit": "Edit",
     "book": "Book",
+    "viewProfile": "View Profile",
     "loadingPatients": "Loading patients..."
   },
   "addPatient": {
@@ -376,5 +377,31 @@
     "healthCondition": "Health Condition",
     "previousTreatments": "Previous Treatments",
     "noTreatmentHistory": "No treatment history available for this patient"
+  },
+  "patientProfile": {
+    "patientProfile": "Patient Profile",
+    "patientInformation": "Patient Information",
+    "treatmentHistory": "Treatment History",
+    "appointments": "Appointments",
+    "appointmentHistory": "Appointment History",
+    "medicalNotes": "Medical Notes",
+    "medicalNotesAndConditions": "Medical Notes & Conditions",
+    "files": "Files",
+    "filesAndDocuments": "Files & Documents",
+    "print": "Print",
+    "download": "Download",
+    "registeredDate": "Registered Date",
+    "noAppointments": "No appointments found",
+    "notes": "Notes",
+    "enterMedicalNotes": "Enter medical notes and health conditions...",
+    "uploadFile": "Upload File",
+    "uploading": "Uploading...",
+    "noFilesUploaded": "No files uploaded yet",
+    "patientNotFound": "Patient not found",
+    "errorFetchingData": "Error fetching patient data",
+    "notesSaved": "Medical notes saved successfully",
+    "errorSavingNotes": "Error saving medical notes",
+    "fileUploaded": "File uploaded successfully",
+    "errorUploadingFile": "Error uploading file"
   }
 }

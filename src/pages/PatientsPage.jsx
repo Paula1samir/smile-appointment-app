@@ -181,6 +181,12 @@ const PatientsPage = () => {
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center space-x-2">
+                            <Link to={`/patient-profile/${patient.id}`}>
+                              <Button variant="outline" size="sm">
+                                <User className="h-4 w-4 mr-1" />
+                                {t('patients.viewProfile')}
+                              </Button>
+                            </Link>
                             <Link to={`/edit-patient/${patient.id}`}>
                               <Button variant="outline" size="sm">
                                 {t('patients.edit')}
