@@ -14,6 +14,7 @@ import SchedulerPage from "./pages/SchedulerPage";
 import PatientsPage from "./pages/PatientsPage";
 import AddPatientPage from "./pages/AddPatientPage";
 import EditPatientPage from "./pages/EditPatientPage";
+import PatientProfilePage from "./pages/PatientProfilePage";
 import ProfilePage from "./pages/ProfilePage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import NotFound from "./pages/NotFound";
@@ -61,6 +62,17 @@ const App = () => (
                 <EditPatientPage />
               </ProtectedRoute>
             } />
+            <Route path="/patient-profile/:id" element={
+              <ProtectedRoute>
+                <PatientProfilePage />
+              </ProtectedRoute>
+            } />
+            <Route path="/profile" element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            } />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           </BrowserRouter>

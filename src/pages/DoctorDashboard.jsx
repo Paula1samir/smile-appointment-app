@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,6 +19,7 @@ import Layout from '@/components/Layout';
 
 const DoctorDashboard = () => {
   const { profile } = useAuth();
+  const { t } = useTranslation();
   const [stats, setStats] = useState({
     todayAppointments: 0,
     totalPatients: 0,
@@ -206,7 +208,7 @@ const DoctorDashboard = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.6 }}
           >
-            Welcome back, Dr. {profile?.full_name}
+            {t('doctorDashboard.welcomeBackDr')} {profile?.full_name}
           </motion.h1>
           <motion.p 
             className="text-lg text-gray-600 font-medium"
@@ -214,7 +216,7 @@ const DoctorDashboard = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
           >
-            Treatment Management Dashboard
+            {t('doctorDashboard.treatmentManagementDashboard')}
           </motion.p>
           <motion.div 
             className="w-20 h-1 bg-gradient-to-r from-primary to-accent rounded-full mt-3"
@@ -227,7 +229,7 @@ const DoctorDashboard = () => {
 
         <Tabs defaultValue="treatment" className="space-y-6">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="treatment">Treatment Management</TabsTrigger>
+            <TabsTrigger value="treatment">{t('doctorDashboard.treatmentManagement')}</TabsTrigger>
           </TabsList>
 
             <TabsContent value="treatment" className="space-y-6">
@@ -244,10 +246,10 @@ const DoctorDashboard = () => {
                     <CardHeader>
                       <CardTitle className="flex items-center">
                         <User className="h-5 w-5 mr-2 text-primary" />
-                        Patient Selection
+                        {t('doctorDashboard.patientSelection')}
                       </CardTitle>
                       <CardDescription>
-                        Select a patient to view their dental chart and add treatment logs
+                        {t('doctorDashboard.selectPatientToView')}
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
@@ -259,7 +261,7 @@ const DoctorDashboard = () => {
                           />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-sm font-semibold text-gray-700">Chart Type</label>
+                          <label className="text-sm font-semibold text-gray-700">{t('doctorDashboard.chartType')}</label>
                           <div className="flex space-x-2">
                             <Button
                               variant={!isChild ? "default" : "outline"}
@@ -267,7 +269,7 @@ const DoctorDashboard = () => {
                               size="sm"
                               className="flex-1"
                             >
-                              Adult
+                              {t('doctorDashboard.adult')}
                             </Button>
                             <Button
                               variant={isChild ? "default" : "outline"}
@@ -275,7 +277,7 @@ const DoctorDashboard = () => {
                               size="sm"
                               className="flex-1"
                             >
-                              Child
+                              {t('doctorDashboard.child')}
                             </Button>
                           </div>
                         </div>
@@ -294,11 +296,11 @@ const DoctorDashboard = () => {
                               <div>
                                 <h3 className="font-bold text-lg text-gray-900">{selectedPatientData.name}</h3>
                                 <p className="text-sm text-gray-600">
-                                  Age: {selectedPatientData.age} | Phone: {selectedPatientData.telephone}
+                                  {t('doctorDashboard.age')}: {selectedPatientData.age} | {t('doctorDashboard.phone')}: {selectedPatientData.telephone}
                                 </p>
                               </div>
                               <Badge variant="outline" className="bg-white">
-                                {isChild ? 'Child Chart' : 'Adult Chart'}
+                                {isChild ? t('doctorDashboard.childChart') : t('doctorDashboard.adultChart')}
                               </Badge>
                             </div>
                           </motion.div>

@@ -71,6 +71,81 @@ export type Database = {
           },
         ]
       }
+      internal_messages: {
+        Row: {
+          appointment_id: string | null
+          content: string
+          created_at: string
+          from_user_id: string
+          id: string
+          is_read: boolean
+          patient_id: string | null
+          subject: string
+          to_user_id: string
+          updated_at: string
+        }
+        Insert: {
+          appointment_id?: string | null
+          content: string
+          created_at?: string
+          from_user_id: string
+          id?: string
+          is_read?: boolean
+          patient_id?: string | null
+          subject: string
+          to_user_id: string
+          updated_at?: string
+        }
+        Update: {
+          appointment_id?: string | null
+          content?: string
+          created_at?: string
+          from_user_id?: string
+          id?: string
+          is_read?: boolean
+          patient_id?: string | null
+          subject?: string
+          to_user_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          data: Json | null
+          id: string
+          is_read: boolean
+          message: string
+          title: string
+          type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json | null
+          id?: string
+          is_read?: boolean
+          message: string
+          title: string
+          type?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json | null
+          id?: string
+          is_read?: boolean
+          message?: string
+          title?: string
+          type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       password_reset_otps: {
         Row: {
           created_at: string | null
@@ -223,6 +298,26 @@ export type Database = {
       cleanup_expired_otps: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      create_appointment_reminder: {
+        Args: {
+          appointment_id: string
+          user_id: string
+          patient_name: string
+          appointment_date: string
+          appointment_time: string
+        }
+        Returns: string
+      }
+      create_followup_reminder: {
+        Args: {
+          user_id: string
+          patient_id: string
+          patient_name: string
+          last_treatment_date: string
+          days_since_treatment: number
+        }
+        Returns: string
       }
       get_current_user_role: {
         Args: Record<PropertyKey, never>

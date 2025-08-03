@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,6 +12,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Save } from 'lucide-react';
 
 const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     date: new Date().toISOString().split('T')[0],
     tooth_number: selectedTooth || '',
@@ -104,8 +106,8 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
       if (error) throw error;
 
       toast({
-        title: "Success",
-        description: "Surgery log added successfully!",
+        title: t('messages.success'),
+        description: t('surgeryLog.treatmentAdded'),
       });
 
       setFormData({
@@ -118,7 +120,7 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
       if (onSuccess) onSuccess();
     } catch (error) {
       toast({
-        title: "Error",
+        title: t('messages.error'),
         description: error.message,
         variant: "destructive",
       });
@@ -130,11 +132,11 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Add Surgery/Treatment Log</CardTitle>
+        <CardTitle>{t('surgeryLog.addTreatment')}</CardTitle>
         {patientInfo && (
           <div className="text-sm text-muted-foreground">
-            Patient: <span className="font-medium">{patientInfo.name}</span> | 
-            Age: <span className="font-medium">{patientInfo.age} years</span>
+            {t('patients.patient')}: <span className="font-medium">{patientInfo.name}</span> | 
+            {t('patients.age')}: <span className="font-medium">{patientInfo.age} {t('patients.years')}</span>
           </div>
         )}
       </CardHeader>
@@ -142,7 +144,7 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="date">Date</Label>
+              <Label htmlFor="date">{t('surgeryLog.date')}</Label>
               <Input
                 id="date"
                 type="date"
@@ -152,7 +154,7 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="tooth_number">Tooth Number</Label>
+              <Label htmlFor="tooth_number">{t('surgeryLog.toothNumber')}</Label>
               <Input
                 id="tooth_number"
                 value={formData.tooth_number}
@@ -164,13 +166,13 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="treatment">Treatment Performed</Label>
+            <Label htmlFor="treatment">{t('surgeryLog.treatmentPerformed')}</Label>
             <Select 
               value={formData.treatment_performed} 
               onValueChange={(value) => setFormData({...formData, treatment_performed: value})}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select treatment" />
+                <SelectValue placeholder={t('surgeryLog.selectTreatment')} />
               </SelectTrigger>
               <SelectContent>
                 {treatments.map((treatment) => (
@@ -183,23 +185,23 @@ const SurgeryLogForm = ({ patientId, selectedTooth, onSuccess }) => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="notes">Notes (Optional)</Label>
+            <Label htmlFor="notes">{t('surgeryLog.notes')}</Label>
             <Textarea
               id="notes"
               value={formData.notes}
               onChange={(e) => setFormData({...formData, notes: e.target.value})}
-              placeholder="Additional notes about the procedure"
+              placeholder={t('surgeryLog.additionalNotes')}
               rows={3}
             />
           </div>
 
           <Button type="submit" disabled={loading} className="w-full">
             {loading ? (
-              'Saving...'
+              t('common.loading')
             ) : (
               <>
                 <Save className="h-4 w-4 mr-2" />
-                Add Surgery Log
+                {t('surgeryLog.addLog')}
               </>
             )}
           </Button>

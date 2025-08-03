@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -12,6 +13,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import Layout from '@/components/Layout';
 
 const EditPatientPage = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [formData, setFormData] = useState({
     name: '',
@@ -48,8 +50,8 @@ const EditPatientPage = () => {
       }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Patient not found",
+        title: t('messages.error'),
+        description: t('editPatient.patientNotFound'),
         variant: "destructive",
       });
       navigate('/patients');
@@ -82,14 +84,14 @@ const EditPatientPage = () => {
       if (error) throw error;
 
       toast({
-        title: "Success",
-        description: "Patient updated successfully!",
+        title: t('messages.success'),
+        description: t('editPatient.patientUpdated'),
       });
 
       navigate('/patients');
     } catch (error) {
       toast({
-        title: "Error",
+        title: t('messages.error'),
         description: error.message,
         variant: "destructive",
       });
@@ -108,14 +110,14 @@ const EditPatientPage = () => {
       if (error) throw error;
 
       toast({
-        title: "Success",
-        description: "Patient deleted successfully!",
+        title: t('messages.success'),
+        description: t('editPatient.patientDeleted'),
       });
 
       navigate('/patients');
     } catch (error) {
       toast({
-        title: "Error",
+        title: t('messages.error'),
         description: error.message,
         variant: "destructive",
       });
@@ -125,7 +127,7 @@ const EditPatientPage = () => {
   if (initialLoading) {
     return (
         <div className="p-6">
-          <div className="text-center">Loading patient data...</div>
+          <div className="text-center">{t('editPatient.loadingPatientData')}</div>
         </div>
     );
   }
@@ -140,11 +142,11 @@ const EditPatientPage = () => {
             className="mr-4"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Patients
+            {t('editPatient.backToPatients')}
           </Button>
           <div>
-            <h1 className="text-3xl font-bold">Edit Patient</h1>
-            <p className="text-muted-foreground">Update patient information</p>
+            <h1 className="text-3xl font-bold">{t('editPatient.editPatient')}</h1>
+            <p className="text-muted-foreground">{t('editPatient.updatePatientInformation')}</p>
           </div>
         </div>
 
@@ -153,43 +155,43 @@ const EditPatientPage = () => {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <User className="h-4 w-4 mr-2" />
-                Patient Information
+                {t('editPatient.patientInformation')}
               </CardTitle>
               <CardDescription>
-                Update the patient details below. All fields marked with * are required.
+                {t('editPatient.updatePatientDetails')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="name">Full Name *</Label>
+                    <Label htmlFor="name">{t('editPatient.fullName')}</Label>
                     <Input
                       id="name"
                       name="name"
                       type="text"
                       value={formData.name}
                       onChange={handleChange}
-                      placeholder="Enter patient's full name"
+                      placeholder={t('editPatient.enterPatientName')}
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="telephone">Telephone *</Label>
+                    <Label htmlFor="telephone">{t('editPatient.telephone')}</Label>
                     <Input
                       id="telephone"
                       name="telephone"
                       type="tel"
                       value={formData.telephone}
                       onChange={handleChange}
-                      placeholder="Enter phone number"
+                      placeholder={t('editPatient.enterPhoneNumber')}
                       required
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="age">Age *</Label>
+                  <Label htmlFor="age">{t('editPatient.age')}</Label>
                   <Input
                     id="age"
                     name="age"
@@ -198,20 +200,20 @@ const EditPatientPage = () => {
                     max="120"
                     value={formData.age}
                     onChange={handleChange}
-                    placeholder="Enter patient's age"
+                    placeholder={t('editPatient.enterAge')}
                     required
                     className="max-w-xs"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="health_condition">Health Condition</Label>
+                  <Label htmlFor="health_condition">{t('editPatient.healthCondition')}</Label>
                   <Textarea
                     id="health_condition"
                     name="health_condition"
                     value={formData.health_condition}
                     onChange={handleChange}
-                    placeholder="Enter any health conditions, allergies, medications, or medical history (optional)"
+                    placeholder={t('editPatient.healthConditionPlaceholder')}
                     rows={4}
                   />
                 </div>
@@ -221,20 +223,20 @@ const EditPatientPage = () => {
                     <AlertDialogTrigger asChild>
                       <Button variant="destructive" type="button">
                         <Trash2 className="h-4 w-4 mr-2" />
-                        Delete Patient
+                        {t('editPatient.deletePatient')}
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Delete Patient</AlertDialogTitle>
+                        <AlertDialogTitle>{t('editPatient.deletePatient')}</AlertDialogTitle>
                         <AlertDialogDescription>
-                          Are you sure you want to delete this patient? This action cannot be undone and will also delete all associated appointments.
+                          {t('editPatient.deleteConfirmation')}
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
                         <AlertDialogAction onClick={handleDelete}>
-                          Delete
+                          {t('common.delete')}
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
@@ -246,15 +248,15 @@ const EditPatientPage = () => {
                       variant="outline" 
                       onClick={() => navigate('/patients')}
                     >
-                      Cancel
+                      {t('common.cancel')}
                     </Button>
                     <Button type="submit" disabled={loading}>
                       {loading ? (
-                        'Saving...'
+                        t('editPatient.saving')
                       ) : (
                         <>
                           <Save className="h-4 w-4 mr-2" />
-                          Update Patient
+                          {t('editPatient.updatePatient')}
                         </>
                       )}
                     </Button>

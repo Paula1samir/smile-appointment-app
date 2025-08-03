@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -12,6 +14,8 @@ import Layout from '@/components/Layout';
 
 
 const PatientsPage = () => {
+  const { isRTL } = useLanguage();
+  const { t } = useTranslation();
   const [patients, setPatients] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
@@ -65,7 +69,7 @@ const PatientsPage = () => {
 
       <div className="min-h-screen bg-background">
         <div className="p-6">
-          <div className="text-center">Loading patients...</div>
+          <div className="text-center">{t('patients.loadingPatients')}</div>
         </div>
       </div>
       </Layout>
@@ -79,13 +83,13 @@ const PatientsPage = () => {
       <div className="p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-3xl font-bold">Patients</h1>
-            <p className="text-muted-foreground">Manage patient records</p>
+            <h1 className="text-3xl font-bold">{t('patients.patients')}</h1>
+            <p className="text-muted-foreground">{t('patients.managePatientRecords')}</p>
           </div>
           <Link to="/add-patient">
             <Button>
               <Plus className="h-4 w-4 mr-2" />
-              Add Patient
+              {t('patients.addPatient')}
             </Button>
           </Link>
         </div>
@@ -94,13 +98,13 @@ const PatientsPage = () => {
           <CardHeader>
             <CardTitle className="flex items-center">
               <Search className="h-4 w-4 mr-2" />
-              Search Patients
+              {t('patients.searchPatients')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <Input
               type="text"
-              placeholder="Search by name or phone number..."
+              placeholder={t('patients.searchByNameOrPhone')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="max-w-md"
@@ -110,21 +114,21 @@ const PatientsPage = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Patient List</CardTitle>
+            <CardTitle>{t('patients.patientList')}</CardTitle>
             <CardDescription>
-              {filteredPatients.length} patient(s) found
+              {filteredPatients.length} {t('patients.patientsFound')}
             </CardDescription>
           </CardHeader>
           <CardContent>
             {filteredPatients.length === 0 ? (
               <div className="text-center py-8">
                 <p className="text-muted-foreground">
-                  {searchTerm ? 'No patients found matching your search.' : 'No patients registered yet.'}
+                  {searchTerm ? t('patients.noPatientsFound') : t('patients.noPatientsRegistered')}
                 </p>
                 <Link to="/add-patient">
                   <Button className="mt-4">
                     <Plus className="h-4 w-4 mr-2" />
-                    Add First Patient
+                    {t('patients.addFirstPatient')}
                   </Button>
                 </Link>
               </div>
@@ -132,12 +136,12 @@ const PatientsPage = () => {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Patient</TableHead>
-                    <TableHead>Contact</TableHead>
-                    <TableHead>Age</TableHead>
-                    <TableHead>Health Condition</TableHead>
-                    <TableHead>Appointments</TableHead>
-                    <TableHead>Actions</TableHead>
+                    <TableHead>{t('patients.patient')}</TableHead>
+                    <TableHead>{t('patients.contact')}</TableHead>
+                    <TableHead>{t('patients.age')}</TableHead>
+                    <TableHead>{t('patients.healthCondition')}</TableHead>
+                    <TableHead>{t('patients.appointments')}</TableHead>
+                    <TableHead>{t('patients.actions')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -157,35 +161,41 @@ const PatientsPage = () => {
                             <span>{patient.telephone}</span>
                           </div>
                         </TableCell>
-                        <TableCell>{patient.age} years</TableCell>
+                        <TableCell>{patient.age} {t('patients.years')}</TableCell>
                         <TableCell>
                           <span className="text-sm">
-                            {patient.health_condition || 'Not specified'}
+                            {patient.health_condition || t('patients.notSpecified')}
                           </span>
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center space-x-2">
                             <Badge variant="outline">
-                              {stats.totalAppointments} total
+                              {stats.totalAppointments} {t('patients.total')}
                             </Badge>
                             {stats.upcomingAppointments > 0 && (
                               <Badge variant="default">
-                                {stats.upcomingAppointments} upcoming
+                                {stats.upcomingAppointments} {t('patients.upcoming')}
                               </Badge>
                             )}
                           </div>
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center space-x-2">
+                            <Link to={`/patient-profile/${patient.id}`}>
+                              <Button variant="outline" size="sm">
+                                <User className="h-4 w-4 mr-1" />
+                                {t('patients.viewProfile')}
+                              </Button>
+                            </Link>
                             <Link to={`/edit-patient/${patient.id}`}>
                               <Button variant="outline" size="sm">
-                                Edit
+                                {t('patients.edit')}
                               </Button>
                             </Link>
                             <Link to={`/scheduler?patient=${patient.id}`}>
                               <Button variant="outline" size="sm">
                                 <Calendar className="h-4 w-4 mr-1" />
-                                Book
+                                {t('patients.book')}
                               </Button>
                             </Link>
                           </div>
