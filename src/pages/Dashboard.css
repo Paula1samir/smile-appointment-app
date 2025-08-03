@@ -31,3 +31,6 @@
 textarea{
     color:black !important;
 }
+.tabs{
+    display: flex;
+}

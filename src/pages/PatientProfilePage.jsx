@@ -260,8 +260,8 @@ const PatientProfilePage = () => {
           </Card>
 
           {/* Tabs */}
-          <Tabs defaultValue="history" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4 print:hidden">
+          <Tabs defaultValue="history" className="space-y-6 ">
+            <TabsList className=" tabs p-6 text-center">
               <TabsTrigger value="history">{t('patientProfile.treatmentHistory')}</TabsTrigger>
               <TabsTrigger value="appointments">{t('patientProfile.appointments')}</TabsTrigger>
               <TabsTrigger value="notes">{t('patientProfile.medicalNotes')}</TabsTrigger>

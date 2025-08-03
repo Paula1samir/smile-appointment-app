@@ -94,7 +94,7 @@ const PatientsPage = () => {
           </Link>
         </div>
 
-        <Card className="mb-6">
+        <Card className="mb-6 mt-4">
           <CardHeader>
             <CardTitle className="flex items-center">
               <Search className="h-4 w-4 mr-2" />
@@ -112,7 +112,7 @@ const PatientsPage = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="mt-4">
           <CardHeader>
             <CardTitle>{t('patients.patientList')}</CardTitle>
             <CardDescription>
