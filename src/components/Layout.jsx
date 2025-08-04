@@ -9,6 +9,7 @@ import Logo from '@/images/Logo.png';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
+import NotificationCenter from './NotificationCenter';
 
 const Layout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -56,6 +57,7 @@ const Layout = ({ children }) => {
               </span>
             </div>
             <div className="flex items-center gap-2">
+              <NotificationCenter />
               <LanguageSwitcher />
               <Button
                 variant="ghost"
