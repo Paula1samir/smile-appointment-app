@@ -80,7 +80,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Send OTP via email using Resend
     try {
       const emailResponse = await resend.emails.send({
-        from: "DentalCare <noreply@resend.dev>", // Update this to your verified domain
+        from: "DentalCare <onboarding@resend.dev>", // Using Resend's default verified domain
         to: [email],
         subject: "Password Reset OTP - DentalCare",
         html: `
