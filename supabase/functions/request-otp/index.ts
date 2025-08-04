@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { Resend } from "npm:resend@2.0.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -29,6 +30,17 @@ const handler = async (req: Request): Promise<Response> => {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // Initialize Resend
+    const resendApiKey = Deno.env.get("RESEND_API_KEY");
+    if (!resendApiKey) {
+      console.error("RESEND_API_KEY is not configured");
+      return new Response(
+        JSON.stringify({ error: "Email service not configured" }),
+        { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+    const resend = new Resend(resendApiKey);
 
     // Check if user exists
     const { data: userData, error: userError } = await supabase.auth.admin.listUsers();
@@ -65,19 +77,53 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Here you would send the OTP via email (requires RESEND_API_KEY)
-    // For now, we'll return the OTP in development (remove in production)
-    console.log(`OTP for ${email}: ${otpCode}`);
+    // Send OTP via email using Resend
+    try {
+      const emailResponse = await resend.emails.send({
+        from: "DentalCare <noreply@resend.dev>", // Update this to your verified domain
+        to: [email],
+        subject: "Password Reset OTP - DentalCare",
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <h2 style="color: #2563eb; text-align: center;">Password Reset Request</h2>
+            <p>Hello,</p>
+            <p>You have requested to reset your password for your DentalCare account. Please use the following One-Time Password (OTP) to complete the process:</p>
+            
+            <div style="background: #f3f4f6; border: 2px solid #e5e7eb; border-radius: 8px; padding: 20px; text-align: center; margin: 20px 0;">
+              <h1 style="color: #1f2937; font-size: 36px; letter-spacing: 8px; margin: 0; font-weight: bold;">${otpCode}</h1>
+            </div>
+            
+            <p><strong>Important:</strong></p>
+            <ul>
+              <li>This OTP will expire in <strong>5 minutes</strong></li>
+              <li>Do not share this code with anyone</li>
+              <li>If you didn't request this password reset, please ignore this email</li>
+            </ul>
+            
+            <p>If you have any questions, please contact our support team.</p>
+            
+            <p>Best regards,<br>The DentalCare Team</p>
+          </div>
+        `,
+      });
 
-    return new Response(
-      JSON.stringify({ 
-        success: true, 
-        message: "OTP sent to your email address",
-        // Remove this in production:
-        otp: otpCode 
-      }),
-      { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
-    );
+      console.log("Email sent successfully:", emailResponse);
+
+      return new Response(
+        JSON.stringify({ 
+          success: true, 
+          message: "OTP sent to your email address. Please check your inbox.",
+        }),
+        { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+
+    } catch (emailError) {
+      console.error("Error sending email:", emailError);
+      return new Response(
+        JSON.stringify({ error: "Failed to send OTP email" }),
+        { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
 
   } catch (error: any) {
     console.error("Error in request-otp function:", error);
