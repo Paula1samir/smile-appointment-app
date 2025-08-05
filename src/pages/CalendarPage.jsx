@@ -6,7 +6,7 @@ import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '../contexts/LanguageContext';
 import { supabase } from '../integrations/supabase/client';
-import { Layout } from '../components/Layout';
+import  Layout  from '../components/Layout';
 import { toast } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
