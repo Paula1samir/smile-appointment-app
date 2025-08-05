@@ -15,7 +15,9 @@ import {
   Menu,
   X,
   Stethoscope,
-  User
+  User,
+  CalendarDays,
+  Shield
 } from 'lucide-react';
 import { Button } from './ui/button';
 import Logo from '@/images/Logo.png';
@@ -53,6 +55,12 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       description: 'Manage appointments'
     },
     { 
+      path: '/calendar', 
+      icon: CalendarDays, 
+      label: t('calendar.calendar'),
+      description: 'Calendar view with drag-and-drop'
+    },
+    { 
       path: '/patients', 
       icon: Users, 
       label: t('navigation.patients'),
@@ -65,12 +73,22 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       description: 'Register new patient'
     },
     { 
+      path: '/admin', 
+      icon: Shield, 
+      label: t('admin.adminDashboard'),
+      description: 'User management and system administration',
+      adminOnly: true
+    },
+    { 
       path: '/profile', 
       icon: User, 
       label: t('navigation.profile'),
       description: 'Account settings'
     }
-  ].filter(item => !item.doctorOnly || profile?.role === 'doctor');
+  ].filter(item => 
+    (!item.doctorOnly || profile?.role === 'doctor') &&
+    (!item.adminOnly || profile?.role === 'admin')
+  );
 
   const sidebarVariants = {
     open: {
