@@ -146,6 +146,33 @@ export type Database = {
         }
         Relationships: []
       }
+      password_reset_attempts: {
+        Row: {
+          attempt_type: string
+          attempted_at: string
+          email: string
+          id: string
+          ip_address: string | null
+          success: boolean
+        }
+        Insert: {
+          attempt_type: string
+          attempted_at?: string
+          email: string
+          id?: string
+          ip_address?: string | null
+          success?: boolean
+        }
+        Update: {
+          attempt_type?: string
+          attempted_at?: string
+          email?: string
+          id?: string
+          ip_address?: string | null
+          success?: boolean
+        }
+        Relationships: []
+      }
       password_reset_otps: {
         Row: {
           created_at: string | null
@@ -290,12 +317,38 @@ export type Database = {
           },
         ]
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      check_password_reset_rate_limit: {
+        Args: { _attempt_type: string; _email: string; _ip_address: string }
+        Returns: Json
+      }
       cleanup_expired_otps: { Args: never; Returns: undefined }
+      cleanup_old_password_reset_attempts: { Args: never; Returns: undefined }
       create_appointment_reminder: {
         Args: {
           appointment_date: string
@@ -319,9 +372,18 @@ export type Database = {
       get_current_user_role: { Args: never; Returns: string }
       has_role: { Args: { _role: string }; Returns: boolean }
       is_doctor_for_patient: { Args: { _patient_id: string }; Returns: boolean }
+      log_password_reset_attempt: {
+        Args: {
+          _attempt_type: string
+          _email: string
+          _ip_address: string
+          _success: boolean
+        }
+        Returns: undefined
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "doctor" | "assistant" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -448,6 +510,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["doctor", "assistant", "admin"],
+    },
   },
 } as const

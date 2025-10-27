@@ -11,6 +11,9 @@ interface RequestOTPRequest {
   email: string;
 }
 
+// Email validation regex
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -19,17 +22,38 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const { email }: RequestOTPRequest = await req.json();
 
-    if (!email) {
+    // Validate email format
+    if (!email || typeof email !== 'string' || !EMAIL_REGEX.test(email) || email.length > 255) {
       return new Response(
-        JSON.stringify({ error: "Email is required" }),
+        JSON.stringify({ error: "Invalid email format" }),
         { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
     }
+
+    // Get client IP address for rate limiting
+    const clientIp = req.headers.get("x-forwarded-for") || 
+                     req.headers.get("x-real-ip") || 
+                     "unknown";
 
     // Initialize Supabase client
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // Check rate limits
+    const { data: rateLimitCheck } = await supabase.rpc('check_password_reset_rate_limit', {
+      _email: email.toLowerCase(),
+      _ip_address: clientIp,
+      _attempt_type: 'request_otp'
+    });
+
+    if (rateLimitCheck && !rateLimitCheck.allowed) {
+      console.log(`Rate limit exceeded for ${email} from IP ${clientIp}`);
+      return new Response(
+        JSON.stringify({ error: rateLimitCheck.reason }),
+        { status: 429, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
 
     // Initialize Resend
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
@@ -42,88 +66,132 @@ const handler = async (req: Request): Promise<Response> => {
     }
     const resend = new Resend(resendApiKey);
 
-    // Check if user exists
-    const { data: userData, error: userError } = await supabase.auth.admin.listUsers();
-    const userExists = userData?.users?.some(user => user.email === email);
+    // Check if user exists (prevent user enumeration with generic error)
+    const { data: userData } = await supabase.auth.admin.listUsers();
+    const user = userData?.users?.find(u => u.email?.toLowerCase() === email.toLowerCase());
 
-    if (!userExists) {
+    if (!user) {
+      // Log attempt even for non-existent users to track abuse
+      await supabase.rpc('log_password_reset_attempt', {
+        _email: email.toLowerCase(),
+        _ip_address: clientIp,
+        _attempt_type: 'request_otp',
+        _success: false
+      });
+      
+      // Use generic message to prevent user enumeration
       return new Response(
-        JSON.stringify({ error: "No account found with this email address" }),
-        { status: 404, headers: { "Content-Type": "application/json", ...corsHeaders } }
+        JSON.stringify({ 
+          success: true, 
+          message: "If an account exists with this email, you will receive a password reset code." 
+        }),
+        { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
     }
 
-    // Generate 6-digit OTP
-    const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes from now
+    // Generate OTP (6 digits)
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiryTime = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
     // Clean up expired OTPs
     await supabase.rpc('cleanup_expired_otps');
+    
+    // Invalidate any existing OTPs for this email
+    await supabase
+      .from('password_reset_otps')
+      .update({ used: true })
+      .eq('email', email.toLowerCase())
+      .eq('used', false);
 
     // Store OTP in database
-    const { error: otpError } = await supabase
+    const { error: insertError } = await supabase
       .from('password_reset_otps')
       .insert({
-        email,
-        otp_code: otpCode,
-        expires_at: expiresAt.toISOString(),
+        email: email.toLowerCase(),
+        otp_code: otp,
+        expires_at: expiryTime.toISOString(),
       });
 
-    if (otpError) {
-      console.error('Error storing OTP:', otpError);
+    if (insertError) {
+      console.error('Error storing OTP:', insertError);
+      
+      // Log failed attempt
+      await supabase.rpc('log_password_reset_attempt', {
+        _email: email.toLowerCase(),
+        _ip_address: clientIp,
+        _attempt_type: 'request_otp',
+        _success: false
+      });
+      
       return new Response(
         JSON.stringify({ error: "Failed to generate OTP" }),
         { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
     }
 
-    // Send OTP via email using Resend
-    try {
-      const emailResponse = await resend.emails.send({
-        from: "DentalCare <onboarding@resend.dev>", // Using Resend's default verified domain
-        to: [email],
-        subject: "Password Reset OTP - DentalCare",
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-            <h2 style="color: #2563eb; text-align: center;">Password Reset Request</h2>
-            <p>Hello,</p>
-            <p>You have requested to reset your password for your DentalCare account. Please use the following One-Time Password (OTP) to complete the process:</p>
-            
-            <div style="background: #f3f4f6; border: 2px solid #e5e7eb; border-radius: 8px; padding: 20px; text-align: center; margin: 20px 0;">
-              <h1 style="color: #1f2937; font-size: 36px; letter-spacing: 8px; margin: 0; font-weight: bold;">${otpCode}</h1>
-            </div>
-            
-            <p><strong>Important:</strong></p>
-            <ul>
-              <li>This OTP will expire in <strong>5 minutes</strong></li>
-              <li>Do not share this code with anyone</li>
-              <li>If you didn't request this password reset, please ignore this email</li>
-            </ul>
-            
-            <p>If you have any questions, please contact our support team.</p>
-            
-            <p>Best regards,<br>The DentalCare Team</p>
+    // Send OTP via email
+    const { error: emailError } = await resend.emails.send({
+      from: "DentalCare <onboarding@resend.dev>",
+      to: [email],
+      subject: "Password Reset OTP - DentalCare",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h2 style="color: #2563eb; text-align: center;">Password Reset Request</h2>
+          <p>Hello,</p>
+          <p>You have requested to reset your password for your DentalCare account. Please use the following One-Time Password (OTP) to complete the process:</p>
+          
+          <div style="background: #f3f4f6; border: 2px solid #e5e7eb; border-radius: 8px; padding: 20px; text-align: center; margin: 20px 0;">
+            <h1 style="color: #1f2937; font-size: 36px; letter-spacing: 8px; margin: 0; font-weight: bold;">${otp}</h1>
           </div>
-        `,
+          
+          <p><strong>Important:</strong></p>
+          <ul>
+            <li>This OTP will expire in <strong>10 minutes</strong></li>
+            <li>Do not share this code with anyone</li>
+            <li>If you didn't request this password reset, please ignore this email</li>
+          </ul>
+          
+          <p>If you have any questions, please contact our support team.</p>
+          
+          <p>Best regards,<br>The DentalCare Team</p>
+        </div>
+      `,
+    });
+
+    if (emailError) {
+      console.error('Error sending email:', emailError);
+      
+      // Log failed attempt
+      await supabase.rpc('log_password_reset_attempt', {
+        _email: email.toLowerCase(),
+        _ip_address: clientIp,
+        _attempt_type: 'request_otp',
+        _success: false
       });
-
-      console.log("Email sent successfully:", emailResponse);
-
-      return new Response(
-        JSON.stringify({ 
-          success: true, 
-          message: "OTP sent to your email address. Please check your inbox.",
-        }),
-        { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
-
-    } catch (emailError) {
-      console.error("Error sending email:", emailError);
+      
       return new Response(
         JSON.stringify({ error: "Failed to send OTP email" }),
         { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
     }
+
+    // Log successful attempt
+    await supabase.rpc('log_password_reset_attempt', {
+      _email: email.toLowerCase(),
+      _ip_address: clientIp,
+      _attempt_type: 'request_otp',
+      _success: true
+    });
+
+    console.log(`OTP sent successfully to ${email} from IP ${clientIp}`);
+
+    return new Response(
+      JSON.stringify({ 
+        success: true, 
+        message: "If an account exists with this email, you will receive a password reset code." 
+      }),
+      { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
+    );
 
   } catch (error: any) {
     console.error("Error in request-otp function:", error);
