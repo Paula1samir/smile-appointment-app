@@ -28,12 +28,17 @@ export const AuthProvider = ({ children }) => {
           // Fetch user profile
           setTimeout(async () => {
             try {
-              const { data: profileData } = await supabase
+              const { data: profileData, error } = await supabase
                 .from('profiles')
                 .select('*')
                 .eq('user_id', session.user.id)
-                .single();
-              setProfile(profileData);
+                .maybeSingle();
+              
+              if (error) {
+                console.error('Error fetching profile:', error);
+              } else {
+                setProfile(profileData);
+              }
             } catch (error) {
               console.error('Error fetching profile:', error);
             }
