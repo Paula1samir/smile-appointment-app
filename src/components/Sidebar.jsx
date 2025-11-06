@@ -148,14 +148,14 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         variants={sidebarVariants}
         animate={isOpen ? "open" : "closed"}
         className={`
-          fixed top-0 left-0 h-full bg-white border-r border-gray-200 z-50 shadow-soft-lg dark:bg-gray-900 dark:border-gray-800
+          fixed top-0 left-0 h-full bg-gray-900 border-r border-gray-800 z-50 shadow-2xl dark:bg-black dark:border-gray-900
           ${isOpen ? 'w-80' : 'w-80 -translate-x-full lg:w-20 lg:translate-x-0'}
           lg:relative lg:z-auto
         `}
       >
-        <div className="flex flex-col h-full bg-white dark:bg-gray-900">
+        <div className="flex flex-col h-full bg-gray-900 dark:bg-black">
           {/* Header */}
-          <div className="p-6 border-b border-gray-100 bg-white dark:bg-gray-900 dark:border-gray-800">
+          <div className="p-6 border-b border-gray-800 bg-gray-900 dark:bg-black dark:border-gray-900">
             <div className="flex items-center justify-between">
               <motion.div 
                 className={`flex items-center gap-3 ${isOpen ? 'lg:flex' : 'lg:justify-center'}`}
@@ -178,8 +178,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                       exit={{ opacity: 0, x: -20 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <h1 className="font-bold text-xl bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent dark:from-gray-100 dark:to-gray-400">DentalCare</h1>
-                      <p className="text-sm text-gray-600 font-medium dark:text-gray-300">Clinic Management</p>
+                      <h1 className="font-bold text-xl bg-gradient-to-r from-gray-100 to-gray-300 bg-clip-text text-transparent">DentalCare</h1>
+                      <p className="text-sm text-gray-400 font-medium">Clinic Management</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -197,7 +197,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                     variant="ghost"
                     size="icon"
                     onClick={() => setIsOpen(!isOpen)}
-                    className="rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
+                    className="rounded-xl hover:bg-gray-800 dark:hover:bg-gray-900 transition-colors duration-200 text-gray-300"
                   >
                     <Menu className="w-4 h-4" />
                   </Button>
@@ -217,7 +217,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-2 overflow-y-auto bg-white dark:bg-gray-900">
+          <nav className="flex-1 p-4 space-y-2 overflow-y-auto bg-gray-900 dark:bg-black">
             <AnimatePresence>
               {navItems.map((item, index) => (
                 <motion.div
@@ -235,7 +235,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                         nav-item group relative overflow-hidden
                         ${isActive 
                           ? 'bg-primary text-white shadow-md dark:bg-primary-800' 
-                          : 'hover:bg-primary-50 text-gray-700 hover:text-primary dark:hover:bg-gray-800 dark:text-gray-100 dark:hover:text-primary-300'
+                          : 'hover:bg-gray-800 text-gray-300 hover:text-white dark:hover:bg-gray-900 dark:text-gray-300 dark:hover:text-white'
                         }
                         ${!isOpen && 'lg:justify-center lg:px-3'}
                         transition-all duration-200
@@ -279,9 +279,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           </nav>
 
           {/* User section */}
-          <div className="p-4 border-t border-gray-100 bg-white dark:bg-gray-900 dark:border-gray-800">
+          <div className="p-4 border-t border-gray-800 bg-gray-900 dark:bg-black dark:border-gray-900">
             <motion.div 
-              className={`flex items-center gap-3 p-4 rounded-xl bg-gray-50 dark:bg-gray-800 ${!isOpen && 'lg:justify-center'}`}
+              className={`flex items-center gap-3 p-4 rounded-xl bg-gray-800 dark:bg-gray-900 ${!isOpen && 'lg:justify-center'}`}
               whileHover={{ scale: 1.02 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
@@ -299,8 +299,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                     exit={{ opacity: 0, x: -10 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <div className="font-semibold text-sm truncate text-gray-900 dark:text-gray-100">{user?.email}</div>
-                    <div className="text-xs text-gray-600 capitalize dark:text-gray-300">{profile?.role || 'User'}</div>
+                    <div className="font-semibold text-sm truncate text-gray-100">{user?.email}</div>
+                    <div className="text-xs text-gray-400 capitalize">{profile?.role || 'User'}</div>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -313,7 +313,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               <Button
                 variant="ghost"
                 onClick={handleLogout}
-                className={`w-full mt-3 justify-start text-error hover:text-error hover:bg-error-50 dark:hover:bg-error-900 ${!isOpen && 'lg:justify-center lg:px-3'}`}
+                className={`w-full mt-3 justify-start text-red-400 hover:text-red-300 hover:bg-gray-800 dark:hover:bg-gray-900 ${!isOpen && 'lg:justify-center lg:px-3'}`}
               >
                 <LogOut className="w-4 h-4" />
                 <AnimatePresence>
